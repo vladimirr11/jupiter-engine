@@ -1,0 +1,12 @@
+BasedOnStyle: Google
+IndentWidth: 4
+IncludeBlocks: Merge 
+IndentGotoLabels: true 
+AllowShortIfStatementsOnASingleLine: false 
+IndentCaseLabels: false 
+NamespaceIndentation: None 
+ColumnLimit: 100 
+DerivePointerAlignment: false 
+PointerAlignment: Left 
+AccessModifierOffset: -4
+SortIncludes: false
