@@ -1,0 +1,3 @@
+[submodule ".\\jupiter_engine\\external_libs\\spdlog"]
+	path = .\\jupiter_engine\\external_libs\\spdlog
+	url = https://github.com/gabime/spdlog.git
