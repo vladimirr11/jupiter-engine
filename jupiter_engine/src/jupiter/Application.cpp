@@ -1,5 +1,5 @@
 // Corresponding header
-#include "Application.h"
+#include "jupiter/Application.h"
 
 namespace jupiter {
 

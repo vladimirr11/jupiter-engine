@@ -1,6 +1,7 @@
 # Directories
 .vs/
 bin/
+build/
 
 # Prerequisites
 *.d
@@ -36,5 +37,5 @@ bin/
 *.app
 
 # Files
-*.user
 *.vcxproj*
+*.sln

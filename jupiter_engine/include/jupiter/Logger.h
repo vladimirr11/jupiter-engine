@@ -31,7 +31,7 @@ template <typename... Args>
 void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
     std::lock_guard<std::mutex> lock(logMutex);
     const auto timePoint = std::chrono::system_clock::now();
-    std::string formatedLog = std::format("[{}] Jupiter Log: ", timePoint);
+    std::string formatedLog = fmt::format("[{}] Jupiter Log: ", timePoint);
     formatedLog += fmt::vformat(msg, fmt::make_format_args(args...));
 
     switch (level) {
@@ -57,10 +57,17 @@ void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
 
 }  // namespace jupiter
 
+// Auxiliary macros
+#define VA_ARGS(...) , ##__VA_ARGS__
+
 // Logging macros
-#define LOG_TRACE(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::TRACE, msg, __VA_ARGS__)
-#define LOG_INFO(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::INFO, msg, __VA_ARGS__)
-#define LOG_WARN(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::WARN, msg, __VA_ARGS__)
-#define LOG_ERROR(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::ERROR, msg, __VA_ARGS__)
+#define LOG_TRACE(msg, ...) \
+    jupiter::Logger::logTrace(jupiter::LogLevel::TRACE, msg VA_ARGS(__VA_ARGS__))
+#define LOG_INFO(msg, ...) \
+    jupiter::Logger::logTrace(jupiter::LogLevel::INFO, msg VA_ARGS(__VA_ARGS__))
+#define LOG_WARN(msg, ...) \
+    jupiter::Logger::logTrace(jupiter::LogLevel::WARN, msg VA_ARGS(__VA_ARGS__))
+#define LOG_ERROR(msg, ...) \
+    jupiter::Logger::logTrace(jupiter::LogLevel::ERROR, msg VA_ARGS(__VA_ARGS__))
 #define LOG_CRITICAL(msg, ...) \
-    jupiter::Logger::logTrace(jupiter::LogLevel::CRITICAL, msg, __VA_ARGS__)
+    jupiter::Logger::logTrace(jupiter::LogLevel::CRITICAL, msg VA_ARGS(__VA_ARGS__))
