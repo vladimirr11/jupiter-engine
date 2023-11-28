@@ -9,13 +9,13 @@
 extern jupiter::Application* jupiter::createApplication();
 
 int main(int argc, char** argv) {
-	LOG_INFO("Engine started");
+    LOG_INFO("Engine started");
 
-	jupiter::Application* game = jupiter::createApplication();
-	game->run();
-	delete game;
+    jupiter::Application* game = jupiter::createApplication();
+    game->run();
+    delete game;
 
-	return 0;
+    return 0;
 }
 
 #endif
