@@ -11,7 +11,6 @@ enum class EventType {
     /* Keyboard events */
     KEYBOARD_PRESS = 768,
     KEYBOARD_RELEASE = 769,
-    OS_TEXTEDITING = 770,
 
     /* Mouse events */
     MOUSE_MOTION = 1024,
@@ -19,17 +18,9 @@ enum class EventType {
     MOUSE_RELEASE = 1026,
     MOUSE_WHEEL_MOTION = 1027,
 
-    /* Touch events */
-    FINGER_PRESS = 1792,
-    FINGER_RELEASE = 1793,
-    FINGER_MOTION = 1794,
-
     /* Window events */
     WINDOW_CLOSE = 1800,
-    WINDOW_RESIZE = 1801,
-    WINDOW_FOCUS = 1802,
-    WINDOW_LOST_FOCUS = 1803,
-    WINDOW_MOVED = 1804
+    WINDOW_RESIZE = 1801
 };
 
 namespace Keyboard {

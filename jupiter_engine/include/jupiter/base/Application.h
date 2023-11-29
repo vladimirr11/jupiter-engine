@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "Core.h"
+#include "CommonDefines.h"
 
 namespace jupiter {
 

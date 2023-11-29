@@ -11,9 +11,9 @@ extern jupiter::Application* jupiter::createApplication();
 int main(int argc, char** argv) {
     LOG_INFO("Engine started");
 
-    jupiter::Application* game = jupiter::createApplication();
-    game->run();
-    delete game;
+    jupiter::Application* app = jupiter::createApplication();
+    app->run();
+    delete app;
 
     return 0;
 }

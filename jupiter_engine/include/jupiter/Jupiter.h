@@ -1,5 +1,5 @@
 #pragma once
 
 // Jupiter engine includes
-#include "jupiter/Application.h"
-#include "jupiter/EntryPoint.h"
+#include "jupiter/base/Application.h"
+#include "jupiter/base/EntryPoint.h"

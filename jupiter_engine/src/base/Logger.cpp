@@ -1,5 +1,5 @@
 // Corresponding header
-#include "jupiter/Logger.h"
+#include "jupiter/base/Logger.h"
 
 namespace jupiter {
 

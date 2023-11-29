@@ -5,7 +5,7 @@
 #include <cstdint>
 
 // Own includes
-#include "Core.h"
+#include "CommonDefines.h"
 
 // Third-party includes
 #define FMT_HEADER_ONLY
