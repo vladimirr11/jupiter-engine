@@ -1,8 +1,5 @@
 #pragma once
 
-// C++ system headers
-#include <cstdint>
-
 namespace jupiter {
 
 enum class EventType {

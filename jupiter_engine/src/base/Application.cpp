@@ -1,3 +1,6 @@
+// Jpch
+#include "jupiter/Jpch.h"
+
 // Corresponding header
 #include "jupiter/base/Application.h"
 
@@ -6,8 +9,6 @@
 #include "jupiter/events/KeyboardEvents.h"
 #include "jupiter/events/MouseEvents.h"
 #include "jupiter/events/WindowEvents.h"
-
-#include <iostream>
 
 namespace jupiter {
 

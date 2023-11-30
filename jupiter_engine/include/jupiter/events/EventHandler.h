@@ -1,8 +1,5 @@
 #pragma once
 
-// C++ system includes
-#include <functional>
-
 // Own includes
 #include "Event.h"
 
@@ -18,7 +15,7 @@ public:
 
     virtual void execute(const Event& event) = 0;
 
-    virtual size_t getHHashCode() const = 0;
+    virtual size_t getHashCode() const = 0;
 };
 
 template <typename EventT>
@@ -32,7 +29,7 @@ public:
         }
     }
 
-    size_t getHHashCode() const override {
+    size_t getHashCode() const override {
         return handlerCb.target_type().hash_code();
     }
 

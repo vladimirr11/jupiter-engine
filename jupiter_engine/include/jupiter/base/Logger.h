@@ -1,11 +1,7 @@
 #pragma once
 
-// C++ system includes
-#include <mutex>
-#include <cstdint>
-
 // Own includes
-#include "CommonDefines.h"
+#include "BaseDefines.h"
 
 // Third-party includes
 #define FMT_HEADER_ONLY

@@ -1,3 +1,6 @@
+// Jpch
+#include "jupiter/Jpch.h"
+
 // Corresponding header
 #include "jupiter/events/EventManager.h"
 
@@ -11,14 +14,14 @@ EventManager* gEventManager = nullptr;
 void EventManager::subscribe(const EventType type, std::unique_ptr<IEventHandler>&& handler) {
     auto eventHandlers = handlersMap.find(type);
     if (eventHandlers != handlersMap.end()) {
-        if (eventHandlers->second.contains(handler->getHHashCode())) {
+        if (eventHandlers->second.contains(handler->getHashCode())) {
             LOG_ERROR("Double registering of event handler with hash code {} for event type {}\n",
-                      handler->getHHashCode(), (int32_t)type);
+                      handler->getHashCode(), (int32_t)type);
             return;
         }
-        eventHandlers->second.insert({handler->getHHashCode(), std::move(handler)});
+        eventHandlers->second.insert({handler->getHashCode(), std::move(handler)});
     } else {
-        handlersMap[type].insert({handler->getHHashCode(), std::move(handler)});
+        handlersMap[type].insert({handler->getHashCode(), std::move(handler)});
     }
 }
 
@@ -35,8 +38,8 @@ void EventManager::unsubscribe(const EventType type, const size_t handlerHash) {
 void EventManager::triggerEvent(const Event& event) {
     auto eventHandlers = handlersMap.find(event.getType());
     if (!eventHandlers->second.empty()) {
-        for (auto it = eventHandlers->second.begin(); it != eventHandlers->second.end(); it++) {
-            it->second->execute(event);
+        for (auto& [_, eventHandler] : eventHandlers->second) {
+            eventHandler->execute(event);
         }
     }
 }

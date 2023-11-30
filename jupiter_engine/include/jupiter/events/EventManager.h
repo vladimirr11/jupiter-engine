@@ -1,10 +1,5 @@
 #pragma once
 
-// C++ system includes
-#include <memory>
-#include <vector>
-#include <unordered_map>
-
 // Own includes
 #include "EventHandler.h"
 

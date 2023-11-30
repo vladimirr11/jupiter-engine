@@ -1,9 +1,5 @@
 #pragma once
 
-// C++ system includes
-#include <string>
-#include <type_traits>
-
 // Own includes
 #include "EventDefines.h"
 

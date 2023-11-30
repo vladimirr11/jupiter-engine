@@ -1,3 +1,6 @@
+// Jpch
+#include "jupiter/Jpch.h"
+
 // Corresponding header
 #include "jupiter/base/Logger.h"
 
