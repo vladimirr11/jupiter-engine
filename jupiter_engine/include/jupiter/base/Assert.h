@@ -22,7 +22,8 @@ inline void checkFuncError(T errorCode, const char* func, const char* fileName, 
 /// @brief Asserts function's return code
 #define jAssertFunc(func) checkFuncError((func), #func, __FILE__, __LINE__)
 
-/// @brief Asserts the provided expression to be true, otherwise halts the program
+/// @brief Asserts the provided expression to be true, otherwise log error message and halts the
+/// program
 #define jAssertExpr(expr)                                           \
     if (expr) {                                                     \
     } else {                                                        \
@@ -30,19 +31,18 @@ inline void checkFuncError(T errorCode, const char* func, const char* fileName, 
         exit(EXIT_FAILURE);                                         \
     }
 
-/// @brief Asserts the provided expression to be true, otherwise log error message and halts the
-/// program
-#define jAssertExprMsg(expr, msg)                                                     \
-    if (expr) {                                                                       \
-    } else {                                                                          \
-        JLOG_ERROR("{} at {}, line {}; Message: {}", #expr, __FILE__, __LINE__, msg); \
-        exit(EXIT_FAILURE);                                                           \
+/// @brief Asserts that the provided pointer is not null
+#define jAssertPtr(ptr)                                                       \
+    if (ptr) {                                                                \
+    } else {                                                                  \
+        JLOG_ERROR("{} == nullptr at {}, line {}", #ptr, __FILE__, __LINE__); \
+        exit(EXIT_FAILURE);                                                   \
     }
 
 #else
 #define jAssertFunc(func) (func)
 #define jAssertExpr(expr) expr
-#define jAssertExprMsg(expr, msg) expr
+#define jAssertPtr(ptr) ptr
 #endif
 
 }  // namespace jupiter
