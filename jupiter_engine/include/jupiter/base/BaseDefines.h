@@ -1,5 +1,6 @@
 #pragma once
 
+// Export/import jupiter api
 #ifdef JUPITER_PLATFORM_WINDOWS
 	#ifdef JUPITER_BUILD_DLL
 		#define JUPITER_API __declspec(dllexport)

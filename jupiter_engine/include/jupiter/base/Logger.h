@@ -57,13 +57,13 @@ void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
 #define VA_ARGS(...) , ##__VA_ARGS__
 
 // Logging macros
-#define LOG_TRACE(msg, ...) \
+#define JLOG_TRACE(msg, ...) \
     jupiter::Logger::logTrace(jupiter::LogLevel::TRACE, msg VA_ARGS(__VA_ARGS__))
-#define LOG_INFO(msg, ...) \
+#define JLOG_INFO(msg, ...) \
     jupiter::Logger::logTrace(jupiter::LogLevel::INFO, msg VA_ARGS(__VA_ARGS__))
-#define LOG_WARN(msg, ...) \
+#define JLOG_WARN(msg, ...) \
     jupiter::Logger::logTrace(jupiter::LogLevel::WARN, msg VA_ARGS(__VA_ARGS__))
-#define LOG_ERROR(msg, ...) \
+#define JLOG_ERROR(msg, ...) \
     jupiter::Logger::logTrace(jupiter::LogLevel::ERROR, msg VA_ARGS(__VA_ARGS__))
-#define LOG_CRITICAL(msg, ...) \
+#define JLOG_CRITICAL(msg, ...) \
     jupiter::Logger::logTrace(jupiter::LogLevel::CRITICAL, msg VA_ARGS(__VA_ARGS__))

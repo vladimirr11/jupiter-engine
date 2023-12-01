@@ -9,6 +9,7 @@
 #include "jupiter/events/KeyboardEvents.h"
 #include "jupiter/events/MouseEvents.h"
 #include "jupiter/events/WindowEvents.h"
+#include "jupiter/base/Assert.h"
 
 namespace jupiter {
 

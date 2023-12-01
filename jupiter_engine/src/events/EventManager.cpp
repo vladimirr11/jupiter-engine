@@ -15,7 +15,7 @@ void EventManager::subscribe(const EventType type, std::unique_ptr<IEventHandler
     auto eventHandlers = handlersMap.find(type);
     if (eventHandlers != handlersMap.end()) {
         if (eventHandlers->second.contains(handler->getHashCode())) {
-            LOG_ERROR("Double registering of event handler with hash code {} for event type {}\n",
+            JLOG_ERROR("Double registering of event handler with hash code {} for event type {}\n",
                       handler->getHashCode(), (int32_t)type);
             return;
         }
@@ -28,7 +28,7 @@ void EventManager::subscribe(const EventType type, std::unique_ptr<IEventHandler
 void EventManager::unsubscribe(const EventType type, const size_t handlerHash) {
     auto eventHandlers = handlersMap.find(type);
     if (eventHandlers == handlersMap.end()) {
-        LOG_ERROR("Attempting to unregister event {} that is not registered\n", (int32_t)type);
+        JLOG_ERROR("Attempting to unregister event {} that is not registered\n", (int32_t)type);
         return;
     }
     handlersMap[type].erase(handlerHash);
