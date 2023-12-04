@@ -15,7 +15,7 @@ protected:
     KeyEvent(const KeyCode key_) : key(key_) {}
 
 protected:
-    KeyCode key;  ///< Store pressed/released key
+    KeyCode key = KeyCode::KEY_UNKNOWN;  ///< Store pressed/released key
 };
 
 class KeyPressEvent : public KeyEvent {

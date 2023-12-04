@@ -2,7 +2,7 @@
 #include <cstdint>
 
 // Own includes
-#include <jupiter/Jupiter.h>
+#include <Jupiter.h>
 
 class JupiterApp : public jupiter::Application {
 public:

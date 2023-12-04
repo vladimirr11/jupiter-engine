@@ -1,14 +1,17 @@
 #pragma once
 
+// C++ system includes
+#include <unordered_map>
+
 // Own includes
 #include "EventHandler.h"
 
 namespace jupiter {
 
 class EventManager {
-    using EventQueue = std::vector<std::unique_ptr<Event>>;
+    using EventQueue = std::vector<Event*>;
     using EventHandlersMap =
-        std::unordered_map<EventType, std::unordered_map<size_t, std::unique_ptr<IEventHandler>>>;
+        std::unordered_map<EventType, std::unordered_map<size_t, IEventHandler*>>;
 
 public:
     EventManager() = default;
@@ -16,13 +19,13 @@ public:
     EventManager(const EventManager&) = delete;
     EventManager& operator=(const EventManager&) = delete;
 
-    void subscribe(const EventType type, std::unique_ptr<IEventHandler>&& handler);
+    void subscribe(const EventType type, IEventHandler* handler);
 
     void unsubscribe(const EventType type, const size_t handlerHash);
 
     void triggerEvent(const Event& event);
 
-    void queueEvent(std::unique_ptr<Event>&& event);
+    void queueEvent(Event* event);
 
     void dispatchEvents();
 

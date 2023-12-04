@@ -6,35 +6,33 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(_EXTERNAL_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external_libs) 
-set(_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include) 
 set(_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src) 
 
 add_library(
     ${PROJECT_NAME} SHARED
-        # Include
-        ${_INC_DIR}/jupiter/base/Application.h
-        ${_INC_DIR}/jupiter/base/BaseDefines.h
-        ${_INC_DIR}/jupiter/base/EntryPoint.h
-        ${_INC_DIR}/jupiter/base/Logger.h
+       
+        ${_SRC_DIR}/base/Application.h
+        ${_SRC_DIR}/base/BaseDefines.h
+        ${_SRC_DIR}/base/EntryPoint.h
+        ${_SRC_DIR}/base/Logger.h
+          
+        ${_SRC_DIR}/events/Event.h
+        ${_SRC_DIR}/events/EventDefines.h
+        ${_SRC_DIR}/events/EventHandler.h
+        ${_SRC_DIR}/events/EventManager.h
+        ${_SRC_DIR}/events/KeyboardEvents.h
+        ${_SRC_DIR}/events/MouseEvents.h
+        ${_SRC_DIR}/events/WindowEvents.h
 
-        ${_INC_DIR}/jupiter/events/Event.h
-        ${_INC_DIR}/jupiter/events/EventDefines.h
-        ${_INC_DIR}/jupiter/events/EventHandler.h
-        ${_INC_DIR}/jupiter/events/EventManager.h
-        ${_INC_DIR}/jupiter/events/KeyboardEvents.h
-        ${_INC_DIR}/jupiter/events/MouseEvents.h
-        ${_INC_DIR}/jupiter/events/WindowEvents.h
+        ${_SRC_DIR}/memory/Memory.h
+        ${_SRC_DIR}/memory/LinearAllocator.h
 
-        ${_INC_DIR}/jupiter/Jpch.h
-        ${_INC_DIR}/jupiter/Jupiter.h
+        ${_SRC_DIR}/Jupiter.h
 
-        # Source
         ${_SRC_DIR}/base/Application.cpp
         ${_SRC_DIR}/base/Logger.cpp
 
         ${_SRC_DIR}/events/EventManager.cpp
-
-        ${_SRC_DIR}/Jpch.cpp
 )
 
 if (WIN32)
@@ -52,7 +50,7 @@ endif()
 target_include_directories(
     ${PROJECT_NAME}
         PUBLIC 
-            ${_INC_DIR}
+            ${_SRC_DIR}
             ${_EXTERNAL_LIBS_DIR}/fmt/include
 )
 

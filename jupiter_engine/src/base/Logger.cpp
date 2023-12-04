@@ -1,8 +1,5 @@
-// Jpch
-#include "jupiter/Jpch.h"
-
 // Corresponding header
-#include "jupiter/base/Logger.h"
+#include "Logger.h"
 
 namespace jupiter {
 

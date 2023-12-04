@@ -26,10 +26,9 @@ private:
 template <typename... Args>
 void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
     std::lock_guard<std::mutex> lock(logMutex);
-    const auto timePoint = std::chrono::system_clock::now();
-    std::string formatedLog = fmt::format("[{}] Jupiter Log: ", timePoint);
+    std::time_t t = std::time(nullptr);
+    std::string formatedLog = fmt::format("[{:%F %T UTC%z}] Jupiter Log: ", fmt::localtime(t));
     formatedLog += fmt::vformat(msg, fmt::make_format_args(args...));
-
     switch (level) {
     case TRACE:
         formatedLog = fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(WHITE)), formatedLog);

@@ -1,5 +1,8 @@
 #pragma once
 
+// S++ system icnludes
+#include <functional>
+
 // Own includes
 #include "Event.h"
 
