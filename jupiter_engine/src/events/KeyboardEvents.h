@@ -27,7 +27,7 @@ public:
 
     bool isRepeated() const { return repeated; }
 
-    std::string toString() const override { return fmt::format("Key {} pressed\n", (int32_t)key); }
+    std::string toString() const override { return fmt::format("Key {} pressed\n", (int32)key); }
 
 private:
     bool repeated;  ///< Is the pressed key held
@@ -39,7 +39,7 @@ public:
 
     EVENT_TYPE(EventType::KEYBOARD_RELEASE);
 
-    std::string toString() const override { return fmt::format("Key {} released\n", (int32_t)key); }
+    std::string toString() const override { return fmt::format("Key {} released\n", (int32)key); }
 };
 
 }  // namespace jupiter

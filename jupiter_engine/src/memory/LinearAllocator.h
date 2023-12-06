@@ -16,7 +16,7 @@ class alignas(PLATFORM_CACHE_LINE_SIZE) LinearAllocator {
 public:
     LinearAllocator() = delete;
 
-    explicit LinearAllocator(const size_t memSize_);
+    explicit LinearAllocator(const uint64 memSize_);
 
     LinearAllocator(const LinearAllocator&) = delete;
     LinearAllocator& operator=(const LinearAllocator&) = delete;
@@ -25,7 +25,7 @@ public:
 
     /// @brief Returns a pointer to the next free aligned address for type T
     template <typename T>
-    T* alloc(const int32_t objectCount = 1);
+    T* alloc(const int32 objectCount = 1);
 
     /// @brief Constructs in-place an object of type T at the next free aligned
     /// memory address and returns a pointer to it
@@ -45,27 +45,27 @@ private:
     void destroy();
 
 private:
-    uint8_t* memory = nullptr;  ///< Pointer to the beginning of the owned memory
-    size_t usedMemory = 0;      ///< Amount of memory used by the allocatpr
-    const size_t memSize;       ///< The size in bytes of the allocated memory block
+    uint8* memory = nullptr;  ///< Pointer to the beginning of the owned memory
+    uint64 usedMemory = 0;    ///< Amount of memory used by the allocatpr
+    const uint64 memSize;     ///< The size in bytes of the allocated memory block
 };
 
-LinearAllocator::LinearAllocator(const size_t memSize_) : memSize(memSize_) {
+LinearAllocator::LinearAllocator(const uint64 memSize_) : memSize(memSize_) {
     memory = allocAligned<uint8_t>(memSize, PLATFORM_CACHE_LINE_SIZE);
     jAssertPtr(memory);
 }
 
 template <typename T>
-T* LinearAllocator::alloc(const int32_t objectCount) {
+T* LinearAllocator::alloc(const int32 objectCount) {
     if (usedMemory + (objectCount * sizeof(T)) > memSize) {
-        const size_t remainingBytes = memSize - usedMemory;
+        const uint64 remainingBytes = memSize - usedMemory;
         JLOG_ERROR("Requsted object count exeeds the amount of free memory. Remaining bytes {}\n",
                    remainingBytes);
         return nullptr;
     }
 
-    size_t nextFreeAddress = (size_t)memory + usedMemory;
-    const size_t padding = calcPadding(nextFreeAddress, alignof(T));
+    uint64 nextFreeAddress = (uint64)memory + usedMemory;
+    const uint64 padding = calcPadding(nextFreeAddress, alignof(T));
     nextFreeAddress += padding;
     usedMemory += objectCount * sizeof(T) + padding;
 
@@ -76,12 +76,12 @@ template <typename T, typename... Args>
 T* LinearAllocator::create(Args&&... args) {
     T* baseAddress = alloc<T>();
     jAssertPtr(baseAddress);
-    return new (baseAddress) T(std::forward<Args&&>(args)...);
+    return placeAt(baseAddress, std::forward<Args&&>(args)...);
 }
 
 template <typename T, typename... Args>
 T* LinearAllocator::create(T* atAddress, Args&&... args) {
-    return new (atAddress) T(std::forward<Args&&>(args)...);
+    return placeAt(atAddress, std::forward<Args&&>(args)...);
 }
 
 void LinearAllocator::clear() {

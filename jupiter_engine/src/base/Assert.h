@@ -11,7 +11,7 @@ namespace jupiter {
 
 /// @brief Reports an assertion failure and halt execution of the program if _errorCode_ != 0
 template <typename T>
-inline void checkFuncError(T errorCode, const char* func, const char* fileName, const int line) {
+inline void checkFuncError(T errorCode, const char* func, const char* fileName, const int32 line) {
     if (errorCode) {
         JLOG_ERROR("{} returned error code {} at file {}, line {}", func, errorCode, __FILE__,
                    __LINE__);

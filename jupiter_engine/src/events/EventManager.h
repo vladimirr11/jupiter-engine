@@ -21,7 +21,7 @@ public:
 
     void subscribe(const EventType type, IEventHandler* handler);
 
-    void unsubscribe(const EventType type, const size_t handlerHash);
+    void unsubscribe(const EventType type, const uint64 handlerHash);
 
     void triggerEvent(const Event& event);
 

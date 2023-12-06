@@ -8,7 +8,7 @@
 
 extern jupiter::Application* jupiter::createApplication();
 
-int main(int argc, char** argv) {
+int32 main(int32 argc, char** argv) {
     JLOG_INFO("Engine started");
 
     jupiter::Application* app = jupiter::createApplication();

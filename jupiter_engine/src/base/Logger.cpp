@@ -1,3 +1,6 @@
+// Jpch
+#include "Jpch.h"
+
 // Corresponding header
 #include "Logger.h"
 

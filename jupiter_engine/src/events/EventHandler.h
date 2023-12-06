@@ -18,7 +18,7 @@ public:
 
     virtual void execute(const Event& event) = 0;
 
-    virtual size_t getHashCode() const = 0;
+    virtual uint64 getHashCode() const = 0;
 };
 
 template <typename EventT>

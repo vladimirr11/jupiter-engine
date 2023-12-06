@@ -10,9 +10,9 @@
 
 namespace jupiter {
 
-enum LogLevel : uint8_t { TRACE, INFO, WARN, ERROR, CRITICAL };
+enum LogLevel : uint8 { TRACE, INFO, WARN, ERROR, CRITICAL };
 
-enum LogColor : uint32_t { WHITE = 0xFFFFFF, GREEN = 0x008000, YELLOW = 0xFFFF00, RED = 0xFF0000 };
+enum LogColor : uint32 { WHITE = 0xFFFFFF, GREEN = 0x008000, YELLOW = 0xFFFF00, RED = 0xFF0000 };
 
 class JUPITER_API Logger {
 public:

@@ -2,6 +2,7 @@
 
 // Own includes
 #include "EventDefines.h"
+#include "base/BaseDefines.h"
 
 // Third-party includes
 #define FMT_HEADER_ONLY

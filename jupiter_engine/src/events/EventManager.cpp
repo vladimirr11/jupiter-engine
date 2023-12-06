@@ -1,3 +1,6 @@
+// Jpch
+#include "Jpch.h"
+
 // Corresponding header
 #include "events/EventManager.h"
 
@@ -22,10 +25,10 @@ void EventManager::subscribe(const EventType type, IEventHandler* handler) {
     }
 }
 
-void EventManager::unsubscribe(const EventType type, const size_t handlerHash) {
+void EventManager::unsubscribe(const EventType type, const uint64 handlerHash) {
     auto eventHandlers = handlersMap.find(type);
     if (eventHandlers == handlersMap.end()) {
-        JLOG_ERROR("Attempting to unregister event {} that is not registered\n", (int32_t)type);
+        JLOG_ERROR("Attempting to unregister event {} that is not registered\n", (int32)type);
         return;
     }
     handlersMap[type].erase(handlerHash);

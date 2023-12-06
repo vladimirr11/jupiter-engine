@@ -7,21 +7,21 @@ namespace jupiter {
 
 class WindowResizeEvent : public Event {
 public:
-    WindowResizeEvent(const uint32_t width, const uint32_t height)
+    WindowResizeEvent(const uint32 width, const uint32 height)
         : newWidth(width), newHeight(height) {}
 
     EVENT_TYPE(EventType::WINDOW_RESIZE);
 
-    uint32_t getWidth() const { return newWidth; }
-    uint32_t getHeight() const { return newHeight; }
+    uint32 getWidth() const { return newWidth; }
+    uint32 getHeight() const { return newHeight; }
 
     std::string toString() const override {
         return fmt::format("Window resized to [{}, {}]\n", newWidth, newHeight);
     }
 
 private:
-    uint32_t newWidth{};
-    uint32_t newHeight{};
+    uint32 newWidth{};
+    uint32 newHeight{};
 };
 
 class WindowCloseEvent : public Event {
