@@ -1,16 +1,9 @@
 #pragma once
 
-// S++ system icnludes
-#include <functional>
-
 // Own includes
 #include "Event.h"
 
 namespace jupiter {
-
-/// @brief Alias template for function that will be called by a subscriber (handler) of event
-template <typename EventT>
-using EventCallback = std::function<void(const EventT&)>;
 
 class IEventHandler {
 public:
