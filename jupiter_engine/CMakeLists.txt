@@ -8,18 +8,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(_EXTERNAL_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external_libs) 
 set(_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src) 
 
+# disable building glfw docs, testx, and examples
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
 add_library(
     ${PROJECT_NAME} SHARED
        
         ${_SRC_DIR}/base/Application.h
+        ${_SRC_DIR}/base/Application.cpp
+        ${_SRC_DIR}/base/Assert.h
+        ${_SRC_DIR}/base/Logger.h
+        ${_SRC_DIR}/base/Logger.cpp
         ${_SRC_DIR}/base/BaseDefines.h
         ${_SRC_DIR}/base/EntryPoint.h
-        ${_SRC_DIR}/base/Logger.h
+        ${_SRC_DIR}/base/Window.h
           
         ${_SRC_DIR}/events/Event.h
         ${_SRC_DIR}/events/EventDefines.h
         ${_SRC_DIR}/events/EventHandler.h
         ${_SRC_DIR}/events/EventManager.h
+        ${_SRC_DIR}/events/EventManager.cpp
         ${_SRC_DIR}/events/KeyboardEvents.h
         ${_SRC_DIR}/events/MouseEvents.h
         ${_SRC_DIR}/events/WindowEvents.h
@@ -27,12 +37,12 @@ add_library(
         ${_SRC_DIR}/memory/Memory.h
         ${_SRC_DIR}/memory/LinearAllocator.h
 
+        ${_SRC_DIR}/platform/Win32Window.h
+        ${_SRC_DIR}/platform/Win32Window.cpp
+
         ${_SRC_DIR}/Jupiter.h
-
-        ${_SRC_DIR}/base/Application.cpp
-        ${_SRC_DIR}/base/Logger.cpp
-
-        ${_SRC_DIR}/events/EventManager.cpp
+        ${_SRC_DIR}/Jpch.h
+        ${_SRC_DIR}/Jpch.cpp
 )
 
 if (WIN32)
@@ -52,12 +62,15 @@ target_include_directories(
         PUBLIC 
             ${_SRC_DIR}
             ${_EXTERNAL_LIBS_DIR}/fmt/include
+            ${_EXTERNAL_LIBS_DIR}/glfw/include
 )
 
 target_link_libraries(
     ${PROJECT_NAME}
         PRIVATE 
             fmt
+            glfw
 )
 
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/fmt)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/glfw)
