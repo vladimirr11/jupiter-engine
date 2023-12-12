@@ -25,12 +25,16 @@ public:
         }
     }
 
-    size_t getHashCode() const override {
-        return handlerCb.target_type().hash_code();
-    }
+    size_t getHashCode() const override { return handlerCb.target_type().hash_code(); }
 
 private:
     EventCallback<EventT> handlerCb;
 };
+
+/// @brief Creates new event handler in pre-allocated memory
+template <typename EventT, typename... Args>
+inline EventHandler<EventT>* newEventHandler(Args&&... args) {
+    return gLinearAllocator->create<EventHandler<EventT>>(std::forward<Args>(args)...);
+}
 
 }  // namespace jupiter

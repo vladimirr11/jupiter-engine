@@ -5,10 +5,8 @@
 #include <iostream>
 
 // Own includes
-#include "base/BaseDefines.h"
 #include "base/Assert.h"
 #include "Memory.h"
-#include "events/KeyboardEvents.h"
 
 namespace jupiter {
 
@@ -50,11 +48,6 @@ private:
     const uint64 memSize;     ///< The size in bytes of the allocated memory block
 };
 
-LinearAllocator::LinearAllocator(const uint64 memSize_) : memSize(memSize_) {
-    memory = allocAligned<uint8_t>(memSize, PLATFORM_CACHE_LINE_SIZE);
-    jAssertPtr(memory);
-}
-
 template <typename T>
 T* LinearAllocator::alloc(const int32 objectCount) {
     if (usedMemory + (objectCount * sizeof(T)) > memSize) {
@@ -84,11 +77,7 @@ T* LinearAllocator::create(T* atAddress, Args&&... args) {
     return placeAt(atAddress, std::forward<Args&&>(args)...);
 }
 
-void LinearAllocator::clear() {
-    memory = zeroMemory(memory, memSize);
-    usedMemory = 0;
-}
-
-void LinearAllocator::destroy() { freeAligned(memory); }
+// Global linear allocator for all input events
+extern UniquePtr<LinearAllocator> gLinearAllocator;
 
 }  // namespace jupiter

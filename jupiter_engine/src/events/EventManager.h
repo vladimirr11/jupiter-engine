@@ -11,7 +11,7 @@ namespace jupiter {
 class EventManager {
     using EventQueue = std::vector<Event*>;
     using EventHandlersMap =
-        std::unordered_map<EventType, std::unordered_map<size_t, IEventHandler*>>;
+        std::unordered_map<EventType, std::unordered_map<uint64, IEventHandler*>>;
 
 public:
     EventManager() = default;
@@ -36,6 +36,24 @@ private:
     EventHandlersMap handlersMap;
 };
 
-extern EventManager* gEventManager;
+// Global even manager
+extern UniquePtr<EventManager> gEventManager;
+
+// Utility functions to use with _gEventManager_
+template <typename EventT>
+inline void subscribe(const EventCallback<EventT>& callback) {
+    gEventManager->subscribe(EventT::getStaticType(), newEventHandler<EventT>(callback));
+}
+
+template <typename EventT>
+inline void unsubscribe(const EventCallback<EventT>& callback) {
+    gEventManager->unsubscribe(EventT::getStaticType(), callback.target_type().hash_code());
+}
+
+inline void triggerEvent(const Event& event) { gEventManager->triggerEvent(event); }
+
+inline void queueEvent(Event* event) { gEventManager->queueEvent(event); }
+
+inline void dispatchEvents() { gEventManager->dispatchEvents(); }
 
 }  // namespace jupiter

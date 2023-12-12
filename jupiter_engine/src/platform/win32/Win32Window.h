@@ -18,15 +18,10 @@ public:
     inline uint32 getWidth() const override { return windowData.width; }
     inline uint32 getHeight() const override { return windowData.width; }
 
-    inline void setEventCallback(const EventCallback<Event>& callback) {
-        windowData.eventCb = callback;
-    }
-
 private:
     struct Win32WindowData {
         std::string title;
         uint32 width, height;
-        EventCallback<Event> eventCb;
     };
 
     void init(const WindowConfig& config);

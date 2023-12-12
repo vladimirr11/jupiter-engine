@@ -16,7 +16,7 @@ public:
     uint32 getHeight() const { return newHeight; }
 
     std::string toString() const override {
-        return fmt::format("Window resized to [{}, {}]\n", newWidth, newHeight);
+        return fmt::format("Window resized to [{}, {}]", newWidth, newHeight);
     }
 
 private:
@@ -29,6 +29,8 @@ public:
     WindowCloseEvent() = default;
 
     EVENT_TYPE(EventType::WINDOW_CLOSE);
+
+    std::string toString() const override { return fmt::format("Window closed"); }
 };
 
 }  // namespace jupiter

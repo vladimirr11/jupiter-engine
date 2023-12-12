@@ -6,6 +6,9 @@
 
 namespace jupiter {
 
+struct WindowCloseEvent;
+struct Event;
+
 class JUPITER_API Application {
 public:
     Application();
@@ -13,6 +16,10 @@ public:
     virtual ~Application();
 
     void run();
+
+private:
+    void onWindowClose(const WindowCloseEvent& event);
+    void onEvent(const Event& event);
 
 private:
     UniquePtr<Window> window;

@@ -9,7 +9,7 @@
 
 namespace jupiter {
 
-EventManager* gEventManager = nullptr;
+UniquePtr<EventManager> gEventManager = nullptr;
 
 void EventManager::subscribe(const EventType type, IEventHandler* handler) {
     auto eventHandlers = handlersMap.find(type);
@@ -55,6 +55,11 @@ void EventManager::dispatchEvents() {
     });
 }
 
-void EventManager::shutDown() { handlersMap.clear(); }
+void EventManager::shutDown() {
+    // Note: all event pointers have to be created by custom allocator, that's why we
+    // dont't need to worry about memory clearance here. The allocator should take care about that
+    eventQueue.clear();
+    handlersMap.clear();
+}
 
 }  // namespace jupiter

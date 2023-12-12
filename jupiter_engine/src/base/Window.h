@@ -24,9 +24,6 @@ public:
 
     virtual void onUpdate() = 0;
 
-    // Window attributes
-    virtual void setEventCallback(const EventCallback<Event>& callback) = 0;
-
     virtual uint32 getWidth() const = 0;
     virtual uint32 getHeight() const = 0;
 

@@ -1,7 +1,6 @@
 #pragma once
 
 // Own includes
-#include "Logger.h"
 #include "Application.h"
 
 #ifdef JUPITER_PLATFORM_WINDOWS

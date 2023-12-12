@@ -14,18 +14,14 @@ enum LogLevel : uint8 { TRACE, INFO, WARN, ERROR, CRITICAL };
 
 enum LogColor : uint32 { WHITE = 0xFFFFFF, GREEN = 0x008000, YELLOW = 0xFFFF00, RED = 0xFF0000 };
 
-class JUPITER_API Logger {
+class Logger {
 public:
     template <typename... Args>
     static void logTrace(LogLevel level, const char* msg, Args&&... args);
-
-private:
-    static std::mutex logMutex;
 };
 
 template <typename... Args>
 void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
-    std::lock_guard<std::mutex> lock(logMutex);
     std::time_t t = std::time(nullptr);
     std::string formatedLog = fmt::format("[{:%F %T UTC%z}] Jupiter Log: ", fmt::localtime(t));
     formatedLog += fmt::vformat(msg, fmt::make_format_args(args...));

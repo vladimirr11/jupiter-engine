@@ -1,9 +1,7 @@
 #pragma once
 
 // C++ system includes
-#include <cstdint>
 #include <cstdlib>
-#include <cstring>
 
 namespace jupiter {
 
