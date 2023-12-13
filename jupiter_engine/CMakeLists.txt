@@ -20,7 +20,6 @@ add_library(
         ${_SRC_DIR}/base/Application.cpp
         ${_SRC_DIR}/base/Assert.h
         ${_SRC_DIR}/base/Logger.h
-        ${_SRC_DIR}/base/Logger.cpp
         ${_SRC_DIR}/base/BaseDefines.h
         ${_SRC_DIR}/base/EntryPoint.h
         ${_SRC_DIR}/base/Window.h
@@ -36,9 +35,10 @@ add_library(
 
         ${_SRC_DIR}/memory/Memory.h
         ${_SRC_DIR}/memory/LinearAllocator.h
+        ${_SRC_DIR}/memory/LinearAllocator.cpp
 
-        ${_SRC_DIR}/platform/Win32Window.h
-        ${_SRC_DIR}/platform/Win32Window.cpp
+        ${_SRC_DIR}/platform/win32/Win32Window.h
+        ${_SRC_DIR}/platform/win32/Win32Window.cpp
 
         ${_SRC_DIR}/Jupiter.h
         ${_SRC_DIR}/Jpch.h
