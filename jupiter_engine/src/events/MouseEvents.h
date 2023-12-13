@@ -15,7 +15,7 @@ public:
     float32 getMouseY() const { return mouseY; }
 
     std::string toString() const override {
-        return fmt::format("MouseX[{}], MouseY[{}]\n", getMouseX(), getMouseY());
+        return fmt::format("MouseX[{}], MouseY[{}]", getMouseX(), getMouseY());
     }
 
 private:
@@ -33,7 +33,7 @@ public:
     float32 getYOffset() const { return yOffset; }
 
     std::string toString() const override {
-        return fmt::format("Mouse xOffset[{}], yOffset[{}]\n", getXOffset(), getYOffset());
+        return fmt::format("Mouse xOffset[{}], yOffset[{}]", getXOffset(), getYOffset());
     }
 
 private:
@@ -50,7 +50,7 @@ public:
     EVENT_TYPE(EventType::MOUSE_PRESS);
 
     std::string toString() const override {
-        return fmt::format("Mouse {} button pressed\n", (int32_t)mouseButton);
+        return fmt::format("Mouse {} button pressed", (int32)mouseButton);
     }
 
 private:
@@ -66,7 +66,7 @@ public:
     EVENT_TYPE(EventType::MOUSE_RELEASE);
 
     std::string toString() const override {
-        return fmt::format("Mouse {} button released\n", (int32_t)mouseButton);
+        return fmt::format("Mouse {} button released", (int32)mouseButton);
     }
 
 private:

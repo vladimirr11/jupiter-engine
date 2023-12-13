@@ -1,13 +1,12 @@
 #pragma once
 
 // Own includes
-#include "BaseDefines.h"
 #include "Window.h"
 
 namespace jupiter {
 
-struct WindowCloseEvent;
-struct Event;
+class WindowCloseEvent;
+class Event;
 
 class JUPITER_API Application {
 public:

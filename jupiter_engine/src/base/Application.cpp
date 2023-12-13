@@ -21,19 +21,29 @@ Application::Application() {
     gEventManager = newUniquePtr<EventManager>();
     jAssertPtr(gEventManager);
 
+    // Create window
     window = Window::create();
 
+    // Window events
     subscribe<WindowCloseEvent>([this](const WindowCloseEvent& event) { onWindowClose(event); });
     subscribe<WindowResizeEvent>([this](const WindowResizeEvent& event) { onEvent(event); });
+    // Keyboard events
     subscribe<KeyPressEvent>([this](const KeyPressEvent& event) { onEvent(event); });
     subscribe<KeyReleaseEvent>([this](const KeyReleaseEvent& event) { onEvent(event); });
+    // Mouse events
+    subscribe<MouseButtonPressEvent>(
+        [this](const MouseButtonPressEvent& event) { onEvent(event); });
+    subscribe<MouseButtonReleaseEvent>(
+        [this](const MouseButtonReleaseEvent& event) { onEvent(event); });
+    subscribe<MouseMotionEvent>([this](const MouseMotionEvent& event) { onEvent(event); });
+    subscribe<MouseScrollEvent>([this](const MouseScrollEvent& event) { onEvent(event); });
 }
 
 Application::~Application() {}
 
 void Application::run() {
     while (running) {
-        window->onUpdate();
+        window->update();
 
         // Dispatch event queue
         dispatchEvents();

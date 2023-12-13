@@ -37,9 +37,9 @@ public:
     virtual EventType getType() const override { return getStaticType(); }
 
 /// @brief Creates every event in pre-allocated memory
- template <typename EventT, typename... Args>
- inline EventT* newEvent(Args&&... args) {
-     return gLinearAllocator->create<EventT>(std::forward<Args>(args)...);
- }
+template <typename EventT, typename... Args>
+inline EventT* newEvent(Args&&... args) {
+    return gLinearAllocator->create<EventT>(std::forward<Args>(args)...);
+}
 
 }  // namespace jupiter

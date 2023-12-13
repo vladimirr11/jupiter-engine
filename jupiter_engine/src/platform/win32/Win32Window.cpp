@@ -24,7 +24,7 @@ Win32Window::Win32Window(const WindowConfig& config) { init(config); }
 
 Win32Window::~Win32Window() { shutDown(); }
 
-void Win32Window::onUpdate() {
+void Win32Window::update() {
     glfwPollEvents();
     glfwSwapBuffers(window);
 }
@@ -56,36 +56,61 @@ void Win32Window::init(const WindowConfig& config) {
     glfwSwapInterval(GLFW_TRUE);
 
     // Set glfw event callbacks
+    // Window callbacks
     glfwSetWindowCloseCallback(
-        window, [](GLFWwindow* glfwWindow) { triggerEvent(*newEvent<WindowCloseEvent>()); });
+        window, [](GLFWwindow* glfwWindow) { queueEvent(newEvent<WindowCloseEvent>()); });
 
     glfwSetWindowSizeCallback(window, [](GLFWwindow* glfwWindow, int32 width, int32 height) {
         Win32WindowData& data = *(Win32WindowData*)glfwGetWindowUserPointer(glfwWindow);
         data.width = width;
         data.height = height;
-        triggerEvent(*newEvent<WindowResizeEvent>(width, height));
+        queueEvent(newEvent<WindowResizeEvent>(width, height));
     });
 
+    // Keyborad callbacks
     glfwSetKeyCallback(
         window, [](GLFWwindow* glfwWindow, int32 key, int32 scanCode, int32 action, int32 mods) {
             bool repeated = false;
             switch (action) {
             case GLFW_PRESS:
-                triggerEvent(*newEvent<KeyPressEvent>((Keyboard::Key)key, repeated));
+                queueEvent(newEvent<KeyPressEvent>((Keyboard::Key)key, repeated));
                 break;
             case GLFW_REPEAT:
                 repeated = true;
-                triggerEvent(*newEvent<KeyPressEvent>((Keyboard::Key)key, repeated));
+                queueEvent(newEvent<KeyPressEvent>((Keyboard::Key)key, repeated));
                 break;
             case GLFW_RELEASE:
-                triggerEvent(*newEvent<KeyReleaseEvent>((Keyboard::Key)key));
+                queueEvent(newEvent<KeyReleaseEvent>((Keyboard::Key)key));
                 break;
             default:
                 JLOG_ERROR("Unsupported action provided in glfwSetKeyCallback function");
                 jAssertExpr(false);
-                break;
             }
         });
+
+    // Mouse callbacks
+    glfwSetMouseButtonCallback(
+        window, [](GLFWwindow* glfwWindow, int32 mouseButton, int32 action, int32 mods) {
+            switch (action) {
+            case GLFW_PRESS:
+                queueEvent(newEvent<MouseButtonPressEvent>((Mouse::MouseKey)mouseButton));
+                break;
+            case GLFW_RELEASE:
+                queueEvent(newEvent<MouseButtonReleaseEvent>((Mouse::MouseKey)mouseButton));
+                break;
+            default:
+                JLOG_ERROR("Unsupported action provided in glfwSetMouseButtonCallback function");
+                jAssertExpr(false);
+            }
+        });
+
+    glfwSetCursorPosCallback(window, [](GLFWwindow* glfwWindow, float64 xPos, float64 yPos) {
+        queueEvent(newEvent<MouseMotionEvent>((float32)xPos, (float32)yPos));
+    });
+
+    glfwSetScrollCallback(window, [](GLFWwindow* glfwWindow, float64 xOffset, float64 yOffset) {
+        queueEvent(newEvent<MouseScrollEvent>((float32)xOffset, (float32)yOffset));
+    });
 }
 
 void Win32Window::shutDown() { glfwDestroyWindow(window); }

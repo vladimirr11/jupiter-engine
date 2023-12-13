@@ -13,10 +13,12 @@ public:
 
     ~Win32Window();
 
-    void onUpdate() override;
+    void update() override;
 
     inline uint32 getWidth() const override { return windowData.width; }
     inline uint32 getHeight() const override { return windowData.width; }
+    
+    inline std::string getTitle() const { return windowData.title; }
 
 private:
     struct Win32WindowData {

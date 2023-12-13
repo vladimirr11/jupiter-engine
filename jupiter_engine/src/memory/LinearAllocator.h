@@ -1,9 +1,5 @@
 #pragma once
 
-// C++ system includes
-#include <cstdint>
-#include <iostream>
-
 // Own includes
 #include "base/Assert.h"
 #include "Memory.h"

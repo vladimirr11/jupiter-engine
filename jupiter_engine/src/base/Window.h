@@ -4,7 +4,6 @@
 #include <string>
 
 // Own includes
-#include "base/BaseDefines.h"
 #include "events/Event.h"
 
 namespace jupiter {
@@ -22,7 +21,7 @@ class Window {
 public:
     virtual ~Window() = default;
 
-    virtual void onUpdate() = 0;
+    virtual void update() = 0;
 
     virtual uint32 getWidth() const = 0;
     virtual uint32 getHeight() const = 0;
