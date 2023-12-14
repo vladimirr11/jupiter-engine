@@ -38,4 +38,5 @@ build/
 
 # Files
 *.vcxproj*
-*.sln*
+*.sln
+jupiter_engine/.clang-format
