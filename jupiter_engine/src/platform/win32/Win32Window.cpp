@@ -10,6 +10,7 @@
 #include "events/WindowEvents.h"
 
 // Trird-party includes
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace jupiter {
@@ -48,8 +49,11 @@ void Win32Window::init(const WindowConfig& config) {
                               nullptr, nullptr);
     jAssertPtr(window);
     JLOG_INFO("Window {} created", config.title);
-
     glfwMakeContextCurrent(window);
+
+    // Load OpenGL function pointers
+    jAssertFunc(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress));
+
     glfwSetWindowUserPointer(window, &windowData);
 
     // Enable vsync

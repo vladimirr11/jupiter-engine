@@ -63,6 +63,7 @@ target_include_directories(
             ${_SRC_DIR}
             ${_EXTERNAL_LIBS_DIR}/fmt/include
             ${_EXTERNAL_LIBS_DIR}/glfw/include
+            ${_EXTERNAL_LIBS_DIR}/glad/include
 )
 
 target_link_libraries(
@@ -70,7 +71,9 @@ target_link_libraries(
         PRIVATE 
             fmt
             glfw
+            glad
 )
 
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/fmt)
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/glfw)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/glad)

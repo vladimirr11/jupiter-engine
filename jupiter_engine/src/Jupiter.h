@@ -1,4 +1,7 @@
 #pragma once
 
-// Jupiter engine includes
+// For use by Jupiter application
+#include "base/Application.h"
+
+// Entry point
 #include "base/EntryPoint.h"

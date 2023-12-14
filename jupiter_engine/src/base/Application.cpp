@@ -3,12 +3,10 @@
 
 // Own includes
 #include "base/Application.h"
-#include "base/Assert.h"
 #include "events/EventManager.h"
 #include "events/KeyboardEvents.h"
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
-#include "memory/LinearAllocator.h"
 
 namespace jupiter {
 
