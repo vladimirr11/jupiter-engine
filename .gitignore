@@ -40,3 +40,4 @@ build/
 *.vcxproj*
 *.sln
 jupiter_engine/.clang-format
+playground/.clang-format
