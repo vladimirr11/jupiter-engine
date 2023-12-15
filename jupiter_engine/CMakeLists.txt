@@ -5,7 +5,7 @@ project(jupiter LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(_EXTERNAL_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external_libs) 
+set(_EXTERNAL_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external) 
 set(_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src) 
 
 # disable building glfw docs, testx, and examples
