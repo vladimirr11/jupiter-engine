@@ -1,6 +1,0 @@
-[submodule "jupiter_engine/external_libs/fmt"]
-	path = jupiter_engine/external_libs/fmt
-	url = https://github.com/fmtlib/fmt.git
-[submodule "jupiter_engine/external_libs/glfw"]
-	path = jupiter_engine/external_libs/glfw
-	url = https://github.com/glfw/glfw.git
