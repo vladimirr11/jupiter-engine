@@ -41,3 +41,4 @@ build/
 *.sln
 jupiter_engine/.clang-format
 playground/.clang-format
+playground/imgui.ini

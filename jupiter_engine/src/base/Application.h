@@ -6,13 +6,16 @@
 namespace jupiter {
 
 class WindowCloseEvent;
+class UILayer;
 class Event;
 
 class JUPITER_API Application {
 public:
     Application();
-
     virtual ~Application();
+
+    Application(const Application&) = delete;
+    Application& operator=(const Application&) = delete;
 
     void run();
 
@@ -22,6 +25,7 @@ private:
 
 private:
     UniquePtr<Window> window;
+    UniquePtr<UILayer> uiLayer;
     bool running = true;
 };
 

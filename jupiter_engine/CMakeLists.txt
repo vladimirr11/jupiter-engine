@@ -64,6 +64,7 @@ target_include_directories(
             ${_EXTERNAL_LIBS_DIR}/fmt/include
             ${_EXTERNAL_LIBS_DIR}/glfw/include
             ${_EXTERNAL_LIBS_DIR}/glad/include
+            ${_EXTERNAL_LIBS_DIR}/imgui
 )
 
 target_link_libraries(
@@ -72,8 +73,10 @@ target_link_libraries(
             fmt
             glfw
             glad
+            imgui
 )
 
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/fmt)
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/glfw)
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/glad)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/imgui)

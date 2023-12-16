@@ -25,6 +25,8 @@ public:
 
     virtual uint32 getWidth() const = 0;
     virtual uint32 getHeight() const = 0;
+    
+    virtual void* getNativeWindow() const = 0;
 
     static UniquePtr<Window> create(const WindowConfig& config = WindowConfig());
 };

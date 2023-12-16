@@ -31,6 +31,9 @@ public:
     template <typename T, typename... Args>
     T* create(T* atAddress, Args&&... args);
 
+    /// @brief Returns used memory so far
+    inline uint64 getUsedMemory() const { return usedMemory; }
+
     /// @brief Zeros out the owning memory block
     void clear();
 

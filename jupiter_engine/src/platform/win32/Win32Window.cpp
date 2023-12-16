@@ -12,6 +12,9 @@
 // Trird-party includes
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+//#include <imgui.h>
+//#include <backends/imgui_impl_glfw.h>
+//#include <backends/imgui_impl_opengl3.h>
 
 namespace jupiter {
 
@@ -26,8 +29,13 @@ Win32Window::Win32Window(const WindowConfig& config) { init(config); }
 Win32Window::~Win32Window() { shutDown(); }
 
 void Win32Window::update() {
-    glfwPollEvents();
     glfwSwapBuffers(window);
+    glfwPollEvents();
+    int32 displayWidth, displayHeight;
+    glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+    glViewport(0, 0, displayWidth, displayHeight);
+    glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Win32Window::init(const WindowConfig& config) {
@@ -44,7 +52,8 @@ void Win32Window::init(const WindowConfig& config) {
 
     // Creat window and context
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     window = glfwCreateWindow((int32)config.width, (int32)config.height, config.title.c_str(),
                               nullptr, nullptr);
     jAssertPtr(window);
