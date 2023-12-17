@@ -13,12 +13,16 @@
 
 namespace jupiter {
 
-ImGuiUILayer::~ImGuiUILayer() {}
+ImGuiUILayer::~ImGuiUILayer() {
+    if (running)
+        shutDown();
+}
 
 void ImGuiUILayer::init(const UILayerConfig& config) {
     imguiLayerData.theme = config.theme;
     imguiLayerData.nativeWindow = (GLFWwindow*)config.window->getNativeWindow();
     jAssertPtr(imguiLayerData.nativeWindow);
+    running = true;
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -28,9 +32,7 @@ void ImGuiUILayer::init(const UILayerConfig& config) {
     io = &ImGui::GetIO();
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable keyboard controls
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // Enable docking
-    // io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    // Enable multy-viewport - Windows
-    // only
-    io->ConfigDockingWithShift = true;  // Must hold shift to dock
+    io->ConfigDockingWithShift = true;                      // Must hold shift to dock
 
     // Setup Dear ImGui style
     style = &ImGui::GetStyle();
@@ -52,7 +54,7 @@ void ImGuiUILayer::update() {
     // Show simple debug information
     {
         ImGui::Begin("Debug information");
-        ImGui::Text("Used memory = %d bytes", gLinearAllocator->getUsedMemory());
+        ImGui::Text("Used memory: %d bytes", gLinearAllocator->getUsedMemory());
         ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate,
                     io->Framerate);
         ImGui::End();
@@ -69,6 +71,7 @@ void ImGuiUILayer::shutDown() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    running = false;
 }
 
 void ImGuiUILayer::setTheme() {
@@ -83,7 +86,7 @@ void ImGuiUILayer::setTheme() {
         ImGui::StyleColorsLight();
         break;
     default:
-        JLOG_ERROR("Unsupported action provided in glfwSetKeyCallback function");
+        JLOG_ERROR("Unsupported theme provided in ImGuiUILayer::setTheme()");
         jAssertExpr(false);
     }
 }

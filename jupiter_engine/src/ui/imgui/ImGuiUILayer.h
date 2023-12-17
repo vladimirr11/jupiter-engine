@@ -32,6 +32,7 @@ private:
     ImGuiUILayerData imguiLayerData;
     ImGuiStyle* style = nullptr;
     ImGuiIO* io = nullptr;
+    bool running = false;
 };
 
 }  // namespace jupiter

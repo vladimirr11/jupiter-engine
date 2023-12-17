@@ -17,6 +17,9 @@ public:
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
 
+    static Application& instance() { return *appInstance; }
+    inline Window& getWindow() { return *window.get(); }
+
     void run();
 
 private:
@@ -27,8 +30,13 @@ private:
     UniquePtr<Window> window;
     UniquePtr<UILayer> uiLayer;
     bool running = true;
+    static Application* appInstance;
 };
 
 Application* createApplication();
+
+inline void* getAppNativeWindow() { 
+    return Application::instance().getWindow().getNativeWindow(); 
+}
 
 }  // namespace jupiter

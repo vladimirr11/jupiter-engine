@@ -17,28 +17,20 @@ public:
 
     ~LinearAllocator() { destroy(); }
 
-    /// @brief Returns a pointer to the next free aligned address for type T
     template <typename T>
     T* alloc(const int32 objectCount = 1);
 
-    /// @brief Constructs in-place an object of type T at the next free aligned
-    /// memory address and returns a pointer to it
     template <typename T, typename... Args>
     T* create(Args&&... args);
 
-    /// @brief Constructs in-place an object of type T at _atAddress_ address
-    /// and returns a pointer to it
     template <typename T, typename... Args>
     T* create(T* atAddress, Args&&... args);
 
-    /// @brief Returns used memory so far
     inline uint64 getUsedMemory() const { return usedMemory; }
 
-    /// @brief Zeros out the owning memory block
     void clear();
 
 private:
-    /// @brief Deletes the underlying memory block
     void destroy();
 
 private:

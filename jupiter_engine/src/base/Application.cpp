@@ -8,10 +8,15 @@
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
 #include "ui/imgui/ImGuiUiLayer.h"
+#include "Input.h"
 
 namespace jupiter {
 
+Application* Application::appInstance = nullptr;
+
 Application::Application() {
+    appInstance = this;
+
     // Initialize global linear allocator for input events
     gLinearAllocator = newUniquePtr<LinearAllocator>(1e6);
     jAssertPtr(gLinearAllocator);
@@ -22,10 +27,12 @@ Application::Application() {
 
     // Create window
     window = Window::create();
+    jAssertPtr(window);
 
     // Create UI layer
     uiLayer = newUniquePtr<ImGuiUILayer>();
     uiLayer->init(UILayerConfig(window.get()));
+    jAssertPtr(uiLayer);
 
     // Window events handlers
     subscribe<WindowCloseEvent>([this](const WindowCloseEvent& event) { onWindowClose(event); });
