@@ -9,6 +9,7 @@
 #include "events/WindowEvents.h"
 #include "ui/imgui/ImGuiUiLayer.h"
 #include "Input.h"
+#include "math/matrix/Transform.h"
 
 namespace jupiter {
 
@@ -52,6 +53,11 @@ Application::Application() {
 Application::~Application() {}
 
 void Application::run() {
+    jm::Vec4f vec4(1.145f, .34f, 7.45f, 2.12f);
+    jm::Matrix4x4 mat4;
+    mat4 = jm::rotate(mat4, 15.f, jm::Vec3f(1.0f, 1.0f, 1.0f));
+    vec4 = mat4 * vec4;
+
     while (running) {
         window->update();
         uiLayer->update();
