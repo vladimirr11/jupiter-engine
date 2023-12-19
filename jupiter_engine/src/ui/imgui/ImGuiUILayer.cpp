@@ -15,10 +15,10 @@ namespace jupiter {
 
 ImGuiUILayer::~ImGuiUILayer() {
     if (running)
-        shutDown();
+        detach();
 }
 
-void ImGuiUILayer::init(const UILayerConfig& config) {
+void ImGuiUILayer::attach(const UILayerConfig& config) {
     imguiLayerData.theme = config.theme;
     imguiLayerData.nativeWindow = (GLFWwindow*)config.window->getNativeWindow();
     jAssertPtr(imguiLayerData.nativeWindow);
@@ -32,17 +32,21 @@ void ImGuiUILayer::init(const UILayerConfig& config) {
     io = &ImGui::GetIO();
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable keyboard controls
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // Enable docking
-    io->ConfigDockingWithShift = true;                      // Must hold shift to dock
+    io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Enable Multi-Viewport/Platform Windows
+    io->ConfigDockingWithShift = true;                    // Must hold shift to dock
 
     // Setup Dear ImGui style
     style = &ImGui::GetStyle();
-    style->WindowRounding = 0.0f;
-    style->Colors[ImGuiCol_WindowBg].w = 1.0f;
+    if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        style->WindowRounding = 0.0f;
+        style->Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
     setTheme();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(imguiLayerData.nativeWindow, true);
     ImGui_ImplOpenGL3_Init("#version 410");
+    JLOG_INFO("ImGui Layer attached and set");
 }
 
 void ImGuiUILayer::update() {
@@ -52,7 +56,10 @@ void ImGuiUILayer::update() {
     ImGui::NewFrame();
 
     // Show simple debug information
+    static bool t = true;
     {
+        ImGui::ShowDemoWindow(&t);
+
         ImGui::Begin("Debug information");
         ImGui::Text("Used memory: %d bytes", gLinearAllocator->getUsedMemory());
         ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate,
@@ -62,11 +69,18 @@ void ImGuiUILayer::update() {
 
     // Rendering
     ImGui::Render();
-    ImGui::UpdatePlatformWindows();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    // Update and Render additional Platform Windows
+    if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        GLFWwindow* backUpCurrContex = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backUpCurrContex);
+    }
 }
 
-void ImGuiUILayer::shutDown() {
+void ImGuiUILayer::detach() {
     // Cleanup Dear ImGui
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

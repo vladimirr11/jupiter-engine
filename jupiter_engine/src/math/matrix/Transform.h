@@ -3,6 +3,8 @@
 // Own includes
 #include "Matrix4x4.h"
 
+#define RIGHT_HANDED_COORD_SYSTEM
+
 namespace jm {
 
 /// @brief Creates 4x4 scale matrix from a vector of 3 scalars
@@ -49,6 +51,46 @@ inline Matrix4x4 rotate(const Matrix4x4& mat4, const T theta, const Vec3f& vec3)
     result[3] = Vec4f(0.f, 0.f, 0.f, 1.f);
 
     return mat4 * result;
+}
+
+/// @brief Creates an orthographic projection matrix using right or left-handed coordinates.
+/// Created clip volume is in the range -1 to +1 (OpenGL defalut clip volume)
+template <typename T>
+inline Matrix4x4 ortho(const T left, const T right, const T bottom, const T top,
+                       const T near = 0.1f, const T far = 100.f) {
+    Matrix4x4 result;
+    result[0][0] = 2.f / (right - left);
+    result[1][1] = 2.f / (top - bottom);
+#ifdef RIGHT_HANDED_COORD_SYSTEM
+    result[2][2] = -2.f / (far - near);
+#else
+    result[2][2] = 2.f / (far - near);
+#endif  // RIGHT_HANDED_COORD_SYSTEM
+    result[3][0] = -(right + left) / (right - left);
+    result[3][1] = -(top + bottom) / (top - bottom);
+    result[3][2] = -(far + near) / (far - near);
+    return result;
+}
+
+/// @brief Creates a prespective projection matrix using right or left-handed coordinates.
+/// Created clip volume is in the range -1 to +1 (OpenGL defalut clip volume)
+template <typename T>
+inline Matrix4x4 prespective(const T fov, const T aspect, const T near = 0.1f,
+                             const T far = 100.f) {
+    jAssertExpr(abs(aspect - std::numeric_limits<T>::epsilon()) > 0.f);
+    const T tanFalfFov = tan(fov / 2.f);
+
+    Matrix4x4 result(0.f);
+    result[0][0] = 1.f / (aspect * tanFalfFov);
+    result[1][1] = 1.f / tanFalfFov;
+    result[2][2] = -(far + near) / (far - near);
+#ifdef RIGHT_HANDED_COORD_SYSTEM
+    result[2][3] = -1.f;
+#else
+    result[2][3] = 1.f;
+#endif  // RIGHT_HANDED_COORD_SYSTEM
+    result[3][2] = -(2.f * far * near) / (far - near);
+    return result;
 }
 
 }  // namespace jm

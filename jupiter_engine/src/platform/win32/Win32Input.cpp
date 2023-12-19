@@ -22,11 +22,11 @@ bool Input::isMouseButtonPressed(const int32 mouseButton) {
     return state == GLFW_PRESS || state == GLFW_REPEAT;
 }
 
-std::pair<float32, float32> Input::getMousePosition() {
+jm::Vec2f Input::getMousePosition() {
     GLFWwindow* window = (GLFWwindow*)getAppNativeWindow();
     float64 xPos, yPos;
     glfwGetCursorPos(window, &xPos, &yPos);
-    return {xPos, yPos};
+    return {(float32)xPos, (float32)yPos};
 }
 
 }  // namespace jupiter

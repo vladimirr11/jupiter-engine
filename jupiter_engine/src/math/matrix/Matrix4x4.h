@@ -10,6 +10,9 @@ struct Matrix4x4 {
     // Ctor - Identity matrix
     Matrix4x4() { m[0][0] = m[1][1] = m[2][2] = m[3][3] = 1.f; }
 
+    // Ctor - Main diagonal
+    Matrix4x4(const float32 diag) { m[0][0] = m[1][1] = m[2][2] = diag; }
+
     Matrix4x4(const float32 mat[4][4]) { memcpy(m, mat, 16 * sizeof(float32)); }
 
     // Ctor that takes 4 column vectors

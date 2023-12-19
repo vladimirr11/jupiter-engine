@@ -30,9 +30,9 @@ Application::Application() {
     window = Window::create();
     jAssertPtr(window);
 
-    // Create UI layer
+    // Attach UI layer
     uiLayer = newUniquePtr<ImGuiUILayer>();
-    uiLayer->init(UILayerConfig(window.get()));
+    uiLayer->attach(UILayerConfig(window.get()));
     jAssertPtr(uiLayer);
 
     // Window events handlers
@@ -53,10 +53,7 @@ Application::Application() {
 Application::~Application() {}
 
 void Application::run() {
-    jm::Vec4f vec4(1.145f, .34f, 7.45f, 2.12f);
-    jm::Matrix4x4 mat4;
-    mat4 = jm::rotate(mat4, 15.f, jm::Vec3f(1.0f, 1.0f, 1.0f));
-    vec4 = mat4 * vec4;
+    jm::Matrix4x4 pres = jm::prespective(45.f, 800.0f / 600.f);
 
     while (running) {
         window->update();

@@ -15,8 +15,8 @@ public:
 
     ~ImGuiUILayer();
 
-    void init(const UILayerConfig& config) override;
-    void shutDown() override;
+    void attach(const UILayerConfig& config) override;
+    void detach() override;
 
     void update() override;
 

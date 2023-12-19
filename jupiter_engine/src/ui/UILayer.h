@@ -17,8 +17,8 @@ class UILayer {
 public:
     virtual ~UILayer() = default;
 
-    virtual void init(const UILayerConfig& config) = 0;
-    virtual void shutDown() = 0;
+    virtual void attach(const UILayerConfig& config) = 0;
+    virtual void detach() = 0;
 
     virtual void update() = 0;
 };
