@@ -53,7 +53,8 @@ Application::Application() {
 Application::~Application() {}
 
 void Application::run() {
-    jm::Matrix4x4 pres = jm::prespective(45.f, 800.0f / 600.f);
+    jm::Matrix4x4 view = jm::lookAt(jm::Vec3f(0.4f, 1.8f, 3.0f), jm::Vec3f(6.0f, 2.4f, 0.0f));
+    JLOG_INFO(toString(view).c_str());
 
     while (running) {
         window->update();
@@ -69,6 +70,11 @@ void Application::onWindowClose(const WindowCloseEvent& event) {
     JLOG_INFO(event.toString().c_str());
 }
 
-void Application::onEvent(const Event& event) { JLOG_INFO(event.toString().c_str()); }
+void Application::onEvent(const Event& event) {
+    JLOG_INFO(event.toString().c_str());
+    if (Input::isKeyPressed(Keyboard::KEY_ESCAPE)) {
+        running = false;
+    }
+}
 
 }  // namespace jupiter

@@ -28,9 +28,9 @@ Win32Window::~Win32Window() { shutDown(); }
 void Win32Window::update() {
     glfwSwapBuffers(window);
     glfwPollEvents();
-    int32 displayWidth, displayHeight;
-    glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
-    glViewport(0, 0, displayWidth, displayHeight);
+    int32 windowWidth, windowHeight;
+    glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+    glViewport(0, 0, windowWidth, windowHeight);
     glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
     glClear(GL_COLOR_BUFFER_BIT);
 }

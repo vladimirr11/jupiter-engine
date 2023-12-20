@@ -114,4 +114,11 @@ inline Vector3<T> cross3(const Vector3<T>& v1, const Vector3<T>& v2) {
                       v1.x * v2.y - v1.y * v2.x);
 }
 
+template <typename T>
+inline std::string toString(const Vector3<T>& vec3) {
+    std::stringstream stream;
+    stream << "[" << vec3.x << ", " << vec3.y << ", " << vec3.z << "]";
+    return stream.str();
+}
+
 }  // namespace jm

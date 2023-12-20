@@ -93,4 +93,42 @@ inline Matrix4x4 prespective(const T fov, const T aspect, const T near = 0.1f,
     return result;
 }
 
+/// @brief Creates a look at view matrix using right or left-handed coordinates
+inline Matrix4x4 lookAt(const Vec3f& pos, const Vec3f& target,
+                        const Vec3f& up = Vec3f(0.f, 1.f, 0.f)) {
+    const Vec3f zVec = normalize3(target - pos);
+#ifdef RIGHT_HANDED_COORD_SYSTEM
+    const Vec3f xVec = normalize3(cross3(zVec, up));
+    const Vec3f yVec = cross3(xVec, zVec);
+#else
+    const Vec3f xVec = normalize3(cross3(up, zVec));
+    const Vec3f yVec = cross3(zVec, xVec);
+#endif  // RIGHT_HANDED_COORD_SYSTEM
+
+    Matrix4x4 result;
+    result[0][0] = xVec.x;
+    result[1][0] = xVec.y;
+    result[2][0] = xVec.z;
+    result[0][1] = yVec.x;
+    result[1][1] = yVec.y;
+    result[2][1] = yVec.z;
+#ifdef RIGHT_HANDED_COORD_SYSTEM
+    result[0][2] = -zVec.x;
+    result[1][2] = -zVec.y;
+    result[2][2] = -zVec.z;
+    result[3][0] = -dot3(xVec, pos);
+    result[3][1] = -dot3(yVec, pos);
+    result[3][2] = dot3(zVec, pos);
+#else
+    result[0][2] = zVec.x;
+    result[1][2] = zVec.y;
+    result[2][2] = zVec.z;
+    result[3][0] = -dot3(xVec, pos);
+    result[3][1] = -dot3(yVec, pos);
+    result[3][2] = -dot3(zVec, pos);
+#endif  // RIGHT_HANDED_COORD_SYSTEM
+
+    return result;
+}
+
 }  // namespace jm

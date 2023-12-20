@@ -75,4 +75,11 @@ Vec4f operator*(const Matrix4x4& mat4, const Vec4f& vec4) {
     return result;
 }
 
+inline std::string toString(const Matrix4x4& mat4) {
+    std::stringstream stream;
+    stream << "[" << toString(mat4.col[0]) << ", " << toString(mat4.col[1]) << ", "
+           << toString(mat4.col[2]) << ", " << toString(mat4.col[3]) << "]";
+    return stream.str();
+}
+
 }  // namespace jm

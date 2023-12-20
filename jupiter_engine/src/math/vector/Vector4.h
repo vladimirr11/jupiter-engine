@@ -110,4 +110,11 @@ inline T dot4(const Vector4<T>& v1, const Vector4<T>& v2) {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 }
 
+template <typename T>
+inline std::string toString(const Vector4<T>& vec4) {
+    std::stringstream stream;
+    stream << "[" << vec4.x << ", " << vec4.y << ", " << vec4.z << ", " << vec4.w << "]";
+    return stream.str();
+}
+
 }  // namespace jm

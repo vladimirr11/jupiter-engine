@@ -99,4 +99,11 @@ inline T dot2(const Vector2<T>& v1, const Vector2<T>& v2) {
     return v1.x * v2.x + v1.y * v2.y;
 }
 
-}  // namespace jupiter math
+template <typename T>
+inline std::string toString(const Vector2<T>& vec2) {
+    std::stringstream stream;
+    stream << "[" << vec2.x << ", " << vec2.y << "]";
+    return stream.str();
+}
+
+}  // namespace jm
