@@ -14,14 +14,15 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_library(
-    ${PROJECT_NAME} SHARED
+    ${PROJECT_NAME} STATIC
        
         ${_SRC_DIR}/base/Application.h
         ${_SRC_DIR}/base/Application.cpp
         ${_SRC_DIR}/base/Assert.h
-        ${_SRC_DIR}/base/Logger.h
         ${_SRC_DIR}/base/BaseDefines.h
         ${_SRC_DIR}/base/EntryPoint.h
+        ${_SRC_DIR}/base/Input.h
+        ${_SRC_DIR}/base/Logger.h
         ${_SRC_DIR}/base/Window.h
           
         ${_SRC_DIR}/events/Event.h
@@ -33,12 +34,25 @@ add_library(
         ${_SRC_DIR}/events/MouseEvents.h
         ${_SRC_DIR}/events/WindowEvents.h
 
-        ${_SRC_DIR}/memory/Memory.h
+        ${_SRC_DIR}/math/matrix/Matrix4x4.h
+        ${_SRC_DIR}/math/matrix/Transform.h
+        ${_SRC_DIR}/math/vector/Vector.h
+        ${_SRC_DIR}/math/vector/Vector2.h
+        ${_SRC_DIR}/math/vector/Vector3.h
+        ${_SRC_DIR}/math/vector/Vector4.h
+        ${_SRC_DIR}/math/MathUtils.h
+        
         ${_SRC_DIR}/memory/LinearAllocator.h
         ${_SRC_DIR}/memory/LinearAllocator.cpp
+        ${_SRC_DIR}/memory/Memory.h
 
+        ${_SRC_DIR}/platform/win32/Win32Input.cpp
         ${_SRC_DIR}/platform/win32/Win32Window.h
         ${_SRC_DIR}/platform/win32/Win32Window.cpp
+
+        ${_SRC_DIR}/ui/imgui/ImGuiUILayer.h
+        ${_SRC_DIR}/ui/imgui/ImGuiUILayer.cpp
+        ${_SRC_DIR}/ui/UILayer.h
 
         ${_SRC_DIR}/Jupiter.h
         ${_SRC_DIR}/Jpch.h
@@ -53,8 +67,14 @@ if (WIN32)
        NOMINMAX 
        # Jupiter specific defines
        JUPITER_PLATFORM_WINDOWS
-       JUPITER_BUILD_DLL
     )   
+
+    # enable warnings
+    if(MSVC)
+        target_compile_options(${PROJECT_NAME} PRIVATE /W3)
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
+    endif()
 endif()
 
 target_include_directories(
