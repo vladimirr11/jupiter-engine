@@ -2,6 +2,7 @@
 
 // Own includes
 #include "base/Window.h"
+#include "renderer/opengl/GLContext.h"
 
 struct GLFWwindow;
 
@@ -33,6 +34,7 @@ private:
 private:
     Win32WindowData windowData;
     GLFWwindow* window = nullptr;
+    UniquePtr<GraphicsContext> context = nullptr;
 };
 
 }  // namespace jupiter

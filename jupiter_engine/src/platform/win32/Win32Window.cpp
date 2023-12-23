@@ -9,10 +9,6 @@
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
 
-// Trird-party includes
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 namespace jupiter {
 
 static bool glfwInitialized = false;
@@ -26,7 +22,7 @@ Win32Window::Win32Window(const WindowConfig& config) { init(config); }
 Win32Window::~Win32Window() { shutDown(); }
 
 void Win32Window::update() {
-    glfwSwapBuffers(window);
+    context->swapBuffers();
     glfwPollEvents();
     int32 windowWidth, windowHeight;
     glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
@@ -47,7 +43,7 @@ void Win32Window::init(const WindowConfig& config) {
         glfwInitialized = true;
     }
 
-    // Creat window and context
+    // Create window and context
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -55,10 +51,11 @@ void Win32Window::init(const WindowConfig& config) {
                               nullptr, nullptr);
     jAssertPtr(window);
     JLOG_INFO("Window {} created", config.title);
-    glfwMakeContextCurrent(window);
 
-    // Load OpenGL function pointers
-    jAssertFunc(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress));
+    // Create graphics context
+    context = newUniquePtr<GLContext>(window);
+    jAssertPtr(context);
+    context->init();
 
     glfwSetWindowUserPointer(window, &windowData);
 
