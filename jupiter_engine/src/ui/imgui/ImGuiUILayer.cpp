@@ -61,7 +61,7 @@ void ImGuiUILayer::update() {
         ImGui::ShowDemoWindow(&t);
 
         ImGui::Begin("Debug information");
-        ImGui::Text("Used memory: %d bytes", gLinearAllocator->getUsedMemory());
+        ImGui::Text("Used memory: %lld bytes", gLinearAllocator->getUsedMemory());
         ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate,
                     io->Framerate);
         ImGui::End();

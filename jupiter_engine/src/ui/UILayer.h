@@ -7,8 +7,8 @@ namespace jupiter {
 enum UITheme { CLASSIC, DARK, LIGHT };
 
 struct UILayerConfig {
-    UITheme theme;
     Window* window = nullptr;
+    UITheme theme;
 
     UILayerConfig(Window* window_, const UITheme theme_ = DARK) : window(window_), theme(theme_) {}
 };

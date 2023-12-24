@@ -3,13 +3,17 @@
 
 // Own includes
 #include "base/Application.h"
+#include "base/Input.h"
 #include "events/EventManager.h"
 #include "events/KeyboardEvents.h"
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
 #include "ui/imgui/ImGuiUiLayer.h"
-#include "Input.h"
 #include "math/matrix/Transform.h"
+#include "renderer/opengl/GLShader.h"
+
+// Temp includes
+#include <glad/glad.h>
 
 namespace jupiter {
 
@@ -53,16 +57,62 @@ Application::Application() {
 Application::~Application() {}
 
 void Application::run() {
-    jm::Matrix4x4 view = jm::lookAt(jm::Vec3f(0.4f, 1.8f, 3.0f), jm::Vec3f(6.0f, 2.4f, 0.0f));
-    JLOG_INFO(toString(view).c_str());
+    const std::string vertexShaderSource = R"(
+        #version 330 core
+        layout (location = 0) in vec3 aPos;
+        void main() {
+            gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+        }
+)";
+
+    const std::string fragmentShaderSource = R"(
+        #version 330 core
+        out vec4 FragColor;
+        void main() {
+            FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        }
+)";
+
+    GLShader shader(vertexShaderSource, fragmentShaderSource);
+
+    // Vertex data
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,  // left
+        0.5f,  -0.5f, 0.0f,  // right
+        0.0f,  0.5f,  0.0f   // top
+    };
+
+    // Prepare vertex bufer and vertex array objects handles
+    uint32 VBO, VAO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    // Send vertex data to the GPU
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     while (running) {
         window->update();
         uiLayer->update();
 
+        // draw our first triangle
+        shader.bind();
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
         // Dispatch event queue
         dispatchEvents();
     }
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    shader.unbind();
 }
 
 void Application::onWindowClose(const WindowCloseEvent& event) {

@@ -7,6 +7,7 @@
 #include <utility>
 #include <memory>
 #include <string>
+#include <sstream>
 #include <functional>
 #include <mutex>
 #include <algorithm>

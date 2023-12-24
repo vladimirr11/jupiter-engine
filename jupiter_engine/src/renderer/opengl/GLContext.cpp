@@ -14,9 +14,8 @@ void GLContext::init() {
     // Load OpenGL function pointers
     jAssertFunc(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress));
     JLOG_INFO("OpenGL context created");
-    JLOG_INFO("OpenGL version: {}", (const char*)glGetString(GL_VERSION));
+    JLOG_INFO("OpenGL API version: {}", (const char*)glGetString(GL_VERSION));
     JLOG_INFO("OpenGL renderer implementation: {}", (const char*)glGetString(GL_RENDERER));
-    JLOG_INFO("OpenGL vendor implementation: {}", (const char*)glGetString(GL_VENDOR));
 }
 
 void GLContext::swapBuffers() const { glfwSwapBuffers(windowHandle); }

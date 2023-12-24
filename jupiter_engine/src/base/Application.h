@@ -9,7 +9,7 @@ class WindowCloseEvent;
 class UILayer;
 class Event;
 
-class JUPITER_API Application {
+class Application {
 public:
     Application();
     virtual ~Application();

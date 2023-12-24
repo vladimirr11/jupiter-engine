@@ -2,6 +2,7 @@
 
 // C++ system includes
 #include <cmath>
+#include <sstream>
 
 // Own includes
 #include "base/Assert.h"
