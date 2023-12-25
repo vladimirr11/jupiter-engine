@@ -9,8 +9,7 @@
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
 #include "ui/imgui/ImGuiUiLayer.h"
-#include "math/matrix/Transform.h"
-#include "renderer/opengl/GLShader.h"
+#include "renderer/Shader.h"
 
 // Temp includes
 #include <glad/glad.h>
@@ -73,7 +72,7 @@ void Application::run() {
         }
 )";
 
-    GLShader shader(vertexShaderSource, fragmentShaderSource);
+    SharedPtr<Shader> shader = Shader::create(vertexShaderSource, fragmentShaderSource);
 
     // Vertex data
     float vertices[] = {
@@ -102,7 +101,7 @@ void Application::run() {
         uiLayer->update();
 
         // draw our first triangle
-        shader.bind();
+        shader->bind();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -112,7 +111,7 @@ void Application::run() {
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    shader.unbind();
+    shader->unbind();
 }
 
 void Application::onWindowClose(const WindowCloseEvent& event) {

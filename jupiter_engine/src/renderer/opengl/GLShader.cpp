@@ -34,12 +34,6 @@ GLShader::GLShader(const std::string& vsSource, const std::string& fsSource) {
     glDetachShader(programId, fragShaderId);
 }
 
-GLShader::~GLShader() { glDeleteProgram(programId); }
-
-void GLShader::bind() const { glUseProgram(programId); }
-
-void GLShader::unbind() const { glUseProgram(0); }
-
 void GLShader::compileShader(const std::string& shaderSource, const uint32 shaderId) const {
     // Send the shader source code to GL
     const int8* source = shaderSource.c_str();
@@ -56,6 +50,9 @@ void GLShader::compileShader(const std::string& shaderSource, const uint32 shade
         const int32 maxLogLength = 1024;
         int8 logMessage[maxLogLength]{};
         glGetShaderInfoLog(shaderId, maxLogLength, nullptr, &logMessage[0]);
+
+        // We don't need that shader
+        glDeleteShader(shaderId);
 
         // Log the error and exit
         JLOG_ERROR(logMessage);
@@ -76,10 +73,19 @@ void GLShader::linkProgram() const {
         int8 logMessage[maxLogLength]{};
         glGetProgramInfoLog(programId, maxLogLength, nullptr, &logMessage[0]);
 
+        // We don't need that program anymore
+        glDeleteProgram(programId);
+
         // Log the error and exit
         JLOG_ERROR(logMessage);
         exit(EXIT_FAILURE);
     }
 }
+
+GLShader::~GLShader() { glDeleteProgram(programId); }
+
+void GLShader::bind() const { glUseProgram(programId); }
+
+void GLShader::unbind() const { glUseProgram(0); }
 
 }  // namespace jupiter
