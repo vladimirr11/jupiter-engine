@@ -10,6 +10,7 @@
 #include "events/WindowEvents.h"
 #include "ui/imgui/ImGuiUiLayer.h"
 #include "renderer/Shader.h"
+#include "renderer/VertexBuffer.h"
 
 // Temp includes
 #include <glad/glad.h>
@@ -57,7 +58,7 @@ Application::~Application() {}
 
 void Application::run() {
     const std::string vertexShaderSource = R"(
-        #version 330 core
+        #version 410 core
         layout (location = 0) in vec3 aPos;
         void main() {
             gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
@@ -65,13 +66,14 @@ void Application::run() {
 )";
 
     const std::string fragmentShaderSource = R"(
-        #version 330 core
+        #version 410 core
         out vec4 FragColor;
         void main() {
             FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
         }
 )";
 
+    // Create shader object
     SharedPtr<Shader> shader = Shader::create(vertexShaderSource, fragmentShaderSource);
 
     // Vertex data
@@ -81,26 +83,25 @@ void Application::run() {
         0.0f,  0.5f,  0.0f   // top
     };
 
-    // Prepare vertex bufer and vertex array objects handles
-    uint32 VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    // Create vertex buffer object
+    SharedPtr<VertexBuffer> vbo = VertexBuffer::create(vertices, sizeof(vertices));
 
-    // Send vertex data to the GPU
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    // Prepare vertex array object handle
+    uint32 VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    vbo->unbind();
 
     while (running) {
         window->update();
         uiLayer->update();
 
-        // draw our first triangle
+        // Draw triangle
         shader->bind();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -109,9 +110,8 @@ void Application::run() {
         dispatchEvents();
     }
 
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
     shader->unbind();
+    glDeleteVertexArrays(1, &VAO);
 }
 
 void Application::onWindowClose(const WindowCloseEvent& event) {

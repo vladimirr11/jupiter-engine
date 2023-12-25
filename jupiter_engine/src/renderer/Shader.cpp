@@ -2,7 +2,6 @@
 #include "Jpch.h"
 
 // Own includes
-#include "renderer/Shader.h"
 #include "base/BaseDefines.h"
 #ifdef GRAPHICS_API_OPENGL
 #include "renderer/opengl/GLShader.h"
