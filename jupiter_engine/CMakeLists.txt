@@ -19,8 +19,8 @@ add_library(
         ${_SRC_DIR}/base/Application.h
         ${_SRC_DIR}/base/Application.cpp
         ${_SRC_DIR}/base/Assert.h
-        ${_SRC_DIR}/base/BaseDefines.h
-        ${_SRC_DIR}/base/EntryPoint.h
+        ${_SRC_DIR}/base/Defines.h
+        ${_SRC_DIR}/base/Entry.h
         ${_SRC_DIR}/base/Input.h
         ${_SRC_DIR}/base/Logger.h
         ${_SRC_DIR}/base/Window.h
@@ -42,13 +42,29 @@ add_library(
         ${_SRC_DIR}/math/vector/Vector4.h
         ${_SRC_DIR}/math/MathUtils.h
         
-        ${_SRC_DIR}/memory/LinearAllocator.h
-        ${_SRC_DIR}/memory/LinearAllocator.cpp
+        ${_SRC_DIR}/memory/MemoryArena.h
+        ${_SRC_DIR}/memory/MemoryArena.cpp
         ${_SRC_DIR}/memory/Memory.h
 
         ${_SRC_DIR}/platform/win32/Win32Input.cpp
         ${_SRC_DIR}/platform/win32/Win32Window.h
         ${_SRC_DIR}/platform/win32/Win32Window.cpp
+
+        ${_SRC_DIR}/renderer/opengl/GLContext.h
+        ${_SRC_DIR}/renderer/opengl/GLContext.cpp
+        ${_SRC_DIR}/renderer/opengl/GLIndexBuffer.h
+        ${_SRC_DIR}/renderer/opengl/GLIndexBuffer.cpp
+        ${_SRC_DIR}/renderer/opengl/GLShader.h
+        ${_SRC_DIR}/renderer/opengl/GLShader.cpp
+        ${_SRC_DIR}/renderer/opengl/GLVertexBuffer.h
+        ${_SRC_DIR}/renderer/opengl/GLVertexBuffer.cpp
+        ${_SRC_DIR}/renderer/GraphicsContext.h
+        ${_SRC_DIR}/renderer/IndexBuffer.h
+        ${_SRC_DIR}/renderer/IndexBuffer.cpp
+        ${_SRC_DIR}/renderer/Shader.h
+        ${_SRC_DIR}/renderer/Shader.cpp
+        ${_SRC_DIR}/renderer/VertexBuffer.h
+        ${_SRC_DIR}/renderer/VertexBuffer.cpp
 
         ${_SRC_DIR}/ui/imgui/ImGuiUILayer.h
         ${_SRC_DIR}/ui/imgui/ImGuiUILayer.cpp
