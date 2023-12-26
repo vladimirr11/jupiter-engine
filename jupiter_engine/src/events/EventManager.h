@@ -4,14 +4,14 @@
 #include <unordered_map>
 
 // Own includes
-#include "EventHandler.h"
+#include "events/EventHandler.h"
 
 namespace jupiter {
 
 class EventManager {
     using EventQueue = std::vector<Event*>;
     using EventHandlersMap =
-        std::unordered_map<EventType, std::unordered_map<uint64, IEventHandler*>>;
+        std::unordered_map<EventType, std::unordered_map<uint64, UniquePtr<IEventHandler>>>;
 
 public:
     EventManager() = default;
@@ -19,7 +19,7 @@ public:
     EventManager(const EventManager&) = delete;
     EventManager& operator=(const EventManager&) = delete;
 
-    void subscribe(const EventType type, IEventHandler* handler);
+    void subscribe(const EventType type, UniquePtr<IEventHandler> handler);
 
     void unsubscribe(const EventType type, const uint64 handlerHash);
 

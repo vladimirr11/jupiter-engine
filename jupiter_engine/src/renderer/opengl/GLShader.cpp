@@ -2,7 +2,7 @@
 #include "Jpch.h"
 
 // Own includes
-#include "GLShader.h"
+#include "renderer/opengl/GLShader.h"
 #include "base/Assert.h"
 
 // Third party includes

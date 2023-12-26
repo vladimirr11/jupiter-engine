@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "Event.h"
+#include "events/Event.h"
 
 namespace jupiter {
 
@@ -31,10 +31,10 @@ private:
     EventCallback<EventT> handlerCb;
 };
 
-/// @brief Creates new event handler in pre-allocated memory
+/// @brief Creates new event handler in the global memory arena
 template <typename EventT, typename... Args>
-inline EventHandler<EventT>* newEventHandler(Args&&... args) {
-    return gLinearAllocator->create<EventHandler<EventT>>(std::forward<Args>(args)...);
+inline UniquePtr<EventHandler<EventT>> newEventHandler(Args&&... args) {
+    return newUniquePtr<EventHandler<EventT>>(std::forward<Args>(args)...);
 }
 
 }  // namespace jupiter

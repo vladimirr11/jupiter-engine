@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "Application.h"
+#include "base/Application.h"
 
 #ifdef JUPITER_PLATFORM_WINDOWS
 

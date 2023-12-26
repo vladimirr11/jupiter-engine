@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "Event.h"
+#include "events/Event.h"
 
 namespace jupiter {
 

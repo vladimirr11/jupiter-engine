@@ -2,20 +2,20 @@
 
 // Own includes
 #include "base/Assert.h"
-#include "Memory.h"
+#include "memory/Memory.h"
 
 namespace jupiter {
 
-class alignas(PLATFORM_CACHE_LINE_SIZE) LinearAllocator {
+class alignas(PLATFORM_CACHE_LINE_SIZE) MemoryArena {
 public:
-    LinearAllocator() = delete;
+    MemoryArena() = delete;
 
-    explicit LinearAllocator(const uint64 memSize_);
+    explicit MemoryArena(const uint64 memSize_);
 
-    LinearAllocator(const LinearAllocator&) = delete;
-    LinearAllocator& operator=(const LinearAllocator&) = delete;
+    MemoryArena(const MemoryArena&) = delete;
+    MemoryArena& operator=(const MemoryArena&) = delete;
 
-    ~LinearAllocator() { destroy(); }
+    ~MemoryArena() { destroy(); }
 
     template <typename T>
     T* alloc(const int32 objectCount = 1);
@@ -40,7 +40,7 @@ private:
 };
 
 template <typename T>
-T* LinearAllocator::alloc(const int32 objectCount) {
+T* MemoryArena::alloc(const int32 objectCount) {
     if (usedMemory + (objectCount * sizeof(T)) > memSize) {
         const uint64 remainingBytes = memSize - usedMemory;
         JLOG_ERROR("Requsted object count exeeds the amount of free memory. Remaining bytes {}\n",
@@ -57,18 +57,18 @@ T* LinearAllocator::alloc(const int32 objectCount) {
 }
 
 template <typename T, typename... Args>
-T* LinearAllocator::create(Args&&... args) {
+T* MemoryArena::create(Args&&... args) {
     T* baseAddress = alloc<T>();
     jAssertPtr(baseAddress);
     return placeAt(baseAddress, std::forward<Args&&>(args)...);
 }
 
 template <typename T, typename... Args>
-T* LinearAllocator::create(T* atAddress, Args&&... args) {
+T* MemoryArena::create(T* atAddress, Args&&... args) {
     return placeAt(atAddress, std::forward<Args&&>(args)...);
 }
 
-// Global linear allocator for all input events
-extern UniquePtr<LinearAllocator> gLinearAllocator;
+// Global memory arena for all input events
+extern UniquePtr<MemoryArena> gMemoryArena;
 
 }  // namespace jupiter

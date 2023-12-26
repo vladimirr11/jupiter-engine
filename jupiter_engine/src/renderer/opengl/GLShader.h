@@ -5,7 +5,7 @@
 
 // Own includes
 #include "renderer/Shader.h"
-#include "base/BaseDefines.h"
+#include "base/Defines.h"
 
 namespace jupiter {
 

@@ -24,8 +24,8 @@ Application::Application() {
     appInstance = this;
 
     // Initialize global linear allocator for input events
-    gLinearAllocator = newUniquePtr<LinearAllocator>(1e6);
-    jAssertPtr(gLinearAllocator);
+    gMemoryArena = newUniquePtr<MemoryArena>(1e6);
+    jAssertPtr(gMemoryArena);
 
     // Initialize global event manager
     gEventManager = newUniquePtr<EventManager>();

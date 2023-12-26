@@ -11,7 +11,7 @@ namespace jupiter {
 
 UniquePtr<EventManager> gEventManager = nullptr;
 
-void EventManager::subscribe(const EventType type, IEventHandler* handler) {
+void EventManager::subscribe(const EventType type, UniquePtr<IEventHandler> handler) {
     auto eventHandlers = handlersMap.find(type);
     if (eventHandlers != handlersMap.end()) {
         if (eventHandlers->second.contains(handler->getHashCode())) {
@@ -19,9 +19,9 @@ void EventManager::subscribe(const EventType type, IEventHandler* handler) {
                        handler->getHashCode(), (int32_t)type);
             return;
         }
-        eventHandlers->second.insert({handler->getHashCode(), handler});
+        eventHandlers->second.insert({handler->getHashCode(), std::move(handler)});
     } else {
-        handlersMap[type].insert({handler->getHashCode(), handler});
+        handlersMap[type].insert({handler->getHashCode(), std::move(handler)});
     }
 }
 

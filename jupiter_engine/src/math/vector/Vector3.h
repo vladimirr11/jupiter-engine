@@ -1,8 +1,5 @@
 #pragma once
 
-// C++ system includes
-#include <cmath>
-
 // Own includes
 #include "Vector2.h"
 

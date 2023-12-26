@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "base/Basedefines.h"
+#include "base/Defines.h"
 #include "math/vector/Vector.h"
 
 namespace jupiter {

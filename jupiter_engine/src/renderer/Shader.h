@@ -4,7 +4,7 @@
 #include <string>
 
 // Own includes
-#include "base/BaseDefines.h"
+#include "base/Defines.h"
 
 namespace jupiter {
 

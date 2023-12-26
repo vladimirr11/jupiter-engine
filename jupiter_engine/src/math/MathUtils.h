@@ -1,8 +1,7 @@
 #pragma once
 
 // Own includes
-#include "base/BaseDefines.h"
-#include <numeric>
+#include "base/Defines.h"
 
 static constexpr float32 PI = 3.14159265358979323846f;
 static constexpr float32 PIOver180 = PI / 180.f;

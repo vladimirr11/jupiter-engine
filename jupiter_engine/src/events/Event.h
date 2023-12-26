@@ -1,12 +1,12 @@
 #pragma once
 
-// S++ system icnludes
+// C++ system icnludes
 #include <functional>
 
 // Own includes
-#include "EventDefines.h"
-#include "base/BaseDefines.h"
-#include "memory/LinearAllocator.h"
+#include "events/EventDefines.h"
+#include "base/Defines.h"
+#include "memory/MemoryArena.h"
 
 // Third-party includes
 #define FMT_HEADER_ONLY
@@ -36,10 +36,10 @@ public:
     static EventType getStaticType() { return EventT; }        \
     virtual EventType getType() const override { return getStaticType(); }
 
-/// @brief Creates every event in pre-allocated memory
+/// @brief Creates every event in the global memory arena
 template <typename EventT, typename... Args>
 inline EventT* newEvent(Args&&... args) {
-    return gLinearAllocator->create<EventT>(std::forward<Args>(args)...);
+    return gMemoryArena->create<EventT>(std::forward<Args>(args)...);
 }
 
 }  // namespace jupiter

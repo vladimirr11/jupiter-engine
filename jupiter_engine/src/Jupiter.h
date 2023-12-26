@@ -4,4 +4,4 @@
 #include "base/Application.h"
 
 // Entry point
-#include "base/EntryPoint.h"
+#include "base/Entry.h"

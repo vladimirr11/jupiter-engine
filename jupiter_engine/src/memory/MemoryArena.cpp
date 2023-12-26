@@ -2,22 +2,22 @@
 #include "Jpch.h"
 
 // Own includes
-#include "LinearAllocator.h"
+#include "memory/MemoryArena.h"
 
 namespace jupiter {
 
-UniquePtr<LinearAllocator> gLinearAllocator = nullptr;
+UniquePtr<MemoryArena> gMemoryArena = nullptr;
 
-LinearAllocator::LinearAllocator(const uint64 memSize_) : memSize(memSize_) {
+MemoryArena::MemoryArena(const uint64 memSize_) : memSize(memSize_) {
     memory = allocAligned<uint8_t>(memSize, PLATFORM_CACHE_LINE_SIZE);
     jAssertPtr(memory);
 }
 
-void LinearAllocator::clear() {
+void MemoryArena::clear() {
     memory = zeroMemory(memory, memSize);
     usedMemory = 0;
 }
 
-void LinearAllocator::destroy() { freeAligned(memory); }
+void MemoryArena::destroy() { freeAligned(memory); }
 
 }  // namespace jupiter

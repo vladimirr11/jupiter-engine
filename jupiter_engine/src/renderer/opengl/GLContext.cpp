@@ -2,7 +2,7 @@
 #include "Jpch.h"
 
 // Own includes
-#include "GLContext.h"
+#include "renderer/opengl/GLContext.h"
 #include "base/Assert.h"
 
 namespace jupiter {

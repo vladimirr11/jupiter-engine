@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "BaseDefines.h"
+#include "base/Defines.h"
 
 // Third-party includes
 #define FMT_HEADER_ONLY

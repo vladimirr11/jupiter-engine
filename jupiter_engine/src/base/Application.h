@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "Window.h"
+#include "base/Window.h"
 
 namespace jupiter {
 

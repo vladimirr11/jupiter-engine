@@ -2,7 +2,7 @@
 #include "Jpch.h"
 
 // Own includes
-#include "Win32Window.h"
+#include "platform/win32/Win32Window.h"
 #include "base/Assert.h"
 #include "events/EventManager.h"
 #include "events/KeyboardEvents.h"
