@@ -9,7 +9,7 @@ class GLVertexBuffer : public VertexBuffer {
 public:
     GLVertexBuffer(const void* data, const uint32 numBytess);
 
-    ~GLVertexBuffer();
+    ~GLVertexBuffer() override;
 
     void bind() const override;
     void unbind() const override;
@@ -19,4 +19,5 @@ public:
 private:
     uint32 vboId;
 };
+
 }  // namespace jupiter

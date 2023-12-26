@@ -11,6 +11,7 @@
 #include "ui/imgui/ImGuiUiLayer.h"
 #include "renderer/Shader.h"
 #include "renderer/VertexBuffer.h"
+#include "renderer/IndexBuffer.h"
 
 // Temp includes
 #include <glad/glad.h>
@@ -73,18 +74,22 @@ void Application::run() {
         }
 )";
 
-    // Create shader object
-    SharedPtr<Shader> shader = Shader::create(vertexShaderSource, fragmentShaderSource);
-
     // Vertex data
-    float vertices[] = {
+    float32 vertices[] = {
         -0.5f, -0.5f, 0.0f,  // left
         0.5f,  -0.5f, 0.0f,  // right
         0.0f,  0.5f,  0.0f   // top
     };
 
+    // Indices data
+    uint32 indices[] = {0, 1, 2};
+
+    // Create shader object
+    SharedPtr<Shader> shader = Shader::create(vertexShaderSource, fragmentShaderSource);
     // Create vertex buffer object
     SharedPtr<VertexBuffer> vbo = VertexBuffer::create(vertices, sizeof(vertices));
+    // Create element buffer object
+    SharedPtr<IndexBuffer> ebo = IndexBuffer::create(indices, std::size(indices));
 
     // Prepare vertex array object handle
     uint32 VAO;
@@ -103,14 +108,16 @@ void Application::run() {
 
         // Draw triangle
         shader->bind();
+        ebo->bind();
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, std::size(indices), GL_UNSIGNED_INT, 0);
 
         // Dispatch event queue
         dispatchEvents();
     }
 
     shader->unbind();
+    ebo->unbind();
     glDeleteVertexArrays(1, &VAO);
 }
 
