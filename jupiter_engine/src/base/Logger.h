@@ -3,7 +3,7 @@
 // Own includes
 #include "base/Defines.h"
 
-// Third-party includes
+// Third party includes
 #define FMT_HEADER_ONLY
 #include <fmt/color.h>
 #include <fmt/chrono.h>

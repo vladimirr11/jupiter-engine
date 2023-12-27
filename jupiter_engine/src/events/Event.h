@@ -8,7 +8,7 @@
 #include "base/Defines.h"
 #include "memory/MemoryArena.h"
 
-// Third-party includes
+// Third party includes
 #define FMT_HEADER_ONLY
 #include <fmt/format.h>
 

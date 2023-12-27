@@ -4,9 +4,6 @@
 
 namespace jupiter {
 
-// Jupiter assertions
-#define JUPITER_ASSERTION_ENABLED
-
 #ifdef JUPITER_ASSERTION_ENABLED
 
 /// @brief Reports an assertion failure and halt execution of the program if _errorCode_ != 0

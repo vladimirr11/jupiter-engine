@@ -1,10 +1,8 @@
 // Jpch
 #include "Jpch.h"
 
-// Corresponding header
-#include "events/EventManager.h"
-
 // Own includes
+#include "events/EventManager.h"
 #include "base/Logger.h"
 
 namespace jupiter {

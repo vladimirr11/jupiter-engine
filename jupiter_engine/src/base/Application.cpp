@@ -15,6 +15,7 @@
 
 // Temp includes
 #include <glad/glad.h>
+#include "renderer/opengl/GLVertexBuffer.h"
 
 namespace jupiter {
 
@@ -23,7 +24,7 @@ Application* Application::appInstance = nullptr;
 Application::Application() {
     appInstance = this;
 
-    // Initialize global linear allocator for input events
+    // Initialize global memory arena for storing of all input events
     gMemoryArena = newUniquePtr<MemoryArena>(1e6);
     jAssertPtr(gMemoryArena);
 
@@ -60,25 +61,32 @@ Application::~Application() {}
 void Application::run() {
     const std::string vertexShaderSource = R"(
         #version 410 core
-        layout (location = 0) in vec3 aPos;
+        layout (location = 0) in vec3 pos;
+        layout (location = 1) in vec4 color;
+
+        out vec4 ourColor;
         void main() {
-            gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+            gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+            ourColor = color;
         }
 )";
 
     const std::string fragmentShaderSource = R"(
         #version 410 core
-        out vec4 FragColor;
+        in vec4 ourColor;
+
+        out vec4 fragColor;
         void main() {
-            FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+            fragColor = ourColor;
         }
 )";
 
     // Vertex data
     float32 vertices[] = {
-        -0.5f, -0.5f, 0.0f,  // left
-        0.5f,  -0.5f, 0.0f,  // right
-        0.0f,  0.5f,  0.0f   // top
+        // position         // orange color
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f,  // left
+        0.5f,  -0.5f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f,  // right
+        0.0f,  0.5f,  0.0f, 1.0f, 0.5f, 0.2f, 1.0f   // top
     };
 
     // Indices data
@@ -96,9 +104,26 @@ void Application::run() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // Set vertex buffer layout
+    VertexBufferLayoutData posData(ShaderDataType::Float3);
+    VertexBufferLayoutData colorData(ShaderDataType::Float4);
 
+    VertexBufferLayout bufferLayout;
+    bufferLayout.update(posData);
+    bufferLayout.update(colorData);
+
+    vbo->setBufferLayout(bufferLayout);
+
+    VertexBufferLayout layout = vbo->getLayout();
+    auto layoutElements = layout.getLayoutElements();
+    for (int32 i = 0; i < (int32)layoutElements.size(); i++) {
+        glEnableVertexAttribArray(i);
+        glVertexAttribPointer(i, layoutElements[i].getCount(), GL_FLOAT,
+                              layoutElements[i].isNormalized(), layout.getStride(),
+                              layoutElements[i].getOffset());
+    }
+
+    // Unbind vba and vbo
     glBindVertexArray(0);
     vbo->unbind();
 
