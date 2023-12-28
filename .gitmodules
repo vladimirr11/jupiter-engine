@@ -1,6 +1,6 @@
-[submodule "jupiter_engine/external/fmt"]
-	path = jupiter_engine/external/fmt
+[submodule "jupiter/external/fmt"]
+	path = jupiter/external/fmt
 	url = https://github.com/fmtlib/fmt.git
-[submodule "jupiter_engine/external/glfw"]
-	path = jupiter_engine/external/glfw
+[submodule "jupiter/external/glfw"]
+	path = jupiterengine/external/glfw
 	url = https://github.com/glfw/glfw.git

@@ -39,6 +39,6 @@ build/
 # Files
 *.vcxproj*
 *.sln
-jupiter_engine/.clang-format
+jupiter/.clang-format
 playground/.clang-format
 playground/imgui.ini
