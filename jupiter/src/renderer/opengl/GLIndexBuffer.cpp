@@ -9,7 +9,8 @@
 
 namespace jupiter {
 
-GLIndexBuffer::GLIndexBuffer(const uint32* data, const uint32 numIndices) {
+GLIndexBuffer::GLIndexBuffer(const uint32* data, const uint32 numIndices)
+    : indicesCount(numIndices) {
     // Prepare ebo handle
     glGenBuffers(1, &eboId);
     // Note: GL_ELEMENT_ARRAY_BUFFER is not valid without an actively bound VAO

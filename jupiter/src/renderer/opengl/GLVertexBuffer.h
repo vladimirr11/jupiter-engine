@@ -84,7 +84,7 @@ public:
     void setVertexData(const void* data, const uint32 numBytes) override;
 
     void setBufferLayout(const VertexBufferLayout& layoutData) override { layout = layoutData; }
-    inline const VertexBufferLayout& getLayout() const override { return layout; }
+    const VertexBufferLayout& getLayout() const override { return layout; }
 
 private:
     uint32 vboId;

@@ -12,6 +12,8 @@ public:
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
 
+    virtual uint32 getIndicesCount() const = 0;
+
     static SharedPtr<IndexBuffer> create(const uint32* data, const uint32 numIndices);
 };
 

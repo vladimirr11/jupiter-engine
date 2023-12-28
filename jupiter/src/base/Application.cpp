@@ -15,7 +15,7 @@
 
 // Temp includes
 #include <glad/glad.h>
-#include "renderer/opengl/GLVertexBuffer.h"
+#include "renderer/opengl/GLVertexArray.h"
 
 namespace jupiter {
 
@@ -98,11 +98,8 @@ void Application::run() {
     SharedPtr<VertexBuffer> vbo = VertexBuffer::create(vertices, sizeof(vertices));
     // Create element buffer object
     SharedPtr<IndexBuffer> ebo = IndexBuffer::create(indices, std::size(indices));
-
-    // Prepare vertex array object handle
-    uint32 VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    // Create vertex array object
+    SharedPtr<VertexArray> vao = VertexArray::create();
 
     // Set vertex buffer layout
     VertexBufferLayoutData posData(ShaderDataType::Float3);
@@ -111,20 +108,16 @@ void Application::run() {
     VertexBufferLayout bufferLayout;
     bufferLayout.update(posData);
     bufferLayout.update(colorData);
-
     vbo->setBufferLayout(bufferLayout);
 
-    VertexBufferLayout layout = vbo->getLayout();
-    auto layoutElements = layout.getLayoutElements();
-    for (int32 i = 0; i < (int32)layoutElements.size(); i++) {
-        glEnableVertexAttribArray(i);
-        glVertexAttribPointer(i, layoutElements[i].getCount(), GL_FLOAT,
-                              layoutElements[i].isNormalized(), layout.getStride(),
-                              (const void*)layoutElements[i].getOffset());
-    }
+    // Add vertex buffer object with set layout to the vao
+    // This binds the vao and the vbo
+    vao->addVertexBuffer(vbo);
+    // Set and bind ebo
+    vao->setIndexBuffer(ebo);
 
-    // Unbind vba and vbo
-    glBindVertexArray(0);
+    // Unbind the vba and vbo
+    vao->unbind();
     vbo->unbind();
 
     while (running) {
@@ -133,9 +126,8 @@ void Application::run() {
 
         // Draw triangle
         shader->bind();
-        ebo->bind();
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, std::size(indices), GL_UNSIGNED_INT, 0);
+        vao->bind();
+        glDrawElements(GL_TRIANGLES, vao->getIndexBuffer()->getIndicesCount(), GL_UNSIGNED_INT, 0);
 
         // Dispatch event queue
         dispatchEvents();
@@ -143,7 +135,7 @@ void Application::run() {
 
     shader->unbind();
     ebo->unbind();
-    glDeleteVertexArrays(1, &VAO);
+    vao->unbind();
 }
 
 void Application::onWindowClose(const WindowCloseEvent& event) {
