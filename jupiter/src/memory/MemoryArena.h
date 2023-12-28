@@ -2,7 +2,7 @@
 
 // Own includes
 #include "base/Assert.h"
-#include "memory/Memory.h"
+#include "memory/MemoryUtils.h"
 
 namespace jupiter {
 

@@ -8,8 +8,8 @@ namespace jupiter {
 
 class Input {
 public:
-    static bool isKeyPressed(const int32 key);
-    static bool isMouseButtonPressed(const int32 mouseButton);
+    static bool keyPressed(const int32 key);
+    static bool mouseButtonPressed(const int32 mouseButton);
     static jm::Vec2f getMousePosition();
 };
 

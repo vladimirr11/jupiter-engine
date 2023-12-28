@@ -31,7 +31,7 @@ private:
     EventCallback<EventT> handlerCb;
 };
 
-/// @brief Creates new event handler in the global memory arena
+/// @brief Creates new event handler
 template <typename EventT, typename... Args>
 inline UniquePtr<EventHandler<EventT>> newEventHandler(Args&&... args) {
     return newUniquePtr<EventHandler<EventT>>(std::forward<Args>(args)...);

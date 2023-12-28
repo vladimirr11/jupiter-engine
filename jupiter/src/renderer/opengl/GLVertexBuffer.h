@@ -37,7 +37,7 @@ public:
 
     inline uint32 getStride() const { return stride; }
 
-    inline const void* getOffset() const { return (const void*)offset; }
+    inline uint32 getOffset() const { return offset; }
     inline void setOffset(const uint32 newOffset) { offset = newOffset; }
 
 private:
@@ -55,7 +55,7 @@ public:
     void update(VertexBufferLayoutData& layoutData) {
         if (!layoutElements.empty()) {
             const auto& prevElement = layoutElements[layoutElements.size() - 1];
-            const uint32 oldOffset = (uint32)prevElement.getOffset();
+            const uint32 oldOffset = prevElement.getOffset();
             const uint32 newOffset = oldOffset + prevElement.getStride();
             layoutData.setOffset(newOffset);
         }

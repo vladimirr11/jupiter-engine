@@ -120,7 +120,7 @@ void Application::run() {
         glEnableVertexAttribArray(i);
         glVertexAttribPointer(i, layoutElements[i].getCount(), GL_FLOAT,
                               layoutElements[i].isNormalized(), layout.getStride(),
-                              layoutElements[i].getOffset());
+                              (const void*)layoutElements[i].getOffset());
     }
 
     // Unbind vba and vbo
@@ -153,7 +153,7 @@ void Application::onWindowClose(const WindowCloseEvent& event) {
 
 void Application::onEvent(const Event& event) {
     JLOG_INFO(event.toString().c_str());
-    if (Input::isKeyPressed(Keyboard::KEY_ESCAPE)) {
+    if (Input::keyPressed(Keyboard::KEY_ESCAPE)) {
         running = false;
     }
 }
