@@ -12,7 +12,7 @@
 #include "renderer/Shader.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/IndexBuffer.h"
-#include "renderer/RenderCommand.h"
+#include "renderer/Renderer.h"
 
 // Temp includes
 #include <glad/glad.h>
@@ -126,12 +126,12 @@ void Application::run() {
         window->update();
 
         // Clear frame
-        RenderCommand::setClearColor(jm::Vec4f(0.45f, 0.55f, 0.60f, 1.00f));
-        RenderCommand::clear();
+        Renderer::Command::setClearColor(jm::Vec4f(0.45f, 0.55f, 0.60f, 1.00f));
+        Renderer::Command::clear();
 
         // Draw triangle
         shader->bind();
-        RenderCommand::drwaElements(vao);
+        Renderer::Command::drwaElements(vao);
 
         // Render UI layer
         uiLayer->update();
