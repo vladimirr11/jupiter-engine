@@ -27,8 +27,6 @@ void Win32Window::update() {
     int32 windowWidth, windowHeight;
     glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
     glViewport(0, 0, windowWidth, windowHeight);
-    glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
-    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Win32Window::init(const WindowConfig& config) {

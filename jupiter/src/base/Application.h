@@ -33,10 +33,11 @@ private:
     static Application* appInstance;
 };
 
-Application* createApplication();
-
 inline void* getAppNativeWindow() { 
     return Application::instance().getWindow().getNativeWindow(); 
 }
+
+// Should be implemented by the Client
+Application* createApplication();
 
 }  // namespace jupiter

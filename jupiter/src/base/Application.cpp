@@ -12,6 +12,7 @@
 #include "renderer/Shader.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/IndexBuffer.h"
+#include "renderer/RenderCommand.h"
 
 // Temp includes
 #include <glad/glad.h>
@@ -121,13 +122,19 @@ void Application::run() {
     vbo->unbind();
 
     while (running) {
+        // Pool events and swap buffers
         window->update();
-        uiLayer->update();
+
+        // Clear frame
+        RenderCommand::setClearColor(jm::Vec4f(0.45f, 0.55f, 0.60f, 1.00f));
+        RenderCommand::clear();
 
         // Draw triangle
         shader->bind();
-        vao->bind();
-        glDrawElements(GL_TRIANGLES, vao->getIndexBuffer()->getIndicesCount(), GL_UNSIGNED_INT, 0);
+        RenderCommand::drwaElements(vao);
+
+        // Render UI layer
+        uiLayer->update();
 
         // Dispatch event queue
         dispatchEvents();
