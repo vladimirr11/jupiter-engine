@@ -1,7 +1,7 @@
 #pragma once
 
 // Own includes
-#include "Matrix4x4.h"
+#include "math/matrix/Matrix4x4.h"
 
 #define RIGHT_HANDED_COORD_SYSTEM
 
