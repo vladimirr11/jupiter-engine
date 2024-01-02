@@ -56,9 +56,9 @@ void ImGuiUILayer::update() {
     ImGui::NewFrame();
 
     // Show simple debug information
-    static bool t = true;
+    //static bool t = true;
     {
-        ImGui::ShowDemoWindow(&t);
+        //ImGui::ShowDemoWindow(&t);
 
         ImGui::Begin("Debug information");
         ImGui::Text("Used memory: %lld bytes", gMemoryArena->getUsedMemory());

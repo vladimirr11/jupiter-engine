@@ -88,4 +88,9 @@ void GLShader::bind() const { glUseProgram(programId); }
 
 void GLShader::unbind() const { glUseProgram(0); }
 
+void GLShader::setUniformMat4x4f(std::string_view name, const jm::Matrix4x4& mat4) const {
+    uint32 loc = glGetUniformLocation(programId, name.data());
+    glUniformMatrix4fv(loc, 1, GL_FALSE, &mat4[0][0]);
+}
+
 }  // namespace jupiter

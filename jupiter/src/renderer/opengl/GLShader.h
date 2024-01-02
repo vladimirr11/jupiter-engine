@@ -18,6 +18,8 @@ public:
     void bind() const override;
     void unbind() const override;
 
+    void setUniformMat4x4f(std::string_view name, const jm::Matrix4x4& mat4) const override;
+
 private:
     void compileShader(const std::string& shaderSource, const uint32 shaderId) const;
     void linkProgram() const;

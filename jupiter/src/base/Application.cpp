@@ -13,6 +13,7 @@
 #include "renderer/VertexBuffer.h"
 #include "renderer/IndexBuffer.h"
 #include "renderer/Renderer.h"
+#include "cameras/OrthographicCamera.h"
 
 // Temp includes
 #include <glad/glad.h>
@@ -64,10 +65,11 @@ void Application::run() {
         #version 410 core
         layout (location = 0) in vec3 pos;
         layout (location = 1) in vec4 color;
-
+        
+        uniform mat4 projViewMatrix;
         out vec4 ourColor;
         void main() {
-            gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+            gl_Position = projViewMatrix * vec4(pos.x, pos.y, pos.z, 1.0);
             ourColor = color;
         }
 )";
@@ -117,21 +119,35 @@ void Application::run() {
     // Set and bind ebo
     vao->setIndexBuffer(ebo);
 
-    // Unbind the vba and vbo
+    // Unbind vba and vbo
     vao->unbind();
     vbo->unbind();
 
+    // Create new ortho camera with defined viewport and set its position
+    SharedPtr<OrthographicCamera> camera = newSharedPtr<OrthographicCamera>(-1.f, 1.f, -1.f, 1.f);
+    camera->setPosition(jm::Vec3f(.0f, .0f, .0f));
+
+    float32 theta = 0.f;
     while (running) {
-        // Pool events and swap buffers
+        // Swap buffers and poll IO events
         window->update();
 
         // Clear frame
         Renderer::Command::setClearColor(jm::Vec4f(0.45f, 0.55f, 0.60f, 1.00f));
         Renderer::Command::clear();
 
-        // Draw triangle
-        shader->bind();
-        Renderer::Command::drwaElements(vao);
+        // Set scene camera
+        Renderer::beginFrame(camera);
+
+        // Rotate the triangle a bit
+        camera->setRotation(theta);
+        theta += .1f;
+
+        // Draw that triangle
+        Renderer::render(shader, vao);
+
+        // Doesn't do anything for now
+        Renderer::finishFrame();
 
         // Render UI layer
         uiLayer->update();
