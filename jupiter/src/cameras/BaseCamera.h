@@ -18,6 +18,7 @@ public:
     jm::Matrix4x4 getProjectionViewMatrix() const { return projectionMat * viewMat; }
     jm::Matrix4x4 getProjectionMatrix() const { return projectionMat; }
     jm::Matrix4x4 getViewMatrix() const { return viewMat; }
+    jm::Vec3f getPosition() const { return cameraPos; }
 
 private:
     auto getDerived() -> DerivedCamera& { return static_cast<DerivedCamera&>(*this); }
@@ -25,6 +26,7 @@ private:
 protected:
     jm::Matrix4x4 projectionMat;
     jm::Matrix4x4 viewMat;
+    jm::Vec3f cameraPos;
 };
 
 }  // namespace jupiter

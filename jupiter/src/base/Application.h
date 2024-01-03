@@ -3,9 +3,6 @@
 // Own includes
 #include "base/Window.h"
 
-// Temp inludes
-#include "cameras/OrthographicCamera.h"
-
 namespace jupiter {
 
 class WindowCloseEvent;
@@ -15,7 +12,7 @@ class Event;
 class Application {
 public:
     Application();
-    virtual ~Application();
+    virtual ~Application() = default;
 
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
@@ -25,30 +22,27 @@ public:
 
     void run();
 
+protected:
+    // Protected virtual methods to be overridden by the client app
+    virtual void init() {}
+    virtual void update(const float32 deltaTime) {}
+    virtual void shutDown() {}
+
 private:
     void onWindowClose(const WindowCloseEvent& event);
     void onEvent(const Event& event);
-    void update(const float32 deltaTime);
 
 private:
     UniquePtr<Window> window;
     UniquePtr<UILayer> uiLayer;
     bool running = true;
     static Application* appInstance;
-    
-    // TODO: remove me ------
-    SharedPtr<OrthographicCamera> camera = nullptr;
-    jm::Vec3f cameraPos;
-    float32 cameraMoveSpeed = 1.5f;
-    // ----------------------
 };
 
-inline void* getAppNativeWindow() { 
-    return Application::instance().getWindow().getNativeWindow(); 
-}
+inline void* getAppNativeWindow() { return Application::instance().getWindow().getNativeWindow(); }
 
-inline GraphicsContext* getAppGraphicsContext() { 
-    return Application::instance().getWindow().getGraphicsContext(); 
+inline GraphicsContext* getAppGraphicsContext() {
+    return Application::instance().getWindow().getGraphicsContext();
 }
 
 // Should be implemented by the Client
