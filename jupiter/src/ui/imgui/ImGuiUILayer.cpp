@@ -3,6 +3,7 @@
 
 // Onw includes
 #include "ui/imgui/ImGuiUILayer.h"
+#include "base/Application.h"
 
 // Third party includes
 #include <glad/glad.h>
@@ -56,11 +57,14 @@ void ImGuiUILayer::update() {
     ImGui::NewFrame();
 
     // Show simple debug information
-    //static bool t = true;
     {
-        //ImGui::ShowDemoWindow(&t);
-
+        GraphicsContext* context = getAppGraphicsContext();
         ImGui::Begin("Debug information");
+        ImGui::Text("Graphics API: OpenGL");
+        ImGui::Text("Graphics API vendor: %s", context->getVendor());
+        ImGui::Text("Graphics API vendor version: %s", context->getVendorVersion());
+        ImGui::Text("Graphics API renderer implementation: %s",
+                    context->getRendererImplementation());
         ImGui::Text("Used memory: %lld bytes", gMemoryArena->getUsedMemory());
         ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate,
                     io->Framerate);

@@ -14,7 +14,7 @@ public:
 
         static void setClearColor(const jm::Vec4f& color) { renderBackend->setClearColor(color); }
 
-        static void drwaElements(const SharedPtr<VertexArray>& vertArray) {
+        static void drawElements(const SharedPtr<VertexArray>& vertArray) {
             renderBackend->drawElements(vertArray);
         }
     };
@@ -32,7 +32,7 @@ public:
     static void render(const SharedPtr<Shader>& shader, const SharedPtr<VertexArray>& vertArray) {
         shader->bind();
         shader->setUniformMat4x4f("projViewMatrix", projViewMatrix);
-        Renderer::Command::drwaElements(vertArray);
+        Renderer::Command::drawElements(vertArray);
     }
 
     static void finishFrame() {}

@@ -27,6 +27,8 @@ public:
         viewMat = jm::rotate(transform, -zRotation, jm::Vec3f(0.f, 0.f, 1.f));
     }
 
+    inline jm::Vec3f getPosition() { return cameraPos; }
+
 private:
     jm::Vec3f cameraPos;
 };

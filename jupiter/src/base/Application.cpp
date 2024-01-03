@@ -4,16 +4,16 @@
 // Own includes
 #include "base/Application.h"
 #include "base/Input.h"
+#include "base/Timer.h"
 #include "events/EventManager.h"
 #include "events/KeyboardEvents.h"
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
-#include "ui/imgui/ImGuiUiLayer.h"
 #include "renderer/Shader.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/IndexBuffer.h"
 #include "renderer/Renderer.h"
-#include "cameras/OrthographicCamera.h"
+#include "ui/imgui/ImGuiUiLayer.h"
 
 // Temp includes
 #include <glad/glad.h>
@@ -124,13 +124,17 @@ void Application::run() {
     vbo->unbind();
 
     // Create new ortho camera with defined viewport and set its position
-    SharedPtr<OrthographicCamera> camera = newSharedPtr<OrthographicCamera>(-1.f, 1.f, -1.f, 1.f);
+    camera = newSharedPtr<OrthographicCamera>(-1.f, 1.f, -1.f, 1.f);
     camera->setPosition(jm::Vec3f(.0f, .0f, .0f));
+    cameraPos = camera->getPosition();
 
-    float32 theta = 0.f;
+    DeltaTime::init();
     while (running) {
-        // Swap buffers and poll IO events
-        window->update();
+        // Dispatch event queue
+        dispatchEvents();
+
+        // Update input wrt frame rate
+        update(DeltaTime::getFrameRate<float32>());
 
         // Clear frame
         Renderer::Command::setClearColor(jm::Vec4f(0.45f, 0.55f, 0.60f, 1.00f));
@@ -138,10 +142,6 @@ void Application::run() {
 
         // Set scene camera
         Renderer::beginFrame(camera);
-
-        // Rotate the triangle a bit
-        camera->setRotation(theta);
-        theta += .1f;
 
         // Draw that triangle
         Renderer::render(shader, vao);
@@ -152,8 +152,8 @@ void Application::run() {
         // Render UI layer
         uiLayer->update();
 
-        // Dispatch event queue
-        dispatchEvents();
+        // Swap buffers and poll IO events
+        window->update();
     }
 
     shader->unbind();
@@ -170,7 +170,27 @@ void Application::onEvent(const Event& event) {
     JLOG_INFO(event.toString().c_str());
     if (Input::keyPressed(Keyboard::KEY_ESCAPE)) {
         running = false;
+        return;
     }
+}
+
+void Application::update(const float32 deltaTime) {
+    JLOG_WARN("deltaTime = {}s ({}ms)", deltaTime, deltaTime * 1000.f);
+
+    float32 velocity = (float32)cameraMoveSpeed * deltaTime;
+    if (Input::keyPressed(Keyboard::KEY_A)) {
+        cameraPos.x += velocity;
+    } else if (Input::keyPressed(Keyboard::KEY_D)) {
+        cameraPos.x -= velocity;
+    }
+
+    if (Input::keyPressed(Keyboard::KEY_W)) {
+        cameraPos.y -= velocity;
+    } else if (Input::keyPressed(Keyboard::KEY_S)) {
+        cameraPos.y += velocity;
+    }
+
+    camera->setPosition(cameraPos);
 }
 
 }  // namespace jupiter

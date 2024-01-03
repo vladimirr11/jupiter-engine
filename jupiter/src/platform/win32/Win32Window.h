@@ -18,8 +18,9 @@ public:
 
     inline uint32 getWidth() const override { return windowData.width; }
     inline uint32 getHeight() const override { return windowData.height; }
-    inline void* getNativeWindow() const override { return window; }
 
+    inline void* getNativeWindow() const override { return window; }
+    inline GraphicsContext* getGraphicsContext() const override { return context.get(); }
     inline std::string getTitle() const { return windowData.title; }
 
 private:

@@ -14,10 +14,15 @@ void GLContext::init() {
     // Load OpenGL function pointers
     jAssertFunc(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress));
     JLOG_INFO("OpenGL context created");
-    JLOG_INFO("OpenGL API version: {}", (const char*)glGetString(GL_VERSION));
-    JLOG_INFO("OpenGL renderer implementation: {}", (const char*)glGetString(GL_RENDERER));
+    JLOG_INFO("OpenGL Vendor: {}", (const char*)getVendor());
+    JLOG_INFO("OpenGL API version: {}", (const char*)getVendorVersion());
+    JLOG_INFO("OpenGL renderer implementation: {}", (const char*)getRendererImplementation());
 }
 
 void GLContext::swapBuffers() const { glfwSwapBuffers(windowHandle); }
+
+const uint8* GLContext::getVendor() const { return glGetString(GL_VENDOR); }
+const uint8* GLContext::getVendorVersion() const { return glGetString(GL_VERSION); }
+const uint8* GLContext::getRendererImplementation() const { return glGetString(GL_RENDERER); }
 
 }  // namespace jupiter
