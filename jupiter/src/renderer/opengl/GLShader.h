@@ -18,6 +18,8 @@ public:
     void bind() const override;
     void unbind() const override;
 
+    void setUniformVec3f(std::string_view name, const jm::Vec3f& vec3) const override;
+    void setUniformVec4f(std::string_view name, const jm::Vec4f& vec4) const override;
     void setUniformMat4x4f(std::string_view name, const jm::Matrix4x4& mat4) const override;
 
 private:
@@ -25,7 +27,7 @@ private:
     void linkProgram() const;
 
 private:
-    uint32 programId;
+    uint32 programId = 0u;
 };
 
 }  // namespace jupiter

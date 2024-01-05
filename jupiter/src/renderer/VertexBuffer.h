@@ -26,6 +26,7 @@ public:
     }
 
     inline uint32 getCount() const { return count; }
+    inline uint32 getStride() const { return stride; }
 
     inline ShaderDataType getType() const {
         jAssertExpr(type != ShaderDataType::None);
@@ -34,15 +35,13 @@ public:
 
     inline bool isNormalized() const { return normalized; }
 
-    inline uint32 getStride() const { return stride; }
-
     inline uint32 getOffset() const { return offset; }
     inline void setOffset(const uint32 newOffset) { offset = newOffset; }
 
 private:
-    uint32 count = 0;
     ShaderDataType type = ShaderDataType::None;
     bool normalized = false;
+    uint32 count = 0;
     uint32 stride = 0;
     uint32 offset = 0;
 };
@@ -82,6 +81,7 @@ public:
 
     virtual void setBufferLayout(const VertexBufferLayout& layout) = 0;
     virtual const VertexBufferLayout& getLayout() const = 0;
+    virtual uint32 getVerticesCount() const = 0;
 
     static SharedPtr<VertexBuffer> create(const void* data, const uint32 numBytes);
 };

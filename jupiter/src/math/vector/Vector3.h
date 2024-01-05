@@ -106,7 +106,7 @@ inline T dot3(const Vector3<T>& v1, const Vector3<T>& v2) {
 }
 
 template <typename T>
-inline Vector3<T> cross3(const Vector3<T>& v1, const Vector3<T>& v2) {
+inline Vector3<T> cross(const Vector3<T>& v1, const Vector3<T>& v2) {
     return Vector3<T>(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z,
                       v1.x * v2.y - v1.y * v2.x);
 }

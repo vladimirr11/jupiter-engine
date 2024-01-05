@@ -24,7 +24,7 @@ private:
     void setTheme();
 
     struct ImGuiUILayerData {
-        UITheme theme;
+        UITheme theme = UITheme::CLASSIC;
         GLFWwindow* nativeWindow = nullptr;
     };
 

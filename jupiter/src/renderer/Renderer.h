@@ -26,20 +26,29 @@ public:
 
     template <typename CameraType>
     static void beginFrame(SharedPtr<CameraType> camera) {
-        projViewMatrix = camera->getProjectionViewMatrix();
+        renderData.projViewMatrix = camera->getProjectionViewMatrix();
     }
 
-    static void render(const SharedPtr<Shader>& shader, const SharedPtr<VertexArray>& vertArray) {
+    static void render(const SharedPtr<Shader>& shader, const SharedPtr<VertexArray>& vertArray,
+                       const jm::Matrix4x4& modelTransform = jm::Matrix4x4()) {
         shader->bind();
-        shader->setUniformMat4x4f("projViewMatrix", projViewMatrix);
+        shader->setUniformMat4x4f(renderData.projViewMatrixName, renderData.projViewMatrix);
+        shader->setUniformMat4x4f(renderData.modelTransformMatrixName, modelTransform);
         Renderer::Command::drawElements(vertArray);
     }
 
     static void finishFrame() {}
 
 private:
+    struct RenderData {
+        jm::Matrix4x4 projViewMatrix;
+        std::string projViewMatrixName = "projViewMatrix";
+        std::string modelTransformMatrixName = "modelTransform";
+    };
+
+private:
     inline static UniquePtr<RendererBackend> renderBackend = RendererBackend::create();
-    inline static jm::Matrix4x4 projViewMatrix = jm::Matrix4x4();
+    inline static RenderData renderData;
 };
 
 }  // namespace jupiter

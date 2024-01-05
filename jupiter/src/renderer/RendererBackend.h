@@ -20,7 +20,7 @@ public:
     virtual void setClearColor(const jm::Vec4f& color) const = 0;
     virtual void drawElements(const SharedPtr<VertexArray>& vertArray) const = 0;
 
-    inline static GraphicsAPI getGraphicsAPI() { return graphicsApi; }
+    static GraphicsAPI getGraphicsAPI() { return graphicsApi; }
 
     static UniquePtr<RendererBackend> create();
 

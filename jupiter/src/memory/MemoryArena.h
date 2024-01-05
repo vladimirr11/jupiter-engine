@@ -26,7 +26,7 @@ public:
     template <typename T, typename... Args>
     T* create(T* atAddress, Args&&... args);
 
-    inline uint64 getUsedMemory() const { return usedMemory; }
+    uint64 getUsedMemory() const { return usedMemory; }
 
     void clear();
 

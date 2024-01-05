@@ -7,7 +7,7 @@ namespace jupiter {
 
 class GLVertexBuffer : public VertexBuffer {
 public:
-    GLVertexBuffer(const void* data, const uint32 numBytess);
+    GLVertexBuffer(const void* data, const uint32 numBytes_);
 
     ~GLVertexBuffer() override;
 
@@ -15,13 +15,16 @@ public:
     void unbind() const override;
 
     void setVertexData(const void* data, const uint32 numBytes) override;
+    void setBufferLayout(const VertexBufferLayout& layoutData) override;
 
-    void setBufferLayout(const VertexBufferLayout& layoutData) override { layout = layoutData; }
     const VertexBufferLayout& getLayout() const override { return layout; }
+    uint32 getVerticesCount() const override { return numVertices; }
 
 private:
-    uint32 vboId;
     VertexBufferLayout layout;
+    uint32 vboId = 0u;
+    uint32 numBytes = 0u;
+    uint32 numVertices = 0u;
 };
 
 }  // namespace jupiter

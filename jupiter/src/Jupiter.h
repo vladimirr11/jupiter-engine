@@ -3,7 +3,6 @@
 // Includes to be used by Jupiter application
 // Base includes
 #include "base/Application.h"
-#include "base/Assert.h"
 #include "base/Defines.h"
 #include "base/Input.h"
 #include "base/Logger.h"
@@ -11,6 +10,7 @@
 
 // Cameras
 #include "cameras/OrthographicCamera.h"
+#include "cameras/PrespectiveCamera.h"
 
 // Event system
 #include "events/KeyboardEvents.h"
@@ -18,6 +18,7 @@
 #include "events/WindowEvents.h"
 
 // Maths
+#include "math/matrix/Matrix4x4.h"
 #include "math/matrix/Transform.h"
 #include "math/vector/Vector.h"
 

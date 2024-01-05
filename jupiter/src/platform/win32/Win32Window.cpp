@@ -57,6 +57,9 @@ void Win32Window::init(const WindowConfig& config) {
 
     glfwSetWindowUserPointer(window, &windowData);
 
+    // Enable GLFW to capture our mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
     // Enable vsync
     glfwSwapInterval(GLFW_TRUE);
 
@@ -65,12 +68,12 @@ void Win32Window::init(const WindowConfig& config) {
     glfwSetWindowCloseCallback(
         window, [](GLFWwindow* glfwWindow) { queueEvent(newEvent<WindowCloseEvent>()); });
 
-     glfwSetWindowSizeCallback(window, [](GLFWwindow* glfwWindow, int32 width, int32 height) {
-         Win32WindowData& data = *(Win32WindowData*)glfwGetWindowUserPointer(glfwWindow);
-         data.width = width;
-         data.height = height;
-         queueEvent(newEvent<WindowResizeEvent>(width, height));
-     });
+    glfwSetWindowSizeCallback(window, [](GLFWwindow* glfwWindow, int32 width, int32 height) {
+        Win32WindowData& data = *(Win32WindowData*)glfwGetWindowUserPointer(glfwWindow);
+        data.width = width;
+        data.height = height;
+        queueEvent(newEvent<WindowResizeEvent>(width, height));
+    });
 
     // Keyborad callbacks
     glfwSetKeyCallback(

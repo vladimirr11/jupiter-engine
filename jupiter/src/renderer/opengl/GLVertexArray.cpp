@@ -11,7 +11,6 @@
 namespace jupiter {
 
 GLVertexArray::GLVertexArray() { glGenVertexArrays(1, &vao); }
-
 GLVertexArray::~GLVertexArray() { glDeleteVertexArrays(1, &vao); }
 
 void GLVertexArray::bind() const { glBindVertexArray(vao); }
@@ -54,6 +53,7 @@ void GLVertexArray::addVertexBuffer(const SharedPtr<VertexBuffer>& vertexBuffer)
 
 void GLVertexArray::setIndexBuffer(const SharedPtr<IndexBuffer>& indexBuffer_) {
     glBindVertexArray(vao);
+    indexBufferSet = true;
     indexBuffer = indexBuffer_;
     indexBuffer->bind();
 }

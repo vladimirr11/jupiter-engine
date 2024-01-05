@@ -14,9 +14,12 @@ public:
     virtual void unbind() const = 0;
 
     virtual void addVertexBuffer(const SharedPtr<VertexBuffer>& vertexBiffer) = 0;
-    virtual void setIndexBuffer(const SharedPtr<IndexBuffer>& vertexBiffer) = 0;
+    virtual void setIndexBuffer(const SharedPtr<IndexBuffer>& indexBiffer) = 0;
+
+    virtual bool isIndexBufferSet() const = 0;
 
     virtual const SharedPtr<IndexBuffer>& getIndexBuffer() const = 0;
+    virtual const std::vector<SharedPtr<VertexBuffer>>& getVertexBuffers() const = 0;
 
     static SharedPtr<VertexArray> create();
 };

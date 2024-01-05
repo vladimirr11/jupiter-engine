@@ -12,13 +12,13 @@ class Event;
 class Application {
 public:
     Application();
-    virtual ~Application() = default;
+    virtual ~Application();
 
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
 
     static Application& instance() { return *appInstance; }
-    inline Window& getWindow() { return *window.get(); }
+    const Window& getWindow() const { return *window.get(); }
 
     void run();
 

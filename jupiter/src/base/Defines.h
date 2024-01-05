@@ -3,11 +3,17 @@
 // C++ system includes
 #include <memory>
 
+#define DEBUG
+
 // Jupiter supports only Windows for now
 #ifdef JUPITER_PLATFORM_WINDOWS
-#define JUPITER_ASSERTION_ENABLED
 #define GRAPHICS_API_OPENGL
 #endif
+
+// Debug mode macros
+#ifdef DEBUG
+#define JUPITER_ASSERTION_ENABLED
+#endif  // DEBUG
 
 // Jupiter primitive data types aliases
 // Unsigned intigers

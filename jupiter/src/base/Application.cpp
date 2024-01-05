@@ -9,6 +9,7 @@
 #include "events/KeyboardEvents.h"
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
+#include "renderer/Renderer.h"
 #include "ui/imgui/ImGuiUiLayer.h"
 
 namespace jupiter {
@@ -35,6 +36,9 @@ Application::Application() {
     uiLayer->attach(UILayerConfig(window.get()));
     jAssertPtr(uiLayer);
 
+    // Initialize renderer
+    Renderer::init();
+
     // Window events handlers
     subscribe<WindowCloseEvent>([this](const WindowCloseEvent& event) { onWindowClose(event); });
     subscribe<WindowResizeEvent>([this](const WindowResizeEvent& event) { onEvent(event); });
@@ -46,19 +50,17 @@ Application::Application() {
         [this](const MouseButtonPressEvent& event) { onEvent(event); });
     subscribe<MouseButtonReleaseEvent>(
         [this](const MouseButtonReleaseEvent& event) { onEvent(event); });
-    subscribe<MouseMotionEvent>([this](const MouseMotionEvent& event) { onEvent(event); });
-    subscribe<MouseScrollEvent>([this](const MouseScrollEvent& event) { onEvent(event); });
 }
 
-void Application::run() {
-    init();
+Application::~Application() { Renderer::shutDown(); }
 
+void Application::run() {
     DeltaTime::init();
     while (running) {
         // Dispatch event queue
         dispatchEvents();
 
-        // Update render logic wrt frame rate
+        // Update render logic and camera movement wrt frame rate
         update(DeltaTime::getFrameRate<float32>());
 
         // Render UI layer

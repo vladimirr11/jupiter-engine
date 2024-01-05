@@ -34,6 +34,26 @@ GLShader::GLShader(const std::string& vsSource, const std::string& fsSource) {
     glDetachShader(programId, fragShaderId);
 }
 
+GLShader::~GLShader() { glDeleteProgram(programId); }
+
+void GLShader::bind() const { glUseProgram(programId); }
+void GLShader::unbind() const { glUseProgram(0); }
+
+void GLShader::setUniformVec3f(std::string_view name, const jm::Vec3f& vec3) const {
+    uint32 loc = glGetUniformLocation(programId, name.data());
+    glUniform3fv(loc, 1, &vec3[0]);
+}
+
+void GLShader::setUniformVec4f(std::string_view name, const jm::Vec4f& vec4) const {
+    uint32 loc = glGetUniformLocation(programId, name.data());
+    glUniform4fv(loc, 1, &vec4[0]);
+}
+
+void GLShader::setUniformMat4x4f(std::string_view name, const jm::Matrix4x4& mat4) const {
+    uint32 loc = glGetUniformLocation(programId, name.data());
+    glUniformMatrix4fv(loc, 1, GL_FALSE, &mat4[0][0]);
+}
+
 void GLShader::compileShader(const std::string& shaderSource, const uint32 shaderId) const {
     // Send the shader source code to GL
     const int8* source = shaderSource.c_str();
@@ -80,17 +100,6 @@ void GLShader::linkProgram() const {
         JLOG_ERROR(logMessage);
         exit(EXIT_FAILURE);
     }
-}
-
-GLShader::~GLShader() { glDeleteProgram(programId); }
-
-void GLShader::bind() const { glUseProgram(programId); }
-
-void GLShader::unbind() const { glUseProgram(0); }
-
-void GLShader::setUniformMat4x4f(std::string_view name, const jm::Matrix4x4& mat4) const {
-    uint32 loc = glGetUniformLocation(programId, name.data());
-    glUniformMatrix4fv(loc, 1, GL_FALSE, &mat4[0][0]);
 }
 
 }  // namespace jupiter

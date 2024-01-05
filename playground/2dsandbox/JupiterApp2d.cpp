@@ -6,12 +6,13 @@
 
 using namespace jupiter;
 
-class DemoJupiterApp : public jupiter::Application {
+class DemoJupiterApp2d : public jupiter::Application {
 public:
-    DemoJupiterApp() { init(); }
+    DemoJupiterApp2d() { init(); }
 
-    ~DemoJupiterApp() { shutDown(); }
-
+    ~DemoJupiterApp2d() override { shutDown(); }
+    
+private:
     void init() override {
         const std::string vertexShaderSource = R"(
         #version 410 core
@@ -19,9 +20,10 @@ public:
         layout (location = 1) in vec4 color;
         
         uniform mat4 projViewMatrix;
+        uniform mat4 modelTransform;
         out vec4 ourColor;
         void main() {
-            gl_Position = projViewMatrix * vec4(pos.x, pos.y, pos.z, 1.0);
+            gl_Position = projViewMatrix * modelTransform * vec4(pos.x, pos.y, pos.z, 1.0);
             ourColor = color;
         }
 )";
@@ -76,8 +78,7 @@ public:
     }
 
     void update(const float32 deltaTime) override {
-        JLOG_WARN("deltaTime = {}s ({}ms)", deltaTime, deltaTime * 1000.f);
-
+        // Update x- and y-axis coords of the camera position
         float32 velocity = (float32)cameraMoveSpeed * deltaTime;
         if (Input::keyPressed(Keyboard::KEY_A)) {
             cameraPos.x += velocity;
@@ -100,8 +101,8 @@ public:
         // Set scene camera
         Renderer::beginFrame(camera);
 
-        // Draw that triangle
-        Renderer::render(shader, vao);
+        jm::Matrix4x4 scale = jm::scale(jm::Matrix4x4(), jm::Vec3f(.5f));
+        Renderer::render(shader, vao, scale);
 
         // Doesn't do anything for now
         Renderer::finishFrame();
@@ -119,4 +120,4 @@ private:
     float32 cameraMoveSpeed = 1.5f;
 };
 
-jupiter::Application* jupiter::createApplication() { return new DemoJupiterApp(); }
+jupiter::Application* jupiter::createApplication() { return new DemoJupiterApp2d(); }

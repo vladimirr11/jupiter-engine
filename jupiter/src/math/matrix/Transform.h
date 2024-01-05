@@ -98,8 +98,8 @@ inline Matrix4x4 lookAt(const Vec3f& pos, const Vec3f& target,
                         const Vec3f& up = Vec3f(0.f, 1.f, 0.f)) {
     const Vec3f zVec = normalize3(target - pos);
 #ifdef RIGHT_HANDED_COORD_SYSTEM
-    const Vec3f xVec = normalize3(cross3(zVec, up));
-    const Vec3f yVec = cross3(xVec, zVec);
+    const Vec3f xVec = normalize3(cross(zVec, up));
+    const Vec3f yVec = cross(xVec, zVec);
 #else
     const Vec3f xVec = normalize3(cross3(up, zVec));
     const Vec3f yVec = cross3(zVec, xVec);

@@ -17,8 +17,8 @@ public:
     uint32 getIndicesCount() const override { return indicesCount; }
 
 private:
-    uint32 eboId;
-    uint32 indicesCount;
+    uint32 eboId = 0u;
+    uint32 indicesCount = 0u;
 };
 
 }  // namespace jupiter
