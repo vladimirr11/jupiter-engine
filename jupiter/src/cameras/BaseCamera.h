@@ -9,16 +9,16 @@ namespace jupiter {
 template <typename DerivedCamera>
 class Camera {
 public:
-    // Common camera setters and getters
+    // Common camera setters 
     void setPosition(const jm::Vec3f& pos) { getDerived().setPosition(pos); }
-
-    void setRotation(const float32 theta, const jm::Vec3f& axis = jm::Vec3f(0.f, 0.f, 1.f)) {
-        getDerived().setRotation(theta, axis);
-    }
 
     void setProjectionMatrix(const jm::Matrix4x4& projMatrix) { projectionMat = projMatrix; }
     void setViewMatrix(const jm::Matrix4x4& viewMatrix) { viewMat = viewMatrix; }
 
+    // Update camera position in world space each frame
+    void update(const float32 deltaTime) { getDerived().update(deltaTime); }
+
+    // Common camera getters
     jm::Matrix4x4 getProjectionViewMatrix() const { return getDerived().getProjectionViewMatrix(); }
     jm::Matrix4x4 getProjectionMatrix() const { return getDerived().getProjectionMatrix(); }
     jm::Matrix4x4 getViewMatrix() const { return getDerived().getViewMatrix(); }

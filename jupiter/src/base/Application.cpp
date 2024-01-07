@@ -50,6 +50,8 @@ Application::Application() {
         [this](const MouseButtonPressEvent& event) { onEvent(event); });
     subscribe<MouseButtonReleaseEvent>(
         [this](const MouseButtonReleaseEvent& event) { onEvent(event); });
+    subscribe<MouseMotionEvent>([this](const MouseMotionEvent& event) { onEvent(event); });
+    subscribe<MouseScrollEvent>([this](const MouseScrollEvent& event) { onEvent(event); });
 }
 
 Application::~Application() { Renderer::shutDown(); }
@@ -64,7 +66,7 @@ void Application::run() {
         update(DeltaTime::getFrameRate<float32>());
 
         // Render UI layer
-        uiLayer->update();
+        uiLayer->update(std::bind(&Application::uiLayerUpdate, this));
 
         // Swap buffers and poll IO events
         window->update();

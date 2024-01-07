@@ -1,8 +1,12 @@
 #pragma once
 
+// Own includes
 #include "base/Window.h"
+#include "events/Event.h"
 
 namespace jupiter {
+
+using UIRenderCallback = std::function<void()>;
 
 enum UITheme { CLASSIC, DARK, LIGHT };
 
@@ -20,7 +24,7 @@ public:
     virtual void attach(const UILayerConfig& config) = 0;
     virtual void detach() = 0;
 
-    virtual void update() = 0;
+    virtual void update(const UIRenderCallback& callback) = 0;
 };
 
 }  // namespace jupiter

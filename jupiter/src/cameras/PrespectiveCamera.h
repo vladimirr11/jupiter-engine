@@ -35,10 +35,20 @@ public:
         viewDirty = true;
     }
 
+    // Camera orientation and field of view setters
+    void setDirection(const jm::Vec3f& target) { direction = target; }
+    void setFOV(const float32 fov_) { fov = fov_; }
+
+    // Camera control setters
+    void setMovementSpeed(const float32 moveSpeed) { movementSpeed = moveSpeed; }
+    void setHoverSensitivity(const float32 hoverSens) { hoverSensitivity = hoverSens; }
+
+    // Update camera position
     void update(const float32 deltaTime) {
         const float32 velocity = (float32)movementSpeed * deltaTime;
         const jm::Vec3f rightDir = jm::cross(direction, cameraUp);
 
+        // Move camera left and right
         if (Input::keyPressed(Keyboard::KEY_A)) {
             cameraPos -= (rightDir * velocity);
             viewDirty = true;
@@ -47,6 +57,7 @@ public:
             viewDirty = true;
         }
 
+        // Move camera forward and backward
         if (Input::keyPressed(Keyboard::KEY_W)) {
             cameraPos += (direction * velocity);
             viewDirty = true;
@@ -56,14 +67,6 @@ public:
         }
     }
 
-    // Camera orientation and field of view setters
-    void setDirection(const jm::Vec3f& target) { direction = target; }
-    void setFOV(const float32 fov_) { fov = fov_; }
-
-    // Camera control settings
-    void setMovementSpeed(const float32 moveSpeed) { movementSpeed = moveSpeed; }
-    void setHoverSensitivity(const float32 hoverSens) { hoverSensitivity = hoverSens; }
-
     // Recalculate each transformation matrix (if neaded) before to be used by the renderer
     jm::Matrix4x4 getProjectionViewMatrix() {
         recalculateProjectionMatrix();
@@ -71,14 +74,9 @@ public:
         return projectionMat * viewMat;
     }
 
-    jm::Matrix4x4 getProjectionMatrix() {
-        recalculateProjectionMatrix();
-        return projectionMat;
-    }
-    jm::Matrix4x4 getViewMatrix() {
-        recalculateViewMatrix();
-        return viewMat;
-    }
+    jm::Matrix4x4 getProjectionMatrix() { recalculateProjectionMatrix(); return projectionMat; }
+    
+    jm::Matrix4x4 getViewMatrix() { recalculateViewMatrix(); return viewMat; }
 
 private:
     void recalculateProjectionMatrix() {
@@ -153,14 +151,13 @@ private:
 private:
     jm::Vec3f direction = jm::Vec3f(0.0f, 0.0f, -1.0f);  ///< Camera's forward direction (target)
     jm::Vec3f cameraUp = jm::Vec3f(0.0f, 1.0f, 0.0f);    ///< Camera's up vector
-    float32 fov = 0.f;       ///< Camera's vertical field of view in degrees
-    float32 width = 0.f;     ///< Viewport width
-    float32 height = 0.f;    ///< Viewport height
-    float32 near = 0.1f;     ///< Camera's near clip distance
-    float32 far = 100.0f;    ///< Camera's far clip distance
-    float32 rotation = 0.f;  ///< Rotation angle in degrees
-    bool projDirty = true;   ///< Dirty flag to indicate if projection matrix needs recalculation
-    bool viewDirty = true;   ///< Dirty flag to indicate if view matrix needs recalculation
+    float32 fov = 0.f;      ///< Camera's vertical field of view in degrees
+    float32 width = 0.f;    ///< Viewport width
+    float32 height = 0.f;   ///< Viewport height
+    float32 near = 0.1f;    ///< Camera's near clip distance
+    float32 far = 100.0f;   ///< Camera's far clip distance
+    bool projDirty = true;  ///< Dirty flag to indicate if projection matrix needs recalculation
+    bool viewDirty = true;  ///< Dirty flag to indicate if view matrix needs recalculation
     // Camera Euler angles
     float32 pitch = 0.0f;  ///< Rotation around the x-axis
     float32 yaw = -90.f;   ///< Rotation around the y-axis

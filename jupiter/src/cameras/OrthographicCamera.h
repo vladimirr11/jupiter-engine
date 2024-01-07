@@ -27,9 +27,50 @@ public:
         viewMat = jm::rotate(transform, -zRotation, axis);
     }
 
+    void update(const float32 deltaTime) {
+        const float32 velocity = (float32)movementSpeed * deltaTime;
+        bool cameraMoved = false;
+
+        // Move camera left and right
+        if (Input::keyPressed(Keyboard::KEY_A)) {
+            cameraPos.x -= velocity;
+            cameraMoved = true;
+        } else if (Input::keyPressed(Keyboard::KEY_D)) {
+            cameraPos.x += velocity;
+            cameraMoved = true;
+        }
+
+        // Move camera up and down
+        if (Input::keyPressed(Keyboard::KEY_W)) {
+            cameraPos.y += velocity;
+            cameraMoved = true;
+        } else if (Input::keyPressed(Keyboard::KEY_S)) {
+            cameraPos.y -= velocity;
+            cameraMoved = true;
+        }
+
+        // Rotate camera cw and acw
+        if (Input::keyPressed(Keyboard::KEY_Q)) {
+            rotation += velocity;
+            cameraMoved = true;
+        } else if (Input::keyPressed(Keyboard::KEY_E)) {
+            rotation -= velocity;
+            cameraMoved = true;
+        }
+
+        if (cameraMoved) {
+            viewMat = jm::translate(jm::Matrix4x4(), -cameraPos);
+        }
+        setRotation(rotation);
+    }
+
     jm::Matrix4x4 getProjectionViewMatrix() const { return projectionMat * viewMat; }
     jm::Matrix4x4 getProjectionMatrix() const { return projectionMat; }
     jm::Matrix4x4 getViewMatrix() const { return viewMat; }
+
+private:
+    float32 rotation = 0.f;        ///< Keep rotation around z-axis in degrees
+    float32 movementSpeed = 1.5f;  ///< Camera's movement speed
 };
 
 }  // namespace jupiter

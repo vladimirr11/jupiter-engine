@@ -4,6 +4,8 @@
 // Onw includes
 #include "ui/imgui/ImGuiUILayer.h"
 #include "base/Application.h"
+#include "events/EventManager.h"
+#include "events/MouseEvents.h"
 
 // Third party includes
 #include <glad/glad.h>
@@ -11,6 +13,9 @@
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
+
+// Temp includes
+#include "math/vector/Vector.h"
 
 namespace jupiter {
 
@@ -50,11 +55,13 @@ void ImGuiUILayer::attach(const UILayerConfig& config) {
     JLOG_INFO("ImGui Layer attached and set");
 }
 
-void ImGuiUILayer::update() {
+void ImGuiUILayer::update(const UIRenderCallback& uiRenderCallback) {
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
+    // ImGui::ShowDemoWindow();
 
     // Show simple debug information
     {
@@ -70,6 +77,9 @@ void ImGuiUILayer::update() {
                     io->Framerate);
         ImGui::End();
     }
+
+    // Render client ui code here
+    { uiRenderCallback(); }
 
     // Rendering
     ImGui::Render();

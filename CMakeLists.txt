@@ -12,7 +12,7 @@ set(_BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build)
 
 add_executable(
     ${PROJECT_NAME} 
-        ${_JUPITER_APP_DIR}/src/JupiterApp.cpp
+        ${_JUPITER_APP_DIR}/2dsandbox/JupiterApp2d.cpp
 )
 
 target_link_libraries(

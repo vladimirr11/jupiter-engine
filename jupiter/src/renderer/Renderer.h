@@ -42,13 +42,14 @@ public:
 private:
     struct RenderData {
         jm::Matrix4x4 projViewMatrix;
-        std::string projViewMatrixName = "projViewMatrix";
-        std::string modelTransformMatrixName = "modelTransform";
+        std::string projViewMatrixName;
+        std::string modelTransformMatrixName;
     };
 
 private:
     inline static UniquePtr<RendererBackend> renderBackend = RendererBackend::create();
-    inline static RenderData renderData;
+    inline static RenderData renderData =
+        RenderData(jm::Matrix4x4(), "projViewMatrix", "modelTransform");
 };
 
 }  // namespace jupiter

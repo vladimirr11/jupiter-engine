@@ -26,6 +26,7 @@ protected:
     // Protected virtual methods to be overridden by the client app
     virtual void init() {}
     virtual void update(const float32 deltaTime) {}
+    virtual void uiLayerUpdate() {}
     virtual void shutDown() {}
 
 private:

@@ -18,7 +18,7 @@ public:
     void attach(const UILayerConfig& config) override;
     void detach() override;
 
-    void update() override;
+    void update(const UIRenderCallback& callback) override;
 
 private:
     void setTheme();

@@ -32,7 +32,7 @@ void EventManager::unsubscribe(const EventType type, const uint64 handlerHash) {
     handlersMap[type].erase(handlerHash);
 }
 
-// TODO: implement handlersMap with vector as second parametar
+// TODO: implement handlersMap with vector or priority_queue as second parametar
 void EventManager::triggerEvent(const Event& event) {
     auto eventHandlers = handlersMap.find(event.getType());
     if (!eventHandlers->second.empty()) {
@@ -45,17 +45,19 @@ void EventManager::triggerEvent(const Event& event) {
 void EventManager::queueEvent(Event* event) { eventQueue.push_back(event); }
 
 void EventManager::dispatchEvents() {
+    // Erase-remove idiom
     std::erase_if(eventQueue, [this](Event* eventPtr) {
         if (!eventPtr->handled) {
             triggerEvent(*eventPtr);
+            eventPtr->handled = true;
         }
-        return !eventPtr->handled;
+        return eventPtr->handled;
     });
 }
 
 void EventManager::shutDown() {
-    // Note: all event pointers have to be created by custom allocator, that's why we
-    // dont't need to worry about memory clearance here. The allocator should take care about that
+    // Note: all event pointers have to be created by custom allocator, that's why we dont't
+    // need to worry about memory clearance here. The allocator should take care about that.
     eventQueue.clear();
     handlersMap.clear();
 }
