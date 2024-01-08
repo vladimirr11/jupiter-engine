@@ -18,53 +18,67 @@ public:
 private:
     void init() override {
         const std::string vertexShaderSource = R"(
-        #version 410 core
+        #version 450 core
         layout (location = 0) in vec3 pos;
+        layout (location = 1) in vec2 texCoord;
         
         uniform mat4 projViewMatrix;
         uniform mat4 modelTransform;
         
+        //out vec2 vTexCoord;            
         void main() {
             gl_Position = projViewMatrix * modelTransform * vec4(pos.x, pos.y, pos.z, 1.0);
+            //vTexCoord = texCoord;
         }
 )";
 
         const std::string fragmentShaderSource = R"(
-        #version 410 core
+        #version 450 core
+        
+        //uniform sampler2D uTexture;
+        //in vec2 vTexCoord; 
         
         uniform vec3 myColor;
         out vec4 fragColor;
+
         void main() {
+            //fragColor = texture(uTexture, vTexCoord);
             fragColor = vec4(myColor, 1.0);
         }
 )";
 
         // Vertex data
-        float32 vertices[] = {
-            // position         // orange color
-            -0.5f, -0.5f, 0.0f,  // left
-            0.5f,  -0.5f, 0.0f,  // right
-            0.0f,  0.5f,  0.0f   // top
-        };
+        float32 vertices[] = {0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   // top right
+                              0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,   // bottom right
+                              -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,   // bottom left
+                              -0.5f, 0.5f,  0.0f, 0.0f, 1.0f};  // top left;
 
         // Indices data
-        uint32 indices[] = {0, 1, 2};
+        uint32 indices[] = {0, 1, 3, 1, 2, 3};
 
-        // Create shader program, vbo, vao, ebo
+        // Create shader program, vbo, vao, ebo, and test texture
         shader = Shader::create(vertexShaderSource, fragmentShaderSource);
         vbo = VertexBuffer::create(vertices, sizeof(vertices));
         ebo = IndexBuffer::create(indices, std::size(indices));
         vao = VertexArray::create();
+        texture = Texture2D::create(
+            "C:/Users/user/source/jupiter_engine/playground/2dsandbox/assets/DemoTexture.png");
 
         // Set uniform color
-        shader->bind();
-        shader->setUniformVec3f("myColor", triangleColor);
-        shader->unbind();
+         shader->bind();
+         shader->setUniformVec3f("myColor", triangleColor);
+         shader->unbind();
+
+        //shader->bind();
+        //shader->setUniformInt("uTexture", 0);  // 0 indicates sthe texture slot
+        //shader->unbind();
 
         // Set vertex buffer layout
         VertexBufferLayoutData posData(ShaderDataType::Float3);
+        VertexBufferLayoutData texData(ShaderDataType::Float2);
         VertexBufferLayout bufferLayout;
         bufferLayout.update(posData);
+        bufferLayout.update(texData);
         vbo->setBufferLayout(bufferLayout);
 
         // Add vbo and ebo to the vao
@@ -117,6 +131,7 @@ private:
     SharedPtr<VertexBuffer> vbo = nullptr;
     SharedPtr<IndexBuffer> ebo = nullptr;
     SharedPtr<VertexArray> vao = nullptr;
+    SharedPtr<Texture2D> texture = nullptr;
     SharedPtr<OrthographicCamera> camera = nullptr;
 
     jm::Vec3f triangleColor = jm::Vec3f(1.0f, 0.5f, 0.2f);

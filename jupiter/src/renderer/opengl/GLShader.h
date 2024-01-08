@@ -18,6 +18,7 @@ public:
     void bind() const override;
     void unbind() const override;
 
+    void setUniformInt(std::string_view name, const int32 uniformId) const override;
     void setUniformVec3f(std::string_view name, const jm::Vec3f& vec3) const override;
     void setUniformVec4f(std::string_view name, const jm::Vec4f& vec4) const override;
     void setUniformMat4x4f(std::string_view name, const jm::Matrix4x4& mat4) const override;

@@ -39,6 +39,11 @@ GLShader::~GLShader() { glDeleteProgram(programId); }
 void GLShader::bind() const { glUseProgram(programId); }
 void GLShader::unbind() const { glUseProgram(0); }
 
+void GLShader::setUniformInt(std::string_view name, const int32 uniformId) const {
+    uint32 loc = glGetUniformLocation(programId, name.data());
+    glUniform1i(loc, uniformId);
+}
+
 void GLShader::setUniformVec3f(std::string_view name, const jm::Vec3f& vec3) const {
     uint32 loc = glGetUniformLocation(programId, name.data());
     glUniform3fv(loc, 1, &vec3[0]);
