@@ -11,10 +11,15 @@ namespace jupiter {
 
 GLRenderer::~GLRenderer() {}
 
-void GLRenderer::init() const {}
+void GLRenderer::init() const {
+    // Enable alpha transparency on renderer init
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 void GLRenderer::shutDown() const {}
 
-void GLRenderer::clear() const { glClear(GL_COLOR_BUFFER_BIT); }
+void GLRenderer::clear() const { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 void GLRenderer::setClearColor(const jm::Vec4f& color) const {
     glClearColor(color.x, color.y, color.z, color.w);
 }

@@ -10,31 +10,30 @@
 
 namespace jupiter {
 
-TextureData TextureLoader::loadFromFile(const FilesysPath& texturePath) {
-    std::cout << texturePath << std::endl;
-    TextureData texData;
-    texData.buffer =
-        stbi_load("C:/Users/user/source/jupiter_engine/playground/2dsandbox/assets/DemoTexture.png",
-                  &texData.width, &texData.height, &texData.numChannels, 0);
-    jAssertPtr(texData.buffer);
-    jAssertExpr(texData.width != 0);
-    jAssertExpr(texData.height != 0);
+TexturePayload TextureLoader::loadFromFile(const FilesysPath& texturePath) {
+    TexturePayload texPayload;
+    stbi_set_flip_vertically_on_load(true); // Flip loaded texture on the y-axis
+    texPayload.buffer = stbi_load(texturePath.string().c_str(), &texPayload.width,
+                                  &texPayload.height, &texPayload.numChannels, 0);
+    jAssertPtr(texPayload.buffer);
+    jAssertExpr(texPayload.width != 0);
+    jAssertExpr(texPayload.height != 0);
 
-    switch (texData.numChannels) {
+    switch (texPayload.numChannels) {
     case 4:
-        texData.format = ColorFormat::RGBA;
+        texPayload.format = ColorFormat::RGBA;
         break;
     case 3:
-        texData.format = ColorFormat::RGB;
+        texPayload.format = ColorFormat::RGB;
         break;
     default:
         JLOG_ERROR("Unsupported number of channels returned by stbi_load");
         break;
     }
-    texData.hasBuffer = true;
+    texPayload.hasBuffer = true;
 
     JLOG_INFO("Texture loaded from path {}", (const int8*)texturePath.c_str());
-    return texData;
+    return texPayload;
 }
 
 }  // namespace jupiter

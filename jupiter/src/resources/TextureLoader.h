@@ -12,7 +12,7 @@ enum class ColorFormat { None, RGB, RGBA };
 
 using FilesysPath = std::filesystem::path;
 
-struct TextureData {
+struct TexturePayload {
     uint8* buffer = nullptr;
     int32 width = 0;
     int32 height = 0;
@@ -23,7 +23,7 @@ struct TextureData {
 
 class TextureLoader {
 public:
-    static TextureData loadFromFile(const FilesysPath& texturePath);
+    static TexturePayload loadFromFile(const FilesysPath& texturePath);
 };
 
 }  // namespace jupiter

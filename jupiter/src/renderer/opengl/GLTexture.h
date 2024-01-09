@@ -13,12 +13,12 @@ public:
 
     void bind(const uint32 slot = 0) const override;
 
-    int32 getWidth() const override { return texData.width; }
-    int32 getHeight() const override { return texData.height; }
-    ColorFormat getFormat() const override { return texData.format; }
+    int32 getWidth() const override { return texPayload.width; }
+    int32 getHeight() const override { return texPayload.height; }
+    ColorFormat getFormat() const override { return texPayload.format; }
 
 private:
-    TextureData texData;
+    TexturePayload texPayload;
     uint32 textureId;
 };
 

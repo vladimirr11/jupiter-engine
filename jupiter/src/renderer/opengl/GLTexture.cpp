@@ -13,9 +13,10 @@ namespace jupiter {
 
 GLTexture::GLTexture(const FilesysPath& path) {
     // Load texture data
-    texData = TextureLoader::loadFromFile(path);
+    texPayload = TextureLoader::loadFromFile(path);
     // Prepare texture handle
-    glCreateTextures(GL_TEXTURE_2D, 1, &textureId);
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     auto colorFormat2OpenGLColorFormat = [](const ColorFormat format) {
         GLenum internalFormat;
@@ -34,9 +35,6 @@ GLTexture::GLTexture(const FilesysPath& path) {
         return internalFormat;
     };
 
-    glTextureStorage2D(textureId, 1, colorFormat2OpenGLColorFormat(texData.format), texData.width,
-                       texData.height);
-
     // Set texture wrapping to GL_REPEAT (default wrapping method)
     glTextureParameteri(textureId, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(textureId, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -44,13 +42,19 @@ GLTexture::GLTexture(const FilesysPath& path) {
     glTextureParameteri(textureId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTextureParameteri(textureId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    GLenum baseInternalFormat = colorFormat2OpenGLColorFormat(texPayload.format);
+    glTexImage2D(GL_TEXTURE_2D, 0, baseInternalFormat, texPayload.width, texPayload.height, 0,
+                 baseInternalFormat, GL_UNSIGNED_BYTE, texPayload.buffer);
+
     // Free texture image
-    stbi_image_free(texData.buffer);
-    texData.hasBuffer = false;
+    stbi_image_free(texPayload.buffer);
+    texPayload.hasBuffer = false;
 }
 
 GLTexture::~GLTexture() { glDeleteTextures(1, &textureId); }
 
-void GLTexture::bind(const uint32 slot) const { glBindTextureUnit(slot, textureId); }
+void GLTexture::bind(const uint32 slot) const {
+    glBindTextureUnit(slot, textureId);
+}
 
 }  // namespace jupiter
