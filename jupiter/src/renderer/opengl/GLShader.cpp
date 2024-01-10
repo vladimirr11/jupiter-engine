@@ -4,6 +4,7 @@
 // Own includes
 #include "renderer/opengl/GLShader.h"
 #include "base/Assert.h"
+#include "resources/ShaderLoader.h"
 
 // Third party includes
 #include <glad/glad.h>
@@ -11,27 +12,13 @@
 namespace jupiter {
 
 GLShader::GLShader(const std::string& vsSource, const std::string& fsSource) {
-    // Compile the vertex shader
-    uint32 vertShaderId = glCreateShader(GL_VERTEX_SHADER);
-    compileShader(vsSource, vertShaderId);
+    compileAndLink(vsSource, fsSource);
+}
 
-    // Compile the fragment shader
-    uint32 fragShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-    compileShader(fsSource, fragShaderId);
-
-    // Get the program object id
-    programId = glCreateProgram();
-
-    // Attach our shaders to our program
-    glAttachShader(programId, vertShaderId);
-    glAttachShader(programId, fragShaderId);
-
-    // Link our program
-    linkProgram();
-
-    // Detach shaders after a successful link
-    glDetachShader(programId, vertShaderId);
-    glDetachShader(programId, fragShaderId);
+GLShader::GLShader(const FilesysPath& vsPath, const FilesysPath& fsPath) {
+    const std::string vsSource = ShaderLoader::loadVertexShader(vsPath);
+    const std::string fsSource = ShaderLoader::loadFragmentShader(fsPath);
+    compileAndLink(vsSource, fsSource);
 }
 
 GLShader::~GLShader() { glDeleteProgram(programId); }
@@ -105,6 +92,30 @@ void GLShader::linkProgram() const {
         JLOG_ERROR(logMessage);
         exit(EXIT_FAILURE);
     }
+}
+
+void GLShader::compileAndLink(const std::string& vsSource, const std::string& fsSource) {
+    // Compile the vertex shader
+    uint32 vertShaderId = glCreateShader(GL_VERTEX_SHADER);
+    compileShader(vsSource, vertShaderId);
+
+    // Compile the fragment shader
+    uint32 fragShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+    compileShader(fsSource, fragShaderId);
+
+    // Get the program object id
+    programId = glCreateProgram();
+
+    // Attach our shaders to our program
+    glAttachShader(programId, vertShaderId);
+    glAttachShader(programId, fragShaderId);
+
+    // Link our program
+    linkProgram();
+
+    // Detach shaders after a successful link
+    glDetachShader(programId, vertShaderId);
+    glDetachShader(programId, fragShaderId);
 }
 
 }  // namespace jupiter

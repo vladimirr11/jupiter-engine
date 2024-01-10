@@ -22,6 +22,7 @@ public:
     virtual void setUniformMat4x4f(std::string_view name, const jm::Matrix4x4& mat4) const = 0;
 
     static SharedPtr<Shader> create(const std::string& vsSource, const std::string& fsSource);
+    static SharedPtr<Shader> create(const FilesysPath& vsPath, const FilesysPath& fsPath);
 };
 
 }  // namespace jupiter

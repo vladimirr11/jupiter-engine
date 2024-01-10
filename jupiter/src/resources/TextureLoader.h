@@ -10,8 +10,6 @@ namespace jupiter {
 
 enum class ColorFormat { None, RGB, RGBA };
 
-using FilesysPath = std::filesystem::path;
-
 struct TexturePayload {
     uint8* buffer = nullptr;
     int32 width = 0;

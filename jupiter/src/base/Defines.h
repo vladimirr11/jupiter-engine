@@ -2,7 +2,9 @@
 
 // C++ system includes
 #include <memory>
+#include <filesystem>
 
+// Base difines
 #define DEBUG
 
 // Jupiter supports only Windows for now
@@ -34,7 +36,11 @@ typedef double float64;
 
 namespace jupiter {
 
+// Base constants
 static constexpr uint32 PLATFORM_CACHE_LINE_SIZE = 64;
+
+// Base aliases
+using FilesysPath = std::filesystem::path;
 
 template <typename T>
 using UniquePtr = std::unique_ptr<T>;
