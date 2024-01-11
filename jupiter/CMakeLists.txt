@@ -63,6 +63,8 @@ add_library(
         ${_SRC_DIR}/renderer/opengl/GLRenderer.h
         ${_SRC_DIR}/renderer/opengl/GLShader.cpp
         ${_SRC_DIR}/renderer/opengl/GLShader.h
+        ${_SRC_DIR}/renderer/opengl/GLTexture.cpp
+        ${_SRC_DIR}/renderer/opengl/GLTexture.h
         ${_SRC_DIR}/renderer/opengl/GLVertexArray.cpp
         ${_SRC_DIR}/renderer/opengl/GLVertexArray.h
         ${_SRC_DIR}/renderer/opengl/GLVertexBuffer.cpp
@@ -76,10 +78,17 @@ add_library(
         ${_SRC_DIR}/renderer/RendererBackend.h
         ${_SRC_DIR}/renderer/Shader.cpp
         ${_SRC_DIR}/renderer/Shader.h
+        ${_SRC_DIR}/renderer/Texture.cpp
+        ${_SRC_DIR}/renderer/Texture.h
         ${_SRC_DIR}/renderer/VertexArray.cpp
         ${_SRC_DIR}/renderer/VertexArray.h
         ${_SRC_DIR}/renderer/VertexBuffer.cpp
         ${_SRC_DIR}/renderer/VertexBuffer.h
+
+        ${_SRC_DIR}/resources/ShaderLoader.cpp
+        ${_SRC_DIR}/resources/ShaderLoader.h
+        ${_SRC_DIR}/resources/TextureLoader.cpp
+        ${_SRC_DIR}/resources/TextureLoader.h
 
         ${_SRC_DIR}/ui/imgui/ImGuiUILayer.h
         ${_SRC_DIR}/ui/imgui/ImGuiUILayer.cpp
@@ -116,6 +125,7 @@ target_include_directories(
             ${_EXTERNAL_LIBS_DIR}/glfw/include
             ${_EXTERNAL_LIBS_DIR}/glad/include
             ${_EXTERNAL_LIBS_DIR}/imgui
+            ${_EXTERNAL_LIBS_DIR}/stb
 )
 
 target_link_libraries(
@@ -125,9 +135,11 @@ target_link_libraries(
             glfw
             glad
             imgui
+            stb
 )
 
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/fmt)
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/glfw)
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/glad)
 add_subdirectory(${_EXTERNAL_LIBS_DIR}/imgui)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/stb)
