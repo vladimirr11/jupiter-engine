@@ -25,7 +25,7 @@ public:
         }
     }
 
-    size_t getHashCode() const override { return handlerCb.target_type().hash_code(); }
+    uint64 getHashCode() const override { return handlerCb.target_type().hash_code(); }
 
 private:
     EventCallback<EventT> handlerCb;

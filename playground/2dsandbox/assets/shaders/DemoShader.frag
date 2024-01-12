@@ -1,4 +1,4 @@
-#version 450 core
+#version 410 core
 
 uniform sampler2D uTextureSampler;
 in vec2 vTexCoord; 

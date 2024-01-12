@@ -4,7 +4,7 @@
 // Own includes
 #include "renderer/RendererBackend.h"
 #ifdef GRAPHICS_API_OPENGL
-#include "renderer/opengl/GLREnderer.h"
+#include "renderer/opengl/GLRenderer.h"
 #endif  // GRAPHICS_API_OPENGL
 
 namespace jupiter {

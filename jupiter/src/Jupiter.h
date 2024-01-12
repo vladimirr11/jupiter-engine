@@ -31,7 +31,7 @@
 #include "renderer/VertexBuffer.h"
 
 // UI
-#include "ui/imgui/ImGuiUiLayer.h"
+#include "ui/imgui/ImGuiUILayer.h"
 
 // Entry point
 #include "base/Entry.h"

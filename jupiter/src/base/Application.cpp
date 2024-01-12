@@ -10,7 +10,7 @@
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
 #include "renderer/Renderer.h"
-#include "ui/imgui/ImGuiUiLayer.h"
+#include "ui/imgui/ImGuiUILayer.h"
 
 namespace jupiter {
 
