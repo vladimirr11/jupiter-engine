@@ -42,3 +42,5 @@ build/
 jupiter/.clang-format
 playground/.clang-format
 playground/imgui.ini
+playground/2dsandbox/imgui.ini
+playground/3dsandbox/imgui.ini

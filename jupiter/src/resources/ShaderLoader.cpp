@@ -26,7 +26,7 @@ std::string ShaderLoader::loadFragmentShader(const FilesysPath& fsPath) {
 }
 
 std::string ShaderLoader::readShader(const FilesysPath& path) {
-    std::ifstream inStream(path.generic_string(), std::ios::in, std::ios::binary);
+    std::ifstream inStream(path.generic_string(), std::ios::in | std::ios::binary);
     if (!inStream.good()) {
         JLOG_ERROR("Error bit was raised during reading of file {}", path.generic_string());
         jAssertExpr(false);

@@ -4,9 +4,6 @@
 // Jupiter includes
 #include <Jupiter.h>
 
-// Third-party includes
-#include <imgui/imgui.h>
-
 using namespace jupiter;
 
 class DemoJupiterApp2d : public jupiter::Application {
@@ -17,34 +14,6 @@ public:
 
 private:
     void init() override {
-//        const std::string vertexShaderSource = R"(
-//        #version 450 core
-//        layout (location = 0) in vec3 pos;
-//        layout (location = 1) in vec2 texCoord;
-//        
-//        uniform mat4 projViewMatrix;
-//        uniform mat4 modelTransform;
-//        
-//        out vec2 vTexCoord;
-//        void main() {
-//            gl_Position = projViewMatrix * modelTransform * vec4(pos.x, pos.y, pos.z, 1.0);
-//            vTexCoord = texCoord;
-//        }
-//)";
-//
-//        const std::string fragmentShaderSource = R"(
-//        #version 450 core
-//        
-//        uniform sampler2D uTextureSampler;
-//        in vec2 vTexCoord; 
-//
-//        out vec4 fragColor;
-//
-//        void main() {
-//            fragColor = texture(uTextureSampler, vTexCoord);
-//        }
-//)";
-
         // Vertex data
         float32 vertices[] = {0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   // top right
                               0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,   // bottom right
@@ -54,9 +23,9 @@ private:
         // Indices data
         uint32 indices[] = {0, 1, 3, 1, 2, 3};
 
-        // Create shader program 
-        const FilesysPath vsPath = "2dsandbox/assets/shaders/DemoShader.vert";
-        const FilesysPath fsPath = "2dsandbox/assets/shaders/DemoShader.frag";
+        // Create shader program
+        const FilesysPath vsPath = "assets/shaders/DemoShader.vert";
+        const FilesysPath fsPath = "assets/shaders/DemoShader.frag";
         shader = Shader::create(vsPath, fsPath);
 
         // Create vbo, vao, and ebo
@@ -65,8 +34,8 @@ private:
         vao = VertexArray::create();
 
         // Create textures
-        texture1 = Texture2D::create("2dsandbox/assets/textures/Checkerboard.png");
-        texture2 = Texture2D::create("2dsandbox/assets/textures/Dices.png");
+        texture1 = Texture2D::create("assets/textures/Checkerboard.png");
+        texture2 = Texture2D::create("assets/textures/Dices.png");
 
         shader->bind();
         shader->setUniformInt("uTextureSampler", 0);  // 0 indicates the texture slot
@@ -118,9 +87,9 @@ private:
 
     void uiLayerUpdate() override {
         // Set tringle color
-        // ImGui::Begin("Color Settings");
-        // ImGui::ColorEdit3("Triangle Color", &triangleColor[0]);
-        // ImGui::End();
+        //ImGui::Begin("Color Settings");
+        //ImGui::ColorEdit3("Triangle Color", &triangleColor[0]);
+        //ImGui::End();
 
         //// Send color to the device
         // shader->bind();

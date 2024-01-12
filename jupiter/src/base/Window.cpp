@@ -2,26 +2,29 @@
 #include "Jpch.h"
 
 // Own includes
-#include "platform/win32/Win32Window.h"
+#include "base/Window.h"
 #include "base/Assert.h"
 #include "events/EventManager.h"
 #include "events/KeyboardEvents.h"
 #include "events/MouseEvents.h"
 #include "events/WindowEvents.h"
+#include "renderer/opengl/GLContext.h"
+
+// Third-party includes
+#include <GLFW/glfw3.h>
 
 namespace jupiter {
 
 static bool glfwInitialized = false;
 
 UniquePtr<Window> Window::create(const WindowConfig& config) {
-    return newUniquePtr<Win32Window>(config);
+    return newUniquePtr<Window>(config);
 }
 
-Win32Window::Win32Window(const WindowConfig& config) { init(config); }
+Window::Window(const WindowConfig& config) { init(config); }
+Window::~Window() { shutDown(); }
 
-Win32Window::~Win32Window() { shutDown(); }
-
-void Win32Window::update() {
+void Window::update() {
     context->swapBuffers();
     glfwPollEvents();
     int32 windowWidth, windowHeight;
@@ -29,7 +32,7 @@ void Win32Window::update() {
     glViewport(0, 0, windowWidth, windowHeight);
 }
 
-void Win32Window::init(const WindowConfig& config) {
+void Window::init(const WindowConfig& config) {
     windowData.title = config.title;
     windowData.width = config.width;
     windowData.height = config.height;
@@ -69,7 +72,7 @@ void Win32Window::init(const WindowConfig& config) {
         window, [](GLFWwindow* glfwWindow) { queueEvent(newEvent<WindowCloseEvent>()); });
 
     glfwSetWindowSizeCallback(window, [](GLFWwindow* glfwWindow, int32 width, int32 height) {
-        Win32WindowData& data = *(Win32WindowData*)glfwGetWindowUserPointer(glfwWindow);
+        WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
         data.width = width;
         data.height = height;
         queueEvent(newEvent<WindowResizeEvent>(width, height));
@@ -121,6 +124,6 @@ void Win32Window::init(const WindowConfig& config) {
     });
 }
 
-void Win32Window::shutDown() { glfwDestroyWindow(window); }
+void Window::shutDown() { glfwDestroyWindow(window); }
 
 }  // namespace jupiter

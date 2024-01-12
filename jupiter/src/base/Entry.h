@@ -3,7 +3,7 @@
 // Own includes
 #include "base/Application.h"
 
-#ifdef JUPITER_PLATFORM_WINDOWS
+#if defined(JUPITER_PLATFORM_WINDOWS) || defined(JUPITER_PLATFORM_LINUX)
 
 extern jupiter::Application* jupiter::createApplication();
 

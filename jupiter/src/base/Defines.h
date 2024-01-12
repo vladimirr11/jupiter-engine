@@ -7,8 +7,20 @@
 // Base difines
 #define DEBUG
 
-// Jupiter supports only Windows for now
-#ifdef JUPITER_PLATFORM_WINDOWS
+// Jupiter supports Windows and Linux platforms
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+#define JUPITER_PLATFORM_WINDOWS 1  // Windows
+#ifndef _WIN64
+#error "64-bit is required on Windows"
+#endif
+#elif defined(__linux__) || defined(__gnu_linux__)
+#define JUPITER_PLATFORM_LINUX 1  // Linux
+#else
+#error "Unknown platform"
+#endif
+
+// Jupiter uses OpenGL as Graphics API (for now)
+#if defined(JUPITER_PLATFORM_WINDOWS) || defined(JUPITER_PLATFORM_LINUX)
 #define GRAPHICS_API_OPENGL
 #endif
 

@@ -3,6 +3,9 @@
 // Own includes
 #include "ui/UILayer.h"
 
+// Third-party includes
+#include <imgui.h>
+
 struct GLFWwindow;
 struct ImGuiStyle;
 struct ImGuiIO;
