@@ -21,9 +21,11 @@ add_library(
         ${_SRC_DIR}/base/Assert.h
         ${_SRC_DIR}/base/Defines.h
         ${_SRC_DIR}/base/Entry.h
+        ${_SRC_DIR}/base/Input.cpp
         ${_SRC_DIR}/base/Input.h
         ${_SRC_DIR}/base/Logger.h
         ${_SRC_DIR}/base/Timer.h
+        ${_SRC_DIR}/base/Window.cpp
         ${_SRC_DIR}/base/Window.h
 
         ${_SRC_DIR}/cameras/BaseCamera.h
@@ -50,10 +52,6 @@ add_library(
         ${_SRC_DIR}/memory/MemoryArena.h
         ${_SRC_DIR}/memory/MemoryArena.cpp
         ${_SRC_DIR}/memory/MemoryUtils.h
-
-        ${_SRC_DIR}/platform/win32/Win32Input.cpp
-        ${_SRC_DIR}/platform/win32/Win32Window.h
-        ${_SRC_DIR}/platform/win32/Win32Window.cpp
 
         ${_SRC_DIR}/renderer/opengl/GLContext.cpp
         ${_SRC_DIR}/renderer/opengl/GLContext.h
@@ -99,22 +97,20 @@ add_library(
         ${_SRC_DIR}/Jpch.cpp
 )
 
-if (WIN32)
+if(WIN32)
     target_compile_definitions(${PROJECT_NAME} PUBLIC   
        # Prevents Windows.h from adding unnecessary includes    
        WIN32_LEAN_AND_MEAN  
        # Prevents Windows.h from defining min/max as macros 
        NOMINMAX 
-       # Jupiter specific defines
-       JUPITER_PLATFORM_WINDOWS
     )   
+endif()
 
-    # enable warnings
-    if(MSVC)
-        target_compile_options(${PROJECT_NAME} PRIVATE /W3)
-    else()
-        target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
-    endif()
+# enable warnings
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W3)
+else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
 endif()
 
 target_include_directories(
