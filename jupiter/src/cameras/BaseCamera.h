@@ -11,11 +11,10 @@ class Camera {
 public:
     // Common camera setters 
     void setPosition(const jm::Vec3f& pos) { getDerived().setPosition(pos); }
-
     void setProjectionMatrix(const jm::Matrix4x4& projMatrix) { projectionMat = projMatrix; }
     void setViewMatrix(const jm::Matrix4x4& viewMatrix) { viewMat = viewMatrix; }
 
-    // Update camera position in world space each frame
+    // Update the camera position and orientation each frame - used instead of camera controller
     void update(const float32 deltaTime) { getDerived().update(deltaTime); }
 
     // Common camera getters
