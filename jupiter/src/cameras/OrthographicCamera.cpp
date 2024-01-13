@@ -4,26 +4,28 @@
 // Own includes
 #include "cameras/OrthographicCamera.h"
 #include "base/Input.h"
+#include "events/MouseEvents.h"
+#include "events/WindowEvents.h"
 #include "events/EventDefines.h"
 #include "events/EventManager.h"
 
 namespace jupiter {
 
-OrthographicCamera::OrthographicCamera(const float32 left, const float32 right,
-                                       const float32 bottom, const float32 top, const float32 near,
-                                       const float32 far) {
-    projectionMat = jm::ortho(left, right, bottom, top, near, far);
-    const float32 viewportHeight = (top - bottom) == 0 ? 0.000001f : (top - bottom);
-    aspectRatio = (right - left) / viewportHeight;
+OrthographicCamera::OrthographicCamera(const float32 width, const float32 height,
+                                       const float32 near, const float32 far)
+    : aspectRatio(width / height) {
+    projectionMat = jm::ortho(-aspectRatio * zoom, aspectRatio * zoom, -zoom, zoom, near, far);
+    // Subscribe camera for events
     subscribe<MouseScrollEvent>(
         [this](const MouseScrollEvent& mouseScrollEvent) { onMouseScroll(mouseScrollEvent); });
+    subscribe<WindowResizeEvent>(
+        [this](const WindowResizeEvent& windowResizeEvent) { onWindowResize(windowResizeEvent); });
 }
 
 void OrthographicCamera::setViewport(const float32 left, const float32 right, const float32 bottom,
                                      const float32 top, const float32 near, const float32 far) {
     projectionMat = jm::ortho(left, right, bottom, top, near, far);
-    const float32 viewportHeight = (top - bottom) == 0 ? 0.000001f : (top - bottom);
-    aspectRatio = (right - left) / viewportHeight;
+    aspectRatio = (right - left) / (top - bottom);
 }
 
 void OrthographicCamera::setPosition(const jm::Vec3f& pos) {
@@ -69,7 +71,7 @@ void OrthographicCamera::update(const float32 deltaTime) {
     }
 
     if (cameraMoved) {
-        viewMat = jm::translate(jm::Matrix4x4(), -cameraPos);
+        viewMat = jm::translate(jm::Matrix4x4(), cameraPos);
     }
     setRotation(rotation);
 }
@@ -84,6 +86,13 @@ void OrthographicCamera::onMouseScroll(const MouseScrollEvent& mouseScrollEvent)
         zoom = 5.0f;
 
     if (prevFrameZoom != zoom) {
+        setViewport(-aspectRatio * zoom, aspectRatio * zoom, -zoom, zoom);
+    }
+}
+
+void OrthographicCamera::onWindowResize(const WindowResizeEvent& windowResizeEvent) {
+    if (windowResizeEvent.getHeight() != 0) {
+        aspectRatio = windowResizeEvent.getWidth() / (float32)windowResizeEvent.getHeight();
         setViewport(-aspectRatio * zoom, aspectRatio * zoom, -zoom, zoom);
     }
 }
