@@ -17,6 +17,10 @@ public:
         static void drawElements(const SharedPtr<VertexArray>& vertArray) {
             renderBackend->drawElements(vertArray);
         }
+
+        static void setViewport(const float32 width, const float32 height) {
+            renderBackend->setViewport(width, height);
+        }
     };
 
 public:

@@ -14,6 +14,8 @@ public:
 
     void clear() const override;
     void setClearColor(const jm::Vec4f& color) const override;
+    void setViewport(const float32 width, const float32 height) const override;
+
     void drawElements(const SharedPtr<VertexArray>& vertArray) const override;
 };
 

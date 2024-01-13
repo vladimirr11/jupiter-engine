@@ -24,6 +24,10 @@ void GLRenderer::setClearColor(const jm::Vec4f& color) const {
     glClearColor(color.x, color.y, color.z, color.w);
 }
 
+void GLRenderer::setViewport(const float32 width, const float32 height) const {
+    glViewport(0, 0, width, height);
+}
+
 void GLRenderer::drawElements(const SharedPtr<VertexArray>& vertArray) const {
     vertArray->bind();
     if (vertArray->isIndexBufferSet()) {
