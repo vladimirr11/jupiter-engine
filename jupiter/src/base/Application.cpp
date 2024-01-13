@@ -41,6 +41,7 @@ Application::Application() {
 
     // Window events handlers
     subscribe<WindowCloseEvent>([this](const WindowCloseEvent& event) { onWindowClose(event); });
+    subscribe<WindowResizeEvent>([this](const WindowResizeEvent& event) { onWindowResize(event); });
     subscribe<WindowResizeEvent>([this](const WindowResizeEvent& event) { onEvent(event); });
     // Keyboard events handlers
     subscribe<KeyPressEvent>([this](const KeyPressEvent& event) { onEvent(event); });
@@ -78,11 +79,14 @@ void Application::onWindowClose(const WindowCloseEvent& event) {
     JLOG_INFO(event.toString().c_str());
 }
 
+void Application::onWindowResize(const WindowResizeEvent& event) {
+    Renderer::Command::setViewport(event.getWidth(), event.getHeight());
+}
+
 void Application::onEvent(const Event& event) {
     JLOG_INFO(event.toString().c_str());
     if (Input::keyPressed(Keyboard::KEY_ESCAPE)) {
         running = false;
-        return;
     }
 }
 

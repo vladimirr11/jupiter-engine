@@ -58,7 +58,8 @@ private:
         vbo->unbind();
 
         // Create ortho camera with defined viewport and position
-        camera = newSharedPtr<OrthographicCamera>(-1.f, 1.f, -1.f, 1.f);
+        const Window& window = Application::getWindow();
+        camera = newSharedPtr<OrthographicCamera>(window.getWidth(), window.getHeight());
         camera->setPosition(jm::Vec3f(.0f, .0f, .0f));
     }
 
@@ -87,9 +88,9 @@ private:
 
     void uiLayerUpdate() override {
         // Set tringle color
-        //ImGui::Begin("Color Settings");
-        //ImGui::ColorEdit3("Triangle Color", &triangleColor[0]);
-        //ImGui::End();
+        // ImGui::Begin("Color Settings");
+        // ImGui::ColorEdit3("Triangle Color", &triangleColor[0]);
+        // ImGui::End();
 
         //// Send color to the device
         // shader->bind();

@@ -5,7 +5,9 @@
 
 namespace jupiter {
 
+// Forward declarations
 class WindowCloseEvent;
+class WindowResizeEvent;
 class UILayer;
 class Event;
 
@@ -31,6 +33,7 @@ protected:
 
 private:
     void onWindowClose(const WindowCloseEvent& event);
+    void onWindowResize(const WindowResizeEvent& event);
     void onEvent(const Event& event);
 
 private:

@@ -27,9 +27,6 @@ Window::~Window() { shutDown(); }
 void Window::update() {
     context->swapBuffers();
     glfwPollEvents();
-    int32 windowWidth, windowHeight;
-    glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
-    glViewport(0, 0, windowWidth, windowHeight);
 }
 
 void Window::init(const WindowConfig& config) {

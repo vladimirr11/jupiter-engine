@@ -15,6 +15,8 @@ public:
     uint32 getWidth() const { return newWidth; }
     uint32 getHeight() const { return newHeight; }
 
+    bool isMinimazied() const { return newWidth == newHeight == 0.f; }
+
     std::string toString() const override {
         return fmt::format("Window resized to [{}, {}]", newWidth, newHeight);
     }
