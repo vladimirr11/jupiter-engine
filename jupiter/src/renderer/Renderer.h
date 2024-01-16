@@ -2,7 +2,7 @@
 
 // Own includes
 #include "renderer/RendererBackend.h"
-#include "renderer/PrimitiveRenderer.h"
+#include "renderer/PrimitivesRenderer.h"
 #include "cameras/BaseCamera.h"
 
 namespace jupiter {
@@ -23,22 +23,22 @@ public:
         }
 
         static void set2DConfig(const Renderer2DConfigData& config) {
-            PrimitiveRenderer::attach2DConfigData(config);
+            PrimitivesRenderer::attach2DConfigData(config);
         }
 
-        static void drawQuad(const Quad& quadDescr) { PrimitiveRenderer::drawQuad(quadDescr); }
+        static void drawQuad(const Quad& quadDescr) { PrimitivesRenderer::drawQuad(quadDescr); }
     };
 
 public:
     // Public API of the 3D Randerer
     static void init() {
         renderBackend->init();
-        PrimitiveRenderer::init();
+        PrimitivesRenderer::init();
     }
 
     static void shutDown() {
         renderBackend->shutDown();
-        PrimitiveRenderer::shutDown();
+        //PrimitiveRenderer::shutDown();
     }
 
     template <typename CameraType>

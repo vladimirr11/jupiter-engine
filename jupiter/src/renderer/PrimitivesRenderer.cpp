@@ -3,17 +3,13 @@
 
 // Own includes
 #include "renderer/Renderer.h"
-#include "renderer/PrimitiveRenderer.h"
 #include "renderer/Texture.h"
 #include "renderer/IndexBuffer.h"
 #include "math/matrix/Transform.h"
 
-// Temp
-#include <iostream>
-
 namespace jupiter {
 
-void PrimitiveRenderer::init() {
+void PrimitivesRenderer::init() {
     // Default vertex data
     float32 vertices[] = {0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   // top right
                           0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,   // bottom right
@@ -57,9 +53,9 @@ void PrimitiveRenderer::init() {
     vbo->unbind();
 }
 
-void PrimitiveRenderer::shutDown() {}
+void PrimitivesRenderer::shutDown() {}
 
-void PrimitiveRenderer::drawQuad(const Quad& quadDescr) {
+void PrimitivesRenderer::drawQuad(const Quad& quadDescr) {
     // Set tranformation matrix and render that quad for each attached texture (if any)
     jm::Matrix4x4 pos = jm::translate(jm::Matrix4x4(), quadDescr.position);
     jm::Matrix4x4 scale = jm::scale(jm::Matrix4x4(), quadDescr.size);

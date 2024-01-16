@@ -19,7 +19,7 @@ struct Renderer2DConfigData {
     PrimitiveRenderConfig quadData;
 };
 
-class PrimitiveRenderer {
+class PrimitivesRenderer {
 public:
     static void init();  // Init default config
     static void shutDown();
