@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.12.1)
 
 project(jupiter LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(_EXTERNAL_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external) 
 set(_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src) 
 
@@ -29,7 +26,9 @@ add_library(
         ${_SRC_DIR}/base/Window.h
 
         ${_SRC_DIR}/cameras/BaseCamera.h
+        ${_SRC_DIR}/cameras/OrthographicCamera.cpp
         ${_SRC_DIR}/cameras/OrthographicCamera.h
+        ${_SRC_DIR}/cameras/PrespectiveCamera.cpp
         ${_SRC_DIR}/cameras/PrespectiveCamera.h
           
         ${_SRC_DIR}/events/Event.h
@@ -53,6 +52,7 @@ add_library(
         ${_SRC_DIR}/memory/MemoryArena.cpp
         ${_SRC_DIR}/memory/MemoryUtils.h
 
+        ${_SRC_DIR}/renderer/opengl/GLAssert.h
         ${_SRC_DIR}/renderer/opengl/GLContext.cpp
         ${_SRC_DIR}/renderer/opengl/GLContext.h
         ${_SRC_DIR}/renderer/opengl/GLIndexBuffer.cpp
@@ -71,6 +71,8 @@ add_library(
         ${_SRC_DIR}/renderer/GraphicsContext.h
         ${_SRC_DIR}/renderer/IndexBuffer.cpp
         ${_SRC_DIR}/renderer/IndexBuffer.h
+        ${_SRC_DIR}/renderer/PrimitivesRenderer.cpp
+        ${_SRC_DIR}/renderer/PrimitivesRenderer.h
         ${_SRC_DIR}/renderer/Renderer.h
         ${_SRC_DIR}/renderer/RendererBackend.cpp
         ${_SRC_DIR}/renderer/RendererBackend.h
@@ -87,6 +89,8 @@ add_library(
         ${_SRC_DIR}/resources/ShaderLoader.h
         ${_SRC_DIR}/resources/TextureLoader.cpp
         ${_SRC_DIR}/resources/TextureLoader.h
+
+        ${_SRC_DIR}/scene/primitives/2DPrimitives.h
 
         ${_SRC_DIR}/ui/imgui/ImGuiUILayer.h
         ${_SRC_DIR}/ui/imgui/ImGuiUILayer.cpp
@@ -108,9 +112,9 @@ endif()
 
 # enable warnings
 if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W3)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W3 /std:c++20)
 else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -std=c++20)
 endif()
 
 target_include_directories(
