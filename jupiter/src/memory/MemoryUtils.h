@@ -12,7 +12,7 @@ template <typename T>
 inline T* allocAligned(const uint64 numBytes, const uint64 alignment) {
 #if defined(JUPITER_PLATFORM_WINDOWS)
     return reinterpret_cast<T*>(_aligned_malloc(numBytes, alignment));
-#elif defined(JUPITER_PLATFORM_LINUX) 
+#elif defined(JUPITER_PLATFORM_LINUX)
     return reinterpret_cast<T*>(aligned_alloc(numBytes, alignment));
 #endif
 }
@@ -23,7 +23,7 @@ inline void freeAligned(T* ptr) {
     if (!ptr)
         return;
     _aligned_free((void*)ptr);
-#elif defined(JUPITER_PLATFORM_LINUX) 
+#elif defined(JUPITER_PLATFORM_LINUX)
     free(ptr);
 #endif
 }

@@ -15,4 +15,10 @@ SharedPtr<VertexBuffer> VertexBuffer::create(const void* data, const uint32 numB
 #endif  // GRAPHICS_API_OPENGL
 }
 
+SharedPtr<VertexBuffer> VertexBuffer::create(const int32 numBytes) {
+#ifdef GRAPHICS_API_OPENGL
+    return newSharedPtr<GLVertexBuffer>(numBytes);
+#endif  // GRAPHICS_API_OPENGL
+}
+
 }  // namespace jupiter

@@ -32,7 +32,7 @@ TexturePayload TextureLoader::loadFromFile(const FilesysPath& texturePath) {
     }
     texPayload.hasBuffer = true;
 
-    JLOG_INFO("Texture loaded from path {}", (const int8*)texturePath.c_str());
+    JLOG_INFO("Texture loaded from path {}", texturePath.string());
     return texPayload;
 }
 

@@ -3,10 +3,9 @@
 
 // Own includes
 #include "renderer/opengl/GLTexture.h"
-#include "base/Assert.h"
+#include "renderer/opengl/GLAssert.h"
 
 // Third-party includes
-#include <glad/glad.h>
 #include <stb_image.h>
 
 namespace jupiter {
@@ -16,8 +15,8 @@ GLTexture::GLTexture(const FilesysPath& path) {
     texPayload = TextureLoader::loadFromFile(path);
 
     // Prepare texture handle
-    glGenTextures(1, &textureId);
-    glBindTexture(GL_TEXTURE_2D, textureId);
+    GLCALL(glGenTextures(1, &textureId));
+    GLCALL(glBindTexture(GL_TEXTURE_2D, textureId));
 
     auto colorFormat2OpenGLColorFormat = [](const ColorFormat format) {
         GLenum internalFormat;
@@ -43,18 +42,18 @@ GLTexture::GLTexture(const FilesysPath& path) {
 
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
     // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-    glTexImage2D(GL_TEXTURE_2D, 0, baseInternalFormat, texPayload.width, texPayload.height, 0,
-                 dataFormat, GL_UNSIGNED_BYTE, texPayload.buffer);
+    GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, baseInternalFormat, texPayload.width, texPayload.height,
+                        0, dataFormat, GL_UNSIGNED_BYTE, texPayload.buffer));
 
-    glGenerateMipmap(GL_TEXTURE_2D);
+    GLCALL(glGenerateMipmap(GL_TEXTURE_2D));
 
     // Set texture mag/min filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+    GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
     // Set texture wrapping to GL_REPEAT (default)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+    GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
     // Free texture image
     stbi_image_free(texPayload.buffer);
@@ -64,9 +63,10 @@ GLTexture::GLTexture(const FilesysPath& path) {
 GLTexture::~GLTexture() { glDeleteTextures(1, &textureId); }
 
 void GLTexture::bind(const uint32 slot) const {
-    glActiveTexture(GL_TEXTURE0 + slot);
-    glBindTexture(GL_TEXTURE_2D, textureId);
-    // glBindTextureUnit(slot, textureId);
+    GLCALL(glActiveTexture(GL_TEXTURE0 + slot));
+    GLCALL(glBindTexture(GL_TEXTURE_2D, textureId));
 }
+
+void GLTexture::unbind() const { GLCALL(glBindTexture(GL_TEXTURE_2D, 0)); }
 
 }  // namespace jupiter

@@ -11,8 +11,7 @@ namespace jupiter {
 
 class GLShader : public Shader {
 public:
-    // Ctors
-    GLShader(const std::string& vsSource, const std::string& fsSource);
+    // Ctor
     GLShader(const FilesysPath& vsPath, const FilesysPath& fsPath);
 
     // Dtor

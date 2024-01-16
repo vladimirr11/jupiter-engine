@@ -12,6 +12,7 @@ public:
     ~GLTexture() override;
 
     void bind(const uint32 slot = 0) const override;
+    void unbind() const override;
 
     int32 getWidth() const override { return texPayload.width; }
     int32 getHeight() const override { return texPayload.height; }

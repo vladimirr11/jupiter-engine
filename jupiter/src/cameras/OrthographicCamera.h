@@ -31,9 +31,9 @@ private:
     void onWindowResize(const WindowResizeEvent& windowResizeEvent);
 
 private:
-    float32 aspectRatio;     ///< Camera's defalut viewport aspect ratio (16/9)
+    float32 aspectRatio;     ///< Camera's viewport aspect ratio
     float32 zoom = 1.f;      ///< Camera's zoom level
-    float32 rotation = 0.f;  ///< Keep rotation around z-axis in degrees
+    float32 rotation = 0.f;  ///< Keeps rotation around z-axis in degrees
 };
 
 }  // namespace jupiter

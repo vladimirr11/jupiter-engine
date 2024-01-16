@@ -3,33 +3,34 @@
 // C++ system includes
 #include <vector>
 #include <array>
+#include <initializer_list>
 
 // Own includes
 #include "base/Assert.h"
 
 namespace jupiter {
 
-enum ShaderDataType { None, Float, Float2, Float3, Float4, Int, Int2, Int3, Int4, Bool };
+enum VertexDataType { None, Float, Float2, Float3, Float4, Int, Int2, Int3, Int4, Bool };
 
 class VertexBufferLayoutData {
 public:
     VertexBufferLayoutData() = default;
 
-    VertexBufferLayoutData(const ShaderDataType type_, bool normalized_ = false)
+    VertexBufferLayoutData(const VertexDataType type_, bool normalized_ = false)
         : type(type_), normalized(normalized_) {
         // Look up tables used to extract the respective count and stride by given shader data type
-        static const std::array shaderDataTypeLookUpCounts{0u, 1u, 2u, 3u, 4u, 1u, 2u, 3u, 4u, 1u};
-        static const std::array shaderDataTypeLookUpStrides{0u, 4u, 8u,  12u, 16u,
+        static const std::array vertexDataTypeLookUpCounts{0u, 1u, 2u, 3u, 4u, 1u, 2u, 3u, 4u, 1u};
+        static const std::array vertexDataTypeLookUpStrides{0u, 4u, 8u,  12u, 16u,
                                                             4u, 8u, 12u, 16u, 1u};
-        count = shaderDataTypeLookUpCounts[type];
-        stride = shaderDataTypeLookUpStrides[type];
+        count = vertexDataTypeLookUpCounts[type];
+        stride = vertexDataTypeLookUpStrides[type];
     }
 
     inline uint32 getCount() const { return count; }
     inline uint32 getStride() const { return stride; }
 
-    inline ShaderDataType getType() const {
-        jAssertExpr(type != ShaderDataType::None);
+    inline VertexDataType getType() const {
+        jAssertExpr(type != VertexDataType::None);
         return type;
     }
 
@@ -39,7 +40,7 @@ public:
     inline void setOffset(const uint32 newOffset) { offset = newOffset; }
 
 private:
-    ShaderDataType type = ShaderDataType::None;
+    VertexDataType type = VertexDataType::None;
     bool normalized = false;
     uint32 count = 0;
     uint32 stride = 0;
@@ -49,6 +50,17 @@ private:
 class VertexBufferLayout {
 public:
     VertexBufferLayout() = default;
+
+    VertexBufferLayout(const std::initializer_list<VertexBufferLayoutData>& layoutData)
+        : layoutElements(layoutData) {
+        size_t offset = 0;
+        stride = 0;
+        for (auto& element : layoutElements) {
+            element.setOffset(offset);
+            offset += element.getCount();
+            stride += element.getStride();
+        }
+    }
 
     void update(VertexBufferLayoutData& layoutData) {
         if (!layoutElements.empty()) {
@@ -84,6 +96,7 @@ public:
     virtual uint32 getVerticesCount() const = 0;
 
     static SharedPtr<VertexBuffer> create(const void* data, const uint32 numBytes);
+    static SharedPtr<VertexBuffer> create(const int32 numBytes);
 };
 
 }  // namespace jupiter

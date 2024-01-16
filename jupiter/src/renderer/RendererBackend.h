@@ -18,7 +18,7 @@ public:
 
     virtual void clear() const = 0;
     virtual void setClearColor(const jm::Vec4f& color) const = 0;
-    virtual void setViewport(const float32 width, const float32 height) const = 0;
+    virtual void setViewport(const uint32 width, const uint32 height) const = 0;
 
     virtual void drawElements(const SharedPtr<VertexArray>& vertArray) const = 0;
 

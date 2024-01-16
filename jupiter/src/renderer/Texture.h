@@ -10,6 +10,7 @@ public:
     virtual ~Texture() = default;
 
     virtual void bind(const uint32 slot = 0) const = 0;
+    virtual void unbind() const = 0;
 
     virtual int32 getWidth() const = 0;
     virtual int32 getHeight() const = 0;

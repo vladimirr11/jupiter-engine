@@ -7,6 +7,7 @@ namespace jupiter {
 
 class GLVertexBuffer : public VertexBuffer {
 public:
+    GLVertexBuffer(const uint32 numBytes_);
     GLVertexBuffer(const void* data, const uint32 numBytes_);
 
     ~GLVertexBuffer() override;

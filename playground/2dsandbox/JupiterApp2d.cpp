@@ -14,50 +14,7 @@ public:
 
 private:
     void init() override {
-        // Vertex data
-        float32 vertices[] = {0.5f,  0.5f,  0.0f, 1.0f, 1.0f,   // top right
-                              0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,   // bottom right
-                              -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,   // bottom left
-                              -0.5f, 0.5f,  0.0f, 0.0f, 1.0f};  // top left
-
-        // Indices data
-        uint32 indices[] = {0, 1, 3, 1, 2, 3};
-
-        // Create shader program
-        const FilesysPath vsPath = "assets/shaders/DemoShader.vert";
-        const FilesysPath fsPath = "assets/shaders/DemoShader.frag";
-        shader = Shader::create(vsPath, fsPath);
-
-        // Create vbo, vao, and ebo
-        vbo = VertexBuffer::create(vertices, sizeof(vertices));
-        ebo = IndexBuffer::create(indices, std::size(indices));
-        vao = VertexArray::create();
-
-        // Create textures
-        texture1 = Texture2D::create("assets/textures/Checkerboard.png");
-        texture2 = Texture2D::create("assets/textures/Dices.png");
-
-        shader->bind();
-        shader->setUniformInt("uTextureSampler", 0);  // 0 indicates the texture slot
-        shader->unbind();
-
-        // Set vertex buffer layout
-        VertexBufferLayoutData posData(ShaderDataType::Float3);
-        VertexBufferLayoutData texData(ShaderDataType::Float2);
-        VertexBufferLayout bufferLayout;
-        bufferLayout.update(posData);
-        bufferLayout.update(texData);
-        vbo->setBufferLayout(bufferLayout);
-
-        // Add vbo and ebo to vao
-        vao->addVertexBuffer(vbo);
-        vao->setIndexBuffer(ebo);
-
-        // Unbind vba and vbo
-        vao->unbind();
-        vbo->unbind();
-
-        // Create ortho camera with defined viewport and position
+        // Create an ortho camera with defined viewport and position
         const Window& window = Application::getWindow();
         camera = newSharedPtr<OrthographicCamera>(window.getWidth(), window.getHeight());
         camera->setPosition(jm::Vec3f(.0f, .0f, .0f));
@@ -74,13 +31,9 @@ private:
         // Set scene camera
         Renderer::beginFrame(camera);
 
-        // Bind texture1 and render
-        texture1->bind();
-        Renderer::render(shader, vao, jm::Matrix4x4());
-
-        // Bind texture2 and render on top of texture1
-        texture2->bind();
-        Renderer::render(shader, vao, jm::Matrix4x4());
+        // Draw quad
+        Renderer::Command::drawQuad(
+            Quad({0.0f, 0.f, 0.f}, {0.8f, 0.8f, 0.f}, {0.8f, 0.2f, 0.3f, 1.f}));
 
         // Doesn't do anything for now
         Renderer::finishFrame();
@@ -101,15 +54,7 @@ private:
     void shutDown() override {}
 
 private:
-    SharedPtr<Shader> shader = nullptr;
-    SharedPtr<VertexBuffer> vbo = nullptr;
-    SharedPtr<IndexBuffer> ebo = nullptr;
-    SharedPtr<VertexArray> vao = nullptr;
-    SharedPtr<Texture2D> texture1 = nullptr;
-    SharedPtr<Texture2D> texture2 = nullptr;
     SharedPtr<OrthographicCamera> camera = nullptr;
-
-    jm::Vec3f triangleColor = jm::Vec3f(1.0f, 0.5f, 0.2f);
 };
 
 jupiter::Application* jupiter::createApplication() { return new DemoJupiterApp2d(); }
