@@ -38,7 +38,7 @@ public:
 
     static void shutDown() {
         renderBackend->shutDown();
-        //PrimitiveRenderer::shutDown();
+        // PrimitiveRenderer::shutDown();
     }
 
     template <typename CameraType>

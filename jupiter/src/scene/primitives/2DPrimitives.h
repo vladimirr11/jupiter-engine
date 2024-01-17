@@ -9,8 +9,8 @@ struct Quad {
     jm::Vec3f position;
     jm::Vec3f size;
     jm::Vec4f color;
-    // jm::Vec2f texCoords;
-    // uint32 id;
+    jm::Vec2f texCoords;
+    uint32 texScaler = 1u;
 };
 
 }  // namespace jupiter

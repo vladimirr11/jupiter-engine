@@ -54,10 +54,9 @@ public:
     VertexBufferLayout(const std::initializer_list<VertexBufferLayoutData>& layoutData)
         : layoutElements(layoutData) {
         size_t offset = 0;
-        stride = 0;
         for (auto& element : layoutElements) {
             element.setOffset(offset);
-            offset += element.getCount();
+            offset += element.getStride();
             stride += element.getStride();
         }
     }

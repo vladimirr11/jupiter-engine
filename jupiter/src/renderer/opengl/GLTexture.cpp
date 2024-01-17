@@ -40,8 +40,8 @@ GLTexture::GLTexture(const FilesysPath& path) {
 
     const auto [baseInternalFormat, dataFormat] = colorFormat2OpenGLColorFormat(texPayload.format);
 
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+    // GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0));
+    // GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0));
     GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, baseInternalFormat, texPayload.width, texPayload.height,
                         0, dataFormat, GL_UNSIGNED_BYTE, texPayload.buffer));
 
@@ -54,6 +54,9 @@ GLTexture::GLTexture(const FilesysPath& path) {
     // Set texture wrapping to GL_REPEAT (default)
     GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
     GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+
+    // Unbind texture
+    GLCALL(glBindTexture(GL_TEXTURE_2D, 0));
 
     // Free texture image
     stbi_image_free(texPayload.buffer);

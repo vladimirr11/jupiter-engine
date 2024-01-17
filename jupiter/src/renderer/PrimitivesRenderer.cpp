@@ -26,8 +26,8 @@ void PrimitivesRenderer::init() {
     SharedPtr<IndexBuffer> ebo = IndexBuffer::create(indices, (uint32)std::size(indices));
 
     // Create shader program
-    const FilesysPath vsPath = "../assets/shaders/DefaultTexture.vert";
-    const FilesysPath fsPath = "../assets/shaders/DefaultTexture.frag";
+    const FilesysPath vsPath = "../assets/shaders/DefaultTextureShader.vert";
+    const FilesysPath fsPath = "../assets/shaders/DefaultTextureShader.frag";
     r2dConfig.quadData.shader = Shader::create(vsPath, fsPath);
 
     // Create textures
@@ -60,7 +60,21 @@ void PrimitivesRenderer::drawQuad(const Quad& quadDescr) {
     jm::Matrix4x4 pos = jm::translate(jm::Matrix4x4(), quadDescr.position);
     jm::Matrix4x4 scale = jm::scale(jm::Matrix4x4(), quadDescr.size);
     jm::Matrix4x4 transform = pos * scale;
-    for (const auto& texture : r2dConfig.quadData.textures) {
+
+    r2dConfig.quadData.shader->bind();
+    r2dConfig.quadData.shader->setUniformInt("uTexScaler", quadDescr.texScaler);
+    if (isZeroVector(quadDescr.color)) {
+        r2dConfig.quadData.shader->setUniformVec4f("uColor", jm::Vec4f(1));
+    } else {
+        r2dConfig.quadData.shader->setUniformVec4f("uColor", quadDescr.color);
+    }
+
+    if (r2dConfig.quadData.textures.empty()) {  // Render without texture
+        Renderer::render(r2dConfig.quadData.shader, r2dConfig.quadData.vertexArray, transform);
+        return;
+    }
+
+    for (const auto& texture : r2dConfig.quadData.textures) {  // Render with texture
         texture->bind();
         Renderer::render(r2dConfig.quadData.shader, r2dConfig.quadData.vertexArray, transform);
     }

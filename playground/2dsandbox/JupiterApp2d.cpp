@@ -32,8 +32,7 @@ private:
         Renderer::beginFrame(camera);
 
         // Draw quad
-        Renderer::Command::drawQuad(
-            Quad({0.0f, 0.f, 0.f}, {0.8f, 0.8f, 0.f}, {0.8f, 0.2f, 0.3f, 1.f}));
+        Renderer::Command::drawQuad(Quad({0.0f, 0.f, 0.f}, {3.f, 3.0f, 0.f}, {}, {}, 1u));
 
         // Doesn't do anything for now
         Renderer::finishFrame();
