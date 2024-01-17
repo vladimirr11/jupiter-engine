@@ -112,6 +112,12 @@ inline Vector3<T> cross(const Vector3<T>& v1, const Vector3<T>& v2) {
 }
 
 template <typename T>
+inline bool isZeroVector(const Vector3<T>& vec3) {
+    const T zero = static_cast<T>(0);
+    return vec3.z == zero && vec3.y == zero && vec3.x == zero;
+}
+
+template <typename T>
 inline std::string toString(const Vector3<T>& vec3) {
     std::stringstream stream;
     stream << "[" << vec3.x << ", " << vec3.y << ", " << vec3.z << "]";

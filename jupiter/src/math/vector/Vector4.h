@@ -111,6 +111,12 @@ inline T dot4(const Vector4<T>& v1, const Vector4<T>& v2) {
 }
 
 template <typename T>
+inline bool isZeroVector(const Vector4<T>& vec4) {
+    const T zero = static_cast<T>(0);
+    return vec4.w == zero && vec4.z == zero && vec4.y == zero && vec4.x == zero;
+}
+
+template <typename T>
 inline std::string toString(const Vector4<T>& vec4) {
     std::stringstream stream;
     stream << "[" << vec4.x << ", " << vec4.y << ", " << vec4.z << ", " << vec4.w << "]";

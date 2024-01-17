@@ -101,6 +101,12 @@ inline T dot2(const Vector2<T>& v1, const Vector2<T>& v2) {
 }
 
 template <typename T>
+inline bool isZeroVector(const Vector2<T>& vec2) {
+    const T zero = static_cast<T>(0);
+    return vec2.y == zero && vec2.x == zero;
+}
+
+template <typename T>
 inline std::string toString(const Vector2<T>& vec2) {
     std::stringstream stream;
     stream << "[" << vec2.x << ", " << vec2.y << "]";
