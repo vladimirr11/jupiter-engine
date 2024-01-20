@@ -58,8 +58,12 @@ Application::Application() {
 Application::~Application() { Renderer::shutDown(); }
 
 void Application::run() {
+    //JPROFILE_FUNC("Application::run");
+
     DeltaTime::init();
     while (running) {
+        JPROFILE_MARK_FRAME
+
         // Dispatch event queue
         dispatchEvents();
 

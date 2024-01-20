@@ -4,3 +4,6 @@
 [submodule "jupiter/external/glfw"]
 	path = jupiter/external/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "jupiter/external/tracy"]
+	path = jupiter/external/tracy
+	url = https://github.com/wolfpld/tracy.git

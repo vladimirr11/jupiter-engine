@@ -1,6 +1,6 @@
 #pragma once
 
-// Pre-compiled headers
+// Pre-compiled header
 
 // C++ system includes
 #include <iostream>
@@ -17,3 +17,6 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+
+// Own includes
+#include "base/Profile.h"

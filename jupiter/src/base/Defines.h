@@ -10,6 +10,7 @@
 // Jupiter supports Windows and Linux platforms
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 #define JUPITER_PLATFORM_WINDOWS 1  // Windows
+#define WIN32_LEAN_AND_MEAN         // Prevents Windows.h from adding unnecessary includes
 #ifndef _WIN64
 #error "64-bit is required on Windows"
 #endif

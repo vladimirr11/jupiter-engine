@@ -9,6 +9,8 @@ set(_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+# enable/disable Tracy profiling
+set(TRACY_ENABLE ON)
 
 add_library(
     ${PROJECT_NAME} STATIC
@@ -21,6 +23,7 @@ add_library(
         ${_SRC_DIR}/base/Input.cpp
         ${_SRC_DIR}/base/Input.h
         ${_SRC_DIR}/base/Logger.h
+        ${_SRC_DIR}/base/Profile.h
         ${_SRC_DIR}/base/Timer.h
         ${_SRC_DIR}/base/Window.cpp
         ${_SRC_DIR}/base/Window.h
@@ -101,20 +104,10 @@ add_library(
         ${_SRC_DIR}/Jpch.cpp
 )
 
-if(WIN32)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC   
-       # Prevents Windows.h from adding unnecessary includes    
-       WIN32_LEAN_AND_MEAN  
-       # Prevents Windows.h from defining min/max as macros 
-       NOMINMAX 
-    )   
-endif()
-
-# enable warnings
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W3 /std:c++20)
 else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -std=c++20)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -std=c++20 -march=native)
 endif()
 
 target_include_directories(
@@ -126,7 +119,15 @@ target_include_directories(
             ${_EXTERNAL_LIBS_DIR}/glad/include
             ${_EXTERNAL_LIBS_DIR}/imgui
             ${_EXTERNAL_LIBS_DIR}/stb
+            ${_EXTERNAL_LIBS_DIR}/tracy
 )
+
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/fmt)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/glfw)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/glad)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/imgui)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/stb)
+add_subdirectory(${_EXTERNAL_LIBS_DIR}/tracy)
 
 target_link_libraries(
     ${PROJECT_NAME}
@@ -136,10 +137,5 @@ target_link_libraries(
             glad
             imgui
             stb
+            Tracy::TracyClient
 )
-
-add_subdirectory(${_EXTERNAL_LIBS_DIR}/fmt)
-add_subdirectory(${_EXTERNAL_LIBS_DIR}/glfw)
-add_subdirectory(${_EXTERNAL_LIBS_DIR}/glad)
-add_subdirectory(${_EXTERNAL_LIBS_DIR}/imgui)
-add_subdirectory(${_EXTERNAL_LIBS_DIR}/stb)
