@@ -10,7 +10,7 @@
 namespace jupiter {
 
 struct PrimitiveRenderConfig {
-    SharedPtr<Shader> shader;
+    SharedPtr<Shader> shader = nullptr;
     std::vector<SharedPtr<Texture>> textures;
     SharedPtr<VertexArray> vertexArray;
 };
@@ -26,7 +26,7 @@ public:
 
     static void attach2DConfigData(const Renderer2DConfigData& config) {}  // Change default config
     // Render methods
-    static void drawQuad(const Quad& quadDescr);
+    static void drawQuad(const QuadDescription& quadDescr);
 
 private:
     inline static Renderer2DConfigData r2dConfig;

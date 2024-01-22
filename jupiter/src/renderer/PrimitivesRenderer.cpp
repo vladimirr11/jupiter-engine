@@ -32,9 +32,9 @@ void PrimitivesRenderer::init() {
 
     // Create textures
     SharedPtr<Texture2D> texture1 = Texture2D::create("../assets/textures/Checkerboard.png");
-    SharedPtr<Texture2D> texture2 = Texture2D::create("../assets/textures/Dices.png");
     r2dConfig.quadData.textures.push_back(texture1);
-    r2dConfig.quadData.textures.push_back(texture2);
+    //SharedPtr<Texture2D> texture2 = Texture2D::create("../assets/textures/Dices.png");
+    //r2dConfig.quadData.textures.push_back(texture2);
 
     r2dConfig.quadData.shader->bind();
     r2dConfig.quadData.shader->setUniformInt("uTextureSampler", 0);  // 0 indicates the texture slot
@@ -55,25 +55,29 @@ void PrimitivesRenderer::init() {
 
 void PrimitivesRenderer::shutDown() {}
 
-void PrimitivesRenderer::drawQuad(const Quad& quadDescr) {
-    // Set tranformation matrix and render that quad for each attached texture (if any)
+void PrimitivesRenderer::drawQuad(const QuadDescription& quadDescr) {
+    jm::Matrix4x4 transform;
     jm::Matrix4x4 pos = jm::translate(jm::Matrix4x4(), quadDescr.position);
     jm::Matrix4x4 scale = jm::scale(jm::Matrix4x4(), quadDescr.size);
-    jm::Matrix4x4 transform = pos * scale;
+    if (quadDescr.rotation > 0.f) {
+        jm::Matrix4x4 rot = jm::rotate(jm::Matrix4x4(), jm::deg2Radians(quadDescr.rotation),
+                                       jm::Vec3f(0.f, 0.f, 1.f));
+        transform = pos * rot * scale;
+    } else {
+        transform = pos * scale;
+    }
 
     r2dConfig.quadData.shader->bind();
     r2dConfig.quadData.shader->setUniformInt("uTexScaler", quadDescr.texScaler);
-    if (isZeroVector(quadDescr.color)) {
-        r2dConfig.quadData.shader->setUniformVec4f("uColor", jm::Vec4f(1));
-    } else {
-        r2dConfig.quadData.shader->setUniformVec4f("uColor", quadDescr.color);
-    }
+    r2dConfig.quadData.shader->setUniformVec4f("uColor", quadDescr.color);
 
-    if (r2dConfig.quadData.textures.empty()) {  // Render without texture
+    if (!quadDescr.useTexture) {  // Render without texture
+        r2dConfig.quadData.shader->setUniformInt("uTexFlag", 0);
         Renderer::render(r2dConfig.quadData.shader, r2dConfig.quadData.vertexArray, transform);
         return;
     }
 
+    r2dConfig.quadData.shader->setUniformInt("uTexFlag", 1);
     for (const auto& texture : r2dConfig.quadData.textures) {  // Render with texture
         texture->bind();
         Renderer::render(r2dConfig.quadData.shader, r2dConfig.quadData.vertexArray, transform);

@@ -31,8 +31,15 @@ private:
         // Set scene camera
         Renderer::beginFrame(camera);
 
-        // Draw quad
-        Renderer::Command::drawQuad(Quad({0.0f, 0.f, 0.f}, {3.f, 3.0f, 0.f}, {}, {}, 1u));
+        // Draw quads
+        Renderer::Command::drawQuad(QuadDescription{
+            .position{0.0f, 0.f, 0.f}, .size{5.f, 5.0f, 0.f}, .useTexture{true}, .texScaler{3}});
+
+        Renderer::Command::drawQuad(QuadDescription{
+            .position{-1.0f, 0.f, 0.f}, .size{.5f, .5f, 0.f}, .color{0.5f, 0.6f, 0.8f, 1.f}});
+
+        Renderer::Command::drawQuad(QuadDescription{
+            .position{1.0f, 0.f, 0.f}, .size{.5f, .5f, 0.f}, .color{0.9f, 0.6f, 0.2f, 1.f}});
 
         // Doesn't do anything for now
         Renderer::finishFrame();

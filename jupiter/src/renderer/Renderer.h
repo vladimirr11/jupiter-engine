@@ -26,7 +26,7 @@ public:
             PrimitivesRenderer::attach2DConfigData(config);
         }
 
-        static void drawQuad(const Quad& quadDescr) { PrimitivesRenderer::drawQuad(quadDescr); }
+        static void drawQuad(const QuadDescription& quadDescr) { PrimitivesRenderer::drawQuad(quadDescr); }
     };
 
 public:
@@ -38,7 +38,7 @@ public:
 
     static void shutDown() {
         renderBackend->shutDown();
-        // PrimitiveRenderer::shutDown();
+        PrimitivesRenderer::shutDown();
     }
 
     template <typename CameraType>
