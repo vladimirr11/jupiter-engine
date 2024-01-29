@@ -26,14 +26,14 @@ void PrimitivesRenderer::init() {
     SharedPtr<IndexBuffer> ebo = IndexBuffer::create(indices, (uint32)std::size(indices));
 
     // Create shader program
-    const FilesysPath vsPath = "../assets/shaders/DefaultTextureShader.vert";
-    const FilesysPath fsPath = "../assets/shaders/DefaultTextureShader.frag";
+    const FilesysPath vsPath = "assets/shaders/DefaultTextureShader.vert";
+    const FilesysPath fsPath = "assets/shaders/DefaultTextureShader.frag";
     r2dConfig.quadData.shader = Shader::create(vsPath, fsPath);
 
     // Create textures
-    SharedPtr<Texture2D> texture1 = Texture2D::create("../assets/textures/Checkerboard.png");
+    SharedPtr<Texture2D> texture1 = Texture2D::create("assets/textures/Checkerboard.png");
     r2dConfig.quadData.textures.push_back(texture1);
-    //SharedPtr<Texture2D> texture2 = Texture2D::create("../assets/textures/Dices.png");
+    //SharedPtr<Texture2D> texture2 = Texture2D::create("assets/textures/Dices.png");
     //r2dConfig.quadData.textures.push_back(texture2);
 
     r2dConfig.quadData.shader->bind();
