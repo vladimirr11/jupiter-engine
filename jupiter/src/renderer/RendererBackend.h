@@ -20,7 +20,8 @@ public:
     virtual void setClearColor(const jm::Vec4f& color) const = 0;
     virtual void setViewport(const uint32 width, const uint32 height) const = 0;
 
-    virtual void drawElements(const SharedPtr<VertexArray>& vertArray) const = 0;
+    virtual void drawElements(const SharedPtr<VertexArray>& vertArray,
+                              const uint32 indices = 0) const = 0;
 
     static GraphicsAPI getGraphicsAPI() { return graphicsApi; }
 

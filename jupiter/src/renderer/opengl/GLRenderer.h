@@ -16,7 +16,8 @@ public:
     void setClearColor(const jm::Vec4f& color) const override;
     void setViewport(const uint32 width, const uint32 height) const override;
 
-    void drawElements(const SharedPtr<VertexArray>& vertArray) const override;
+    void drawElements(const SharedPtr<VertexArray>& vertArray,
+                      const uint32 indices = 0) const override;
 };
 
 }  // namespace jupiter

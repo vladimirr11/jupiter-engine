@@ -58,17 +58,33 @@ using FilesysPath = std::filesystem::path;
 template <typename T>
 using UniquePtr = std::unique_ptr<T>;
 
+template <typename T>
+using UniqueArrPtr = std::unique_ptr<T[]>;
+
 template <typename T, typename... Args>
 constexpr UniquePtr<T> newUniquePtr(Args&&... args) {
     return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
+template <typename T, typename... Args>
+constexpr UniqueArrPtr<T> newUniqueArrPtr(const uint64 size, Args&&... args) {
+    return std::make_unique<T[]>(size, std::forward<Args>(args)...);
+}
+
 template <typename T>
 using SharedPtr = std::shared_ptr<T>;
+
+template <typename T>
+using SharedArrPtr = std::shared_ptr<T[]>;
 
 template <typename T, typename... Args>
 constexpr SharedPtr<T> newSharedPtr(Args&&... args) {
     return std::make_shared<T>(std::forward<Args>(args)...);
+}
+
+template <typename T, typename... Args>
+constexpr SharedArrPtr<T> newSharedArrPtr(const uint64 size, Args&&... args) {
+    return std::make_shared<T[]>(size, std::forward<Args>(args)...);
 }
 
 }  // namespace jupiter

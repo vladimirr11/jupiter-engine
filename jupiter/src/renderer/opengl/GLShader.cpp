@@ -26,6 +26,12 @@ void GLShader::setUniformInt(std::string_view name, const int32 uniformId) const
     GLCALL(glUniform1i(loc, uniformId));
 }
 
+void GLShader::setUniformIntArray(std::string_view name, const int32* array,
+                                  const int32 size) const {
+    int32 loc = glGetUniformLocation(programId, name.data());
+    GLCALL(glUniform1iv(loc, size, array));
+}
+
 void GLShader::setUniformVec3f(std::string_view name, const jm::Vec3f& vec3) const {
     int32 loc = glGetUniformLocation(programId, name.data());
     GLCALL(glUniform3fv(loc, 1, &vec3[0]));

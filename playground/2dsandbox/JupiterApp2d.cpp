@@ -18,6 +18,9 @@ private:
         const Window& window = Application::getWindow();
         camera = newSharedPtr<OrthographicCamera>(window.getWidth(), window.getHeight());
         camera->setPosition(jm::Vec3f(.0f, .0f, .0f));
+
+        checkerBoardTex = Texture2D::create("2dsandbox/assets/textures/Checkerboard.png");
+        dicesTex = Texture2D::create("2dsandbox/assets/textures/Dices.png");
     }
 
     void update(const float32 deltaTime) override {
@@ -28,39 +31,35 @@ private:
         Renderer::Command::setClearColor(jm::Vec4f(0.45f, 0.55f, 0.60f, 1.00f));
         Renderer::Command::clear();
 
-        // Set scene camera
         Renderer::beginFrame(camera);
 
-        // Draw quads
-        Renderer::Command::drawQuad(QuadDescription{
-            .position{0.0f, 0.f, 0.f}, .size{5.f, 5.0f, 0.f}, .useTexture{true}, .texScaler{3}});
+        Renderer::Command::drawQuad(QuadDescription{.position{-0.5f, 0.5f, 0.f},
+                                                    .size{1.f, 1.f},
+                                                    .color{0.1f, 0.6f, 0.2f, 1.f},
+                                                    .texture{checkerBoardTex},
+                                                    .texScaler{4},
+                                                    .rotation{15.f}});
+
+        Renderer::Command::drawQuad(
+            QuadDescription{.position{0.5f, 0.5f, 0.f}, .size{1.f, 1.f}, .texture{dicesTex}});
 
         Renderer::Command::drawQuad(QuadDescription{
-            .position{-1.0f, 0.f, 0.f}, .size{.5f, .5f, 0.f}, .color{0.5f, 0.6f, 0.8f, 1.f}});
+            .position{-0.8f, 0.f, 0.f}, .size{.5f, .5f}, .color{0.7f, 0.6f, 0.8f, 1.f}});
 
         Renderer::Command::drawQuad(QuadDescription{
-            .position{1.0f, 0.f, 0.f}, .size{.5f, .5f, 0.f}, .color{0.9f, 0.6f, 0.2f, 1.f}});
+            .position{0.8f, 0.f, 0.f}, .size{.5f, .5f}, .color{0.9f, 0.6f, 0.2f, 1.f}});
 
-        // Doesn't do anything for now
         Renderer::finishFrame();
     }
 
-    void uiLayerUpdate() override {
-        // Set tringle color
-        // ImGui::Begin("Color Settings");
-        // ImGui::ColorEdit3("Triangle Color", &triangleColor[0]);
-        // ImGui::End();
-
-        //// Send color to the device
-        // shader->bind();
-        // shader->setUniformVec3f("myColor", triangleColor);
-        // shader->unbind();
-    }
+    void uiLayerUpdate() override {}
 
     void shutDown() override {}
 
 private:
     SharedPtr<OrthographicCamera> camera = nullptr;
+    SharedPtr<Texture2D> checkerBoardTex = nullptr;
+    SharedPtr<Texture2D> dicesTex = nullptr;
 };
 
 jupiter::Application* jupiter::createApplication() { return new DemoJupiterApp2d(); }

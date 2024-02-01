@@ -13,7 +13,6 @@ UniquePtr<RendererBackend> RendererBackend::create() {
 #ifdef GRAPHICS_API_OPENGL
     return newUniquePtr<GLRenderer>();
 #endif  // GRAPHICS_API_OPENGL
-    
 }
 
 }  // namespace jupiter

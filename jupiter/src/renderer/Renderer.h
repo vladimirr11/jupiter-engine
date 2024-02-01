@@ -2,7 +2,7 @@
 
 // Own includes
 #include "renderer/RendererBackend.h"
-#include "renderer/PrimitivesRenderer.h"
+#include "renderer/BatchRenderer.h"
 #include "cameras/BaseCamera.h"
 
 namespace jupiter {
@@ -18,34 +18,32 @@ public:
             renderBackend->setViewport(width, height);
         }
 
-        static void drawElements(const SharedPtr<VertexArray>& vertArray) {
-            renderBackend->drawElements(vertArray);
+        static void drawElements(const SharedPtr<VertexArray>& vertArray,
+                                 const uint32 indices = 0) {
+            renderBackend->drawElements(vertArray, indices);
         }
 
-        static void set2DConfig(const Renderer2DConfigData& config) {
-            PrimitivesRenderer::attach2DConfigData(config);
+        static void drawQuad(const QuadDescription& quadDescr) {
+            BatchRenderer::drawQuad(quadDescr);
         }
-
-        static void drawQuad(const QuadDescription& quadDescr) { PrimitivesRenderer::drawQuad(quadDescr); }
     };
 
 public:
     // Public API of the 3D Randerer
     static void init() {
         renderBackend->init();
-        PrimitivesRenderer::init();
+        BatchRenderer::init();
     }
 
-    static void shutDown() {
-        renderBackend->shutDown();
-        PrimitivesRenderer::shutDown();
-    }
+    static void shutDown() { renderBackend->shutDown(); }
 
     template <typename CameraType>
     static void beginFrame(SharedPtr<CameraType> camera) {
         sceneData.projViewMatrix = camera->getProjectionViewMatrix();
+        BatchRenderer::beginBatch();
     }
 
+    // Used for instance rendering
     static void render(const SharedPtr<Shader>& shader, const SharedPtr<VertexArray>& vertArray,
                        const jm::Matrix4x4& modelTransform = jm::Matrix4x4()) {
         shader->bind();
@@ -54,7 +52,15 @@ public:
         Renderer::Command::drawElements(vertArray);
     }
 
-    static void finishFrame() {}
+    // Used for batch rendering
+    static void render(const SharedPtr<Shader>& shader, const SharedPtr<VertexArray>& vertArray,
+                       const uint32 indices) {
+        shader->bind();
+        shader->setUniformMat4x4f("projViewMatrix", sceneData.projViewMatrix);
+        Renderer::Command::drawElements(vertArray, indices);
+    }
+
+    static void finishFrame() { BatchRenderer::flushBatch(); }
 
 private:
     struct SceneData {

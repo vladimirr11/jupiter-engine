@@ -11,8 +11,8 @@ GLVertexBuffer::GLVertexBuffer(const uint32 numBytes_) : numBytes(numBytes_) {
     // Prepare vbo handle
     GLCALL(glGenBuffers(1, &vboId));
     GLCALL(glBindBuffer(GL_ARRAY_BUFFER, vboId));
-    // Send vertex data to device memory
-    GLCALL(glBufferData(GL_ARRAY_BUFFER, numBytes, nullptr, GL_STATIC_DRAW));
+    // Send vertex data to device memory on every frame
+    GLCALL(glBufferData(GL_ARRAY_BUFFER, numBytes, nullptr, GL_DYNAMIC_DRAW));
 }
 
 GLVertexBuffer::GLVertexBuffer(const void* data, const uint32 numBytes_) : numBytes(numBytes_) {

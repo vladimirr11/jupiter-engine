@@ -26,8 +26,14 @@ void GLRenderer::setViewport(const uint32 width, const uint32 height) const {
     GLCALL(glViewport(0, 0, width, height));
 }
 
-void GLRenderer::drawElements(const SharedPtr<VertexArray>& vertArray) const {
+void GLRenderer::drawElements(const SharedPtr<VertexArray>& vertArray, const uint32 indices) const {
     vertArray->bind();
+    if (indices) { // Draw call if we use batch rendering
+        GLCALL(glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, nullptr));
+        return;
+    }
+
+    // If we use instance rendering
     if (vertArray->isIndexBufferSet()) {
         GLCALL(glDrawElements(GL_TRIANGLES, vertArray->getIndexBuffer()->getIndicesCount(),
                               GL_UNSIGNED_INT, nullptr));
