@@ -21,6 +21,7 @@ struct PrimitiveRenderData {
 };
 
 struct BatchRenderData {
+    // Quad data
     PrimitiveRenderData quad;
     SharedArrPtr<QuadVertex> quadVertexBatch;
     // Textures
@@ -29,6 +30,13 @@ struct BatchRenderData {
 };
 
 class BatchRenderer {
+private:
+    struct Statistics {
+        uint32 drawCalls = 0u;
+        uint32 drawQuads = 0u;
+        uint32 drawVertices = 0u;
+    };
+
 public:
     static void init();
 
@@ -37,8 +45,11 @@ public:
 
     static void drawQuad(const QuadDescription& quadDescr);
 
+    static Statistics getStat() { return stats; }
+
 private:
     inline static BatchRenderData renderData;
+    inline static Statistics stats;
 };
 
 }  // namespace jupiter

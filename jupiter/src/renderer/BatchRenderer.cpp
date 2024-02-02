@@ -64,14 +64,18 @@ void BatchRenderer::init() {
 void BatchRenderer::beginBatch() {
     renderData.quad.verticesCount = 0u;
     renderData.quad.indicesCount = 0u;
+    // Reset stats
+    stats.drawCalls = 0u;
+    stats.drawQuads = 0u;
+    stats.drawVertices = 0u;
 }
 
 void BatchRenderer::flushBatch() {
     if (renderData.quad.indicesCount) {
         // Send dynamic vertex data for rendering each frame
         auto bufferData = renderData.quadVertexBatch.get();
-        auto usedBytes = renderData.quad.verticesCount * sizeof(QuadVertex);
-        renderData.quad.vertexBuffer->setVertexData(bufferData, usedBytes);
+        auto bufferBytes = renderData.quad.verticesCount * sizeof(QuadVertex);
+        renderData.quad.vertexBuffer->setVertexData(bufferData, bufferBytes);
 
         // Bind occupied texture slots
         for (uint32 i = 0; i < (uint32)renderData.textures.size(); i++) {
@@ -80,10 +84,16 @@ void BatchRenderer::flushBatch() {
             }
         }
 
+        // Render
         Renderer::render(renderData.quad.shader, renderData.quad.vertexArray,
                          renderData.quad.indicesCount);
+
+        // Get stats
+        stats.drawCalls++;
     }
 
+    renderData.quad.verticesCount = 0u;
+    renderData.quad.indicesCount = 0u;
     renderData.usedSlots = 1;  // We have reserved place for the white texture at slot 0
 }
 
@@ -133,6 +143,10 @@ void BatchRenderer::drawQuad(const QuadDescription& quadDescr) {
         renderData.quad.verticesCount++;
     }
     renderData.quad.indicesCount += 6;
+
+    // Get stats 
+    stats.drawQuads++;
+    stats.drawVertices += numQuadVertices;
 }
 
 }  // namespace jupiter

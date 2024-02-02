@@ -71,4 +71,6 @@ T* MemoryArena::create(T* atAddress, Args&&... args) {
 // Global memory arena for all input events
 extern UniquePtr<MemoryArena> gMemoryArena;
 
+inline uint64 getMemoryArenaUsedMemory() { return gMemoryArena->getUsedMemory(); }
+
 }  // namespace jupiter

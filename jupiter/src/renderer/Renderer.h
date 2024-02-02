@@ -28,6 +28,13 @@ public:
         }
     };
 
+    // Render statistics
+    struct Statistics {
+        static uint32 getDrawCalls() { return BatchRenderer::getStat().drawCalls; }
+        static uint32 getDrawQuads() { return BatchRenderer::getStat().drawQuads; }
+        static uint32 getDrawVertices() { return BatchRenderer::getStat().drawVertices; }
+    };
+
 public:
     // Public API of the 3D Randerer
     static void init() {

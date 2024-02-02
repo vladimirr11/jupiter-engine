@@ -33,12 +33,23 @@ private:
 
         Renderer::beginFrame(camera);
 
+        // Draw quads
+        for (float32 y = -5.f; y < 5.f; y += 0.5f) {
+            for (float32 x = -5.f; x < 5.f; x += 0.5f) {
+                jm::Vec4f quadColor{(x + 0.5f) / 10.f, 0.2f, (y + 0.5f) / 10.f, 0.7f};
+                Renderer::Command::drawQuad(
+                    QuadDescription{.position{x, y, 0.f}, .size{0.45f, 0.45f}, .color{quadColor}});
+            }
+        }
+
+        static float32 quadRot = 0.f;
+        quadRot += deltaTime * 50.f;
         Renderer::Command::drawQuad(QuadDescription{.position{-0.5f, 0.5f, 0.f},
                                                     .size{1.f, 1.f},
                                                     .color{0.1f, 0.6f, 0.2f, 1.f},
                                                     .texture{checkerBoardTex},
                                                     .texScaler{4},
-                                                    .rotation{15.f}});
+                                                    .rotation{quadRot}});
 
         Renderer::Command::drawQuad(
             QuadDescription{.position{0.5f, 0.5f, 0.f}, .size{1.f, 1.f}, .texture{dicesTex}});
@@ -52,7 +63,24 @@ private:
         Renderer::finishFrame();
     }
 
-    void uiLayerUpdate() override {}
+    void uiLayerUpdate() override {
+        ImGuiIO* io = &ImGui::GetIO();
+        GraphicsContext* context = getAppGraphicsContext();
+        ImGui::Begin("Debug information");
+        ImGui::Text("Graphics API: OpenGL");
+        ImGui::Text("Graphics API vendor: %s", context->getVendor());
+        ImGui::Text("Graphics API vendor version: %s", context->getVendorVersion());
+        ImGui::Text("Graphics API renderer implementation: %s",
+                    context->getRendererImplementation());
+        ImGui::Text("Consumed events memory: %lld bytes", getMemoryArenaUsedMemory());
+        ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate,
+                    io->Framerate);
+        ImGui::Text("Batch Renderer stats: #draw calls %d", Renderer::Statistics::getDrawCalls());
+        ImGui::Text("Batch Renderer stats: #draw quads %d", Renderer::Statistics::getDrawQuads());
+        ImGui::Text("Batch Renderer stats: #draw verts %d",
+                    Renderer::Statistics::getDrawVertices());
+        ImGui::End();
+    }
 
     void shutDown() override {}
 

@@ -3,19 +3,14 @@
 
 // Onw includes
 #include "ui/imgui/ImGuiUILayer.h"
-#include "base/Application.h"
 #include "events/EventManager.h"
 #include "events/MouseEvents.h"
 
 // Third party includes
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-//#include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
-
-// Temp includes
-#include "math/vector/Vector.h"
 
 namespace jupiter {
 
@@ -60,23 +55,6 @@ void ImGuiUILayer::update(const UIRenderCallback& uiRenderCallback) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
-    // ImGui::ShowDemoWindow();
-
-    // Show simple debug information
-    {
-        GraphicsContext* context = getAppGraphicsContext();
-        ImGui::Begin("Debug information");
-        ImGui::Text("Graphics API: OpenGL");
-        ImGui::Text("Graphics API vendor: %s", context->getVendor());
-        ImGui::Text("Graphics API vendor version: %s", context->getVendorVersion());
-        ImGui::Text("Graphics API renderer implementation: %s",
-                    context->getRendererImplementation());
-        ImGui::Text("Used memory: %lld bytes", gMemoryArena->getUsedMemory());
-        ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate,
-                    io->Framerate);
-        ImGui::End();
-    }
 
     // Render client ui code here
     { uiRenderCallback(); }

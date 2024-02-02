@@ -29,8 +29,8 @@ void OrthographicCamera::setViewport(const float32 left, const float32 right, co
 }
 
 void OrthographicCamera::setPosition(const jm::Vec3f& pos) {
-    cameraPos = -pos;
-    viewMat = jm::translate(jm::Matrix4x4(), -pos);
+    cameraPos = pos;
+    viewMat = jm::translate(jm::Matrix4x4(), pos);
 }
 
 void OrthographicCamera::setRotation(const float32 zRotation, const jm::Vec3f& axis) {
@@ -45,19 +45,19 @@ void OrthographicCamera::update(const float32 deltaTime) {
 
     // Move camera left and right
     if (Input::keyPressed(Keyboard::KEY_A)) {
-        cameraPos.x -= velocity;
+        cameraPos.x += velocity;
         cameraMoved = true;
     } else if (Input::keyPressed(Keyboard::KEY_D)) {
-        cameraPos.x += velocity;
+        cameraPos.x -= velocity;
         cameraMoved = true;
     }
 
     // Move camera up and down
     if (Input::keyPressed(Keyboard::KEY_W)) {
-        cameraPos.y += velocity;
+        cameraPos.y -= velocity;
         cameraMoved = true;
     } else if (Input::keyPressed(Keyboard::KEY_S)) {
-        cameraPos.y -= velocity;
+        cameraPos.y += velocity;
         cameraMoved = true;
     }
 
