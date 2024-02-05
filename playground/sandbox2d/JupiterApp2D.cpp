@@ -19,8 +19,8 @@ private:
         camera = newSharedPtr<OrthographicCamera>(window.getWidth(), window.getHeight());
         camera->setPosition(jm::Vec3f(.0f, .0f, .0f));
 
-        checkerBoardTex = Texture2D::create("sandbox2d/assets/textures/Checkerboard.png");
-        dicesTex = Texture2D::create("sandbox2d/assets/textures/Dices.png");
+        checkerBoardTex = Texture2D::create("playground/sandbox2d/assets/textures/Checkerboard.png");
+        dicesTex = Texture2D::create("playground/sandbox2d/assets/textures/Dices.png");
     }
 
     void update(const float32 deltaTime) override {

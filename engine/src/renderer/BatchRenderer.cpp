@@ -14,8 +14,8 @@ constexpr uint32 kMaxTextureSlots = 32;
 
 void BatchRenderer::init() {
     // Create default quad shader program
-    const FilesysPath vsPath = "../engine/assets/shaders/BatchRenderShader.vert";
-    const FilesysPath fsPath = "../engine/assets/shaders/BatchRenderShader.frag";
+    const FilesysPath vsPath = "engine/assets/shaders/BatchRenderShader.vert";
+    const FilesysPath fsPath = "engine/assets/shaders/BatchRenderShader.frag";
     renderData.quad.shader = Shader::create(vsPath, fsPath);
 
     // Create quad vertex and index batch
