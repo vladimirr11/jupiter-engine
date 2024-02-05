@@ -34,7 +34,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${_JUPITER_APP2D_DIR}
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/sandbox2d
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/playground/sandbox2d
 )
 
 add_subdirectory(${_JUPITER_ENGINE_DIR})
