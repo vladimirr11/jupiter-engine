@@ -2,13 +2,13 @@ cmake_minimum_required(VERSION 3.12.1)
 
 project(JupiterApp LANGUAGES CXX)
 
-set(_JUPITER_ENGINE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/jupiter) 
-set(_JUPITER_APP2D_DIR ${CMAKE_CURRENT_SOURCE_DIR}/playground/2dsandbox) 
+set(_JUPITER_ENGINE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/engine) 
+set(_JUPITER_APP2D_DIR ${CMAKE_CURRENT_SOURCE_DIR}/playground/sandbox2d) 
 set(_BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build) 
 
 add_executable(
     ${PROJECT_NAME} 
-        ${_JUPITER_APP2D_DIR}/JupiterApp2d.cpp
+        ${_JUPITER_APP2D_DIR}/JupiterApp2D.cpp
 )
 
 if(MSVC)
@@ -29,8 +29,12 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
     
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_SOURCE_DIR}/assets
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
+    ${_JUPITER_ENGINE_DIR}/assets
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/engine/assets
+
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${_JUPITER_APP2D_DIR}
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/sandbox2d
 )
 
 add_subdirectory(${_JUPITER_ENGINE_DIR})

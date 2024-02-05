@@ -24,6 +24,7 @@ add_library(
         ${_SRC_DIR}/base/Input.h
         ${_SRC_DIR}/base/Logger.h
         ${_SRC_DIR}/base/Profile.h
+        ${_SRC_DIR}/base/Random.h
         ${_SRC_DIR}/base/Timer.h
         ${_SRC_DIR}/base/Window.cpp
         ${_SRC_DIR}/base/Window.h
@@ -74,8 +75,8 @@ add_library(
         ${_SRC_DIR}/renderer/GraphicsContext.h
         ${_SRC_DIR}/renderer/IndexBuffer.cpp
         ${_SRC_DIR}/renderer/IndexBuffer.h
-        ${_SRC_DIR}/renderer/PrimitivesRenderer.cpp
-        ${_SRC_DIR}/renderer/PrimitivesRenderer.h
+        ${_SRC_DIR}/renderer/BatchRenderer.cpp
+        ${_SRC_DIR}/renderer/BatchRenderer.h
         ${_SRC_DIR}/renderer/Renderer.h
         ${_SRC_DIR}/renderer/RendererBackend.cpp
         ${_SRC_DIR}/renderer/RendererBackend.h
@@ -107,7 +108,7 @@ add_library(
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /W3 /std:c++20)
 else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -std=c++20 -march=native)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -std=c++2a -march=native)
 endif()
 
 target_include_directories(
