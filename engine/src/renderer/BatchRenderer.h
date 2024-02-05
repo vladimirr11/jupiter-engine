@@ -32,9 +32,9 @@ struct BatchRenderData {
 class BatchRenderer {
 private:
     struct Statistics {
-        uint32 drawCalls = 0u;
-        uint32 drawQuads = 0u;
-        uint32 drawVertices = 0u;
+        uint32 drawCalls;
+        uint32 drawQuads;
+        uint32 drawVertices;
     };
 
 public:
@@ -49,7 +49,7 @@ public:
 
 private:
     inline static BatchRenderData renderData;
-    inline static Statistics stats;
+    inline static Statistics stats = Statistics{};
 };
 
 }  // namespace jupiter

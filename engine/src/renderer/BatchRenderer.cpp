@@ -7,10 +7,10 @@
 
 namespace jupiter {
 
-constexpr uint64 kMaxQuads = 10'000;
-constexpr uint64 kMaxQuadVertices = kMaxQuads * 4;
-constexpr uint64 kMaxQuadIndices = kMaxQuads * 6;
-constexpr uint64 kMaxTextureSlots = 32;
+constexpr uint32 kMaxQuads = 10'000;
+constexpr uint32 kMaxQuadVertices = kMaxQuads * 4;
+constexpr uint32 kMaxQuadIndices = kMaxQuads * 6;
+constexpr uint32 kMaxTextureSlots = 32;
 
 void BatchRenderer::init() {
     // Create default quad shader program
@@ -54,7 +54,7 @@ void BatchRenderer::init() {
 
     // Upload texture samplers array to the GPU
     int32 samplers[kMaxTextureSlots];
-    for (int32 i = 0; i < kMaxTextureSlots; i++) {
+    for (int32 i = 0; i < (int32)kMaxTextureSlots; i++) {
         samplers[i] = i;
     }
     renderData.quad.shader->bind();
@@ -74,7 +74,7 @@ void BatchRenderer::flushBatch() {
     if (renderData.quad.indicesCount) {
         // Send dynamic vertex data for rendering each frame
         auto bufferData = renderData.quadVertexBatch.get();
-        auto bufferBytes = renderData.quad.verticesCount * sizeof(QuadVertex);
+        const uint32 bufferBytes = renderData.quad.verticesCount * sizeof(QuadVertex);
         renderData.quad.vertexBuffer->setVertexData(bufferData, bufferBytes);
 
         // Bind occupied texture slots
@@ -106,7 +106,7 @@ void BatchRenderer::drawQuad(const QuadDescription& quadDescr) {
     static const jm::Vec2f unitQuadTexCoords[] = {
         {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
 
-    if (renderData.usedSlots >= kMaxTextureSlots ||
+    if (renderData.usedSlots >= (int32)kMaxTextureSlots ||
         renderData.quad.verticesCount >= kMaxQuadVertices) {
         flushBatch();
     }
@@ -144,7 +144,7 @@ void BatchRenderer::drawQuad(const QuadDescription& quadDescr) {
     }
     renderData.quad.indicesCount += 6;
 
-    // Get stats 
+    // Get stats
     stats.drawQuads++;
     stats.drawVertices += numQuadVertices;
 }

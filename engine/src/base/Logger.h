@@ -23,23 +23,29 @@ public:
 template <typename... Args>
 void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
     std::time_t t = std::time(nullptr);
-    std::string formatedLog = fmt::format("[{:%F %T UTC%z}] Jupiter Log: ", fmt::localtime(t));
+    std::string formatedLog =
+        fmt::format(fmt::runtime("[{:%F %T UTC%z}] Jupiter Log: "), fmt::localtime(t));
     formatedLog += fmt::vformat(msg, fmt::make_format_args(args...));
     switch (level) {
     case TRACE:
-        formatedLog = fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(WHITE)), formatedLog);
+        formatedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(WHITE)), fmt::runtime(formatedLog));
         break;
     case INFO:
-        formatedLog = fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(GREEN)), formatedLog);
+        formatedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(GREEN)), fmt::runtime(formatedLog));
         break;
     case WARN:
-        formatedLog = fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(YELLOW)), formatedLog);
+        formatedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(YELLOW)), fmt::runtime(formatedLog));
         break;
     case ERROR:
-        formatedLog = fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(RED)), formatedLog);
+        formatedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(RED)), fmt::runtime(formatedLog));
         break;
     case CRITICAL:
-        formatedLog = fmt::format(fmt::emphasis::bold | fmt::bg(fmt::rgb(RED)), formatedLog);
+        formatedLog =
+            fmt::format(fmt::emphasis::bold | fmt::bg(fmt::rgb(RED)), fmt::runtime(formatedLog));
         break;
     }
 
@@ -52,13 +58,9 @@ void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
 #define VA_ARGS(...) , ##__VA_ARGS__
 
 // Logging macros
-#define JLOG_TRACE(msg, ...) \
-    jupiter::Logger::logTrace(jupiter::LogLevel::TRACE, msg, ##__VA_ARGS__)
-#define JLOG_INFO(msg, ...) \
-    jupiter::Logger::logTrace(jupiter::LogLevel::INFO, msg, ##__VA_ARGS__)
-#define JLOG_WARN(msg, ...) \
-    jupiter::Logger::logTrace(jupiter::LogLevel::WARN, msg, ##__VA_ARGS__)
-#define JLOG_ERROR(msg, ...) \
-    jupiter::Logger::logTrace(jupiter::LogLevel::ERROR, msg, ##__VA_ARGS__)
+#define JLOG_TRACE(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::TRACE, msg, ##__VA_ARGS__)
+#define JLOG_INFO(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::INFO, msg, ##__VA_ARGS__)
+#define JLOG_WARN(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::WARN, msg, ##__VA_ARGS__)
+#define JLOG_ERROR(msg, ...) jupiter::Logger::logTrace(jupiter::LogLevel::ERROR, msg, ##__VA_ARGS__)
 #define JLOG_CRITICAL(msg, ...) \
     jupiter::Logger::logTrace(jupiter::LogLevel::CRITICAL, msg, ##__VA_ARGS__)

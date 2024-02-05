@@ -49,7 +49,7 @@ public:
 
     template <typename T>
     static T getFrameRate() {
-        T currFrameRate = Timer::toSec<T>(timer.getElapsedNanoSec());
+        T currFrameRate = Timer::toSec<T>((T)timer.getElapsedNanoSec());
         T deltaTime = currFrameRate - lastFrameRate<T>;
         lastFrameRate<T> = currFrameRate;
         return deltaTime;

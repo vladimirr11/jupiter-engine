@@ -84,7 +84,7 @@ constexpr SharedPtr<T> newSharedPtr(Args&&... args) {
 
 template <typename T, typename... Args>
 constexpr SharedArrPtr<T> newSharedArrPtr(const uint64 size, Args&&... args) {
-    return std::make_shared<T[]>(size, std::forward<Args>(args)...);
+    return SharedArrPtr<T>(new T[size]{std::forward<Args>(args)...});
 }
 
 }  // namespace jupiter
