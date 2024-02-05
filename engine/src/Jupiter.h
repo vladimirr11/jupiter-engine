@@ -6,6 +6,7 @@
 #include "base/Defines.h"
 #include "base/Input.h"
 #include "base/Logger.h"
+#include "base/Random.h"
 #include "base/Timer.h"
 
 // Cameras

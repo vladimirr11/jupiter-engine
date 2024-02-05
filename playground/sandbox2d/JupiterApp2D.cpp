@@ -6,11 +6,11 @@
 
 using namespace jupiter;
 
-class DemoJupiterApp2d : public jupiter::Application {
+class SandboxApp2D : public jupiter::Application {
 public:
-    DemoJupiterApp2d() { init(); }
+    SandboxApp2D() { init(); }
 
-    ~DemoJupiterApp2d() override { shutDown(); }
+    ~SandboxApp2D() override { shutDown(); }
 
 private:
     void init() override {
@@ -19,8 +19,8 @@ private:
         camera = newSharedPtr<OrthographicCamera>(window.getWidth(), window.getHeight());
         camera->setPosition(jm::Vec3f(.0f, .0f, .0f));
 
-        checkerBoardTex = Texture2D::create("2dsandbox/assets/textures/Checkerboard.png");
-        dicesTex = Texture2D::create("2dsandbox/assets/textures/Dices.png");
+        checkerBoardTex = Texture2D::create("sandbox2d/assets/textures/Checkerboard.png");
+        dicesTex = Texture2D::create("sandbox2d/assets/textures/Dices.png");
     }
 
     void update(const float32 deltaTime) override {
@@ -90,4 +90,4 @@ private:
     SharedPtr<Texture2D> dicesTex = nullptr;
 };
 
-jupiter::Application* jupiter::createApplication() { return new DemoJupiterApp2d(); }
+jupiter::Application* jupiter::createApplication() { return new SandboxApp2D(); }

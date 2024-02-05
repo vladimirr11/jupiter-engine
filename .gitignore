@@ -39,8 +39,8 @@ build/
 # Files
 *.vcxproj*
 *.sln
-jupiter/.clang-format
+engine/.clang-format
 playground/.clang-format
 playground/imgui.ini
-playground/2dsandbox/imgui.ini
-playground/3dsandbox/imgui.ini
+playground/sandbox2d/imgui.ini
+playground/sandbox3d/imgui.ini
