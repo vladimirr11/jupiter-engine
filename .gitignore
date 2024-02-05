@@ -39,6 +39,7 @@ build/
 # Files
 *.vcxproj*
 *.sln
+imgui.ini
 engine/.clang-format
 playground/.clang-format
 playground/imgui.ini
