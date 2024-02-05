@@ -3,8 +3,6 @@ This repo is in its very beginning and at this time it represents a simple 2D/3D
 ### Build 
 ... with CMake. 
 ```bash
-mkdir build
-cd build
-cmake ..
-cmake --build .
+mkdir build && cd build
+cmake .. && cmake --build .
 ```
