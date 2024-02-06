@@ -10,9 +10,11 @@ namespace jupiter {
 GLRenderer::~GLRenderer() {}
 
 void GLRenderer::init() const {
-    // Enable alpha transparency on renderer init
+    // Enable alpha transparency and depth buffer test on renderer init
     GLCALL(glEnable(GL_BLEND));
     GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+    GLCALL(glEnable(GL_DEPTH_TEST));
+    GLCALL(glDepthFunc(GL_LESS));
 }
 
 void GLRenderer::shutDown() const {}
@@ -28,7 +30,7 @@ void GLRenderer::setViewport(const uint32 width, const uint32 height) const {
 
 void GLRenderer::drawElements(const SharedPtr<VertexArray>& vertArray, const uint32 indices) const {
     vertArray->bind();
-    if (indices) { // Draw call if we use batch rendering
+    if (indices) {  // Draw call if we use batch rendering
         GLCALL(glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, nullptr));
         return;
     }

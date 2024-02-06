@@ -10,7 +10,7 @@ namespace jupiter {
 constexpr uint32 kMaxQuads = 10'000;
 constexpr uint32 kMaxQuadVertices = kMaxQuads * 4;
 constexpr uint32 kMaxQuadIndices = kMaxQuads * 6;
-constexpr uint32 kMaxTextureSlots = 32;
+constexpr uint32 kMaxTextureSlots = 16;
 
 void BatchRenderer::init() {
     // Create default quad shader program
