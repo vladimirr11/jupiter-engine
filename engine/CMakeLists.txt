@@ -59,6 +59,8 @@ add_library(
         ${_SRC_DIR}/renderer/opengl/GLAssert.h
         ${_SRC_DIR}/renderer/opengl/GLContext.cpp
         ${_SRC_DIR}/renderer/opengl/GLContext.h
+        ${_SRC_DIR}/renderer/opengl/GLFramebuffer.cpp
+        ${_SRC_DIR}/renderer/opengl/GLFramebuffer.h
         ${_SRC_DIR}/renderer/opengl/GLIndexBuffer.cpp
         ${_SRC_DIR}/renderer/opengl/GLIndexBuffer.h
         ${_SRC_DIR}/renderer/opengl/GLRenderer.cpp
@@ -72,11 +74,13 @@ add_library(
         ${_SRC_DIR}/renderer/opengl/GLVertexBuffer.cpp
         ${_SRC_DIR}/renderer/opengl/GLVertexBuffer.h
 
+        ${_SRC_DIR}/renderer/BatchRenderer.cpp
+        ${_SRC_DIR}/renderer/BatchRenderer.h
+        ${_SRC_DIR}/renderer/Framebuffer.cpp
+        ${_SRC_DIR}/renderer/Framebuffer.h
         ${_SRC_DIR}/renderer/GraphicsContext.h
         ${_SRC_DIR}/renderer/IndexBuffer.cpp
         ${_SRC_DIR}/renderer/IndexBuffer.h
-        ${_SRC_DIR}/renderer/BatchRenderer.cpp
-        ${_SRC_DIR}/renderer/BatchRenderer.h
         ${_SRC_DIR}/renderer/Renderer.h
         ${_SRC_DIR}/renderer/RendererBackend.cpp
         ${_SRC_DIR}/renderer/RendererBackend.h
