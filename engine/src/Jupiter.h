@@ -24,6 +24,7 @@
 #include "math/vector/Vector.h"
 
 // Renderer
+#include "renderer/Framebuffer.h"
 #include "renderer/IndexBuffer.h"
 #include "renderer/Renderer.h"
 #include "renderer/Shader.h"

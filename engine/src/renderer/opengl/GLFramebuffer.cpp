@@ -11,9 +11,16 @@
 
 namespace jupiter {
 
-GLFramebuffer::GLFramebuffer(const FramebufferConfig& config) { recreate(); }
+GLFramebuffer::GLFramebuffer(const FramebufferConfig& config) {
+    fbConfig = config;
+    recreate();
+}
 
-GLFramebuffer::~GLFramebuffer() {}
+GLFramebuffer::~GLFramebuffer() {
+    glDeleteFramebuffers(1, &fbId);
+    glDeleteTextures(1, &colorAttachment);
+    glDeleteTextures(1, &depthAttachment);
+}
 
 void GLFramebuffer::recreate() {
     GLCALL(glGenFramebuffers(1, &fbId));
@@ -43,6 +50,19 @@ void GLFramebuffer::recreate() {
 
     // Unbind framebuffer
     GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+}
+
+void GLFramebuffer::bind() const {
+    GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, fbId));
+    GLCALL(glViewport(0, 0, fbConfig.width, fbConfig.height));
+}
+
+void GLFramebuffer::unbind() const { GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0)); }
+
+void GLFramebuffer::resize(const uint32 width, const uint32 height) {
+    fbConfig.width = width;
+    fbConfig.height = height;
+    recreate();
 }
 
 }  // namespace jupiter

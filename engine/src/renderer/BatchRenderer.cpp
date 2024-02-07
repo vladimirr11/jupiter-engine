@@ -10,7 +10,7 @@ namespace jupiter {
 constexpr uint32 kMaxQuads = 10'000;
 constexpr uint32 kMaxQuadVertices = kMaxQuads * 4;
 constexpr uint32 kMaxQuadIndices = kMaxQuads * 6;
-constexpr uint32 kMaxTextureSlots = 16;
+constexpr uint32 kMaxTextureSlots = 32;
 
 void BatchRenderer::init() {
     // Create default quad shader program
@@ -24,7 +24,7 @@ void BatchRenderer::init() {
 
     // Populate the index batch
     uint32 offset = 0;
-    for (uint64 i = 0; i < kMaxQuadIndices; i += 6) {
+    for (uint32 i = 0; i < kMaxQuadIndices; i += 6) {
         quadIndexBatch[i + 0] = offset + 0;
         quadIndexBatch[i + 1] = offset + 1;
         quadIndexBatch[i + 2] = offset + 2;
@@ -74,8 +74,8 @@ void BatchRenderer::flushBatch() {
     if (renderData.quad.indicesCount) {
         // Send dynamic vertex data for rendering each frame
         auto bufferData = renderData.quadVertexBatch.get();
-        const uint32 bufferBytes = renderData.quad.verticesCount * sizeof(QuadVertex);
-        renderData.quad.vertexBuffer->setVertexData(bufferData, bufferBytes);
+        auto bufferBytes = renderData.quad.verticesCount * sizeof(QuadVertex);
+        renderData.quad.vertexBuffer->setVertexData(bufferData, (uint32)bufferBytes);
 
         // Bind occupied texture slots
         for (uint32 i = 0; i < (uint32)renderData.textures.size(); i++) {

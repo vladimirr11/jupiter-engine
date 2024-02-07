@@ -11,6 +11,12 @@ public:
 
     ~GLFramebuffer();
 
+    void bind() const override;
+    void unbind() const override;
+
+    void resize(const uint32 width, const uint32 height) override;
+    uint32 getColorAttachmentId() const override { return colorAttachment; }
+
     const FramebufferConfig& getConfig() const override { return fbConfig; }
 
 private:

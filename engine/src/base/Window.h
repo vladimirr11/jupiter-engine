@@ -17,8 +17,8 @@ struct WindowConfig {
     std::string title;
     uint32 width, height;
 
-    WindowConfig(const std::string& title_ = "Jupiter Engine", const uint32 width_ = 900,
-                 const uint32 height_ = 700)
+    WindowConfig(const std::string& title_ = "Jupiter Engine", const uint32 width_ = 1200,
+                 const uint32 height_ = 800)
         : title(title_), width(width_), height(height_) {}
 };
 

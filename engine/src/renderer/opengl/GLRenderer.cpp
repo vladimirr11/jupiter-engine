@@ -13,8 +13,8 @@ void GLRenderer::init() const {
     // Enable alpha transparency and depth buffer test on renderer init
     GLCALL(glEnable(GL_BLEND));
     GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-    GLCALL(glEnable(GL_DEPTH_TEST));
-    GLCALL(glDepthFunc(GL_LESS));
+    // GLCALL(glEnable(GL_DEPTH_TEST));
+    // GLCALL(glDepthFunc(GL_LESS));
 }
 
 void GLRenderer::shutDown() const {}
