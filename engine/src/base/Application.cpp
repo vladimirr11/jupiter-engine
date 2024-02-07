@@ -74,6 +74,8 @@ void Application::run() {
     }
 }
 
+void Application::close() { running = false; }
+
 void Application::onWindowClose(const WindowCloseEvent& event) {
     running = false;
     JLOG_INFO(event.toString().c_str());

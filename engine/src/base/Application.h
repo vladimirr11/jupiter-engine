@@ -23,6 +23,7 @@ public:
     const Window& getWindow() const { return *window.get(); }
 
     void run();
+    void close();
 
 protected:
     // Protected virtual methods to be overridden by the client app
