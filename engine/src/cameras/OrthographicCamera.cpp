@@ -22,10 +22,10 @@ OrthographicCamera::OrthographicCamera(const float32 width, const float32 height
         [this](const WindowResizeEvent& windowResizeEvent) { onWindowResize(windowResizeEvent); });
 }
 
-void OrthographicCamera::setViewport(const float32 left, const float32 right, const float32 bottom,
-                                     const float32 top, const float32 near, const float32 far) {
-    projectionMat = jm::ortho(left, right, bottom, top, near, far);
-    aspectRatio = (right - left) / (top - bottom);
+void OrthographicCamera::setViewport(const float32 width, const float32 height, const float32 near,
+                                     const float32 far) {
+    aspectRatio = width / height;
+    projectionMat = jm::ortho(-aspectRatio * zoom, aspectRatio * zoom, -zoom, zoom, near, far);
 }
 
 void OrthographicCamera::setPosition(const jm::Vec3f& pos) {
@@ -86,7 +86,9 @@ void OrthographicCamera::onMouseScroll(const MouseScrollEvent& mouseScrollEvent)
         zoom = 5.0f;
 
     if (prevFrameZoom != zoom) {
-        setViewport(-aspectRatio * zoom, aspectRatio * zoom, -zoom, zoom);
+        const float32 width = (aspectRatio * zoom) - (-aspectRatio * zoom);  // Right - Left
+        const float32 height = zoom - (-zoom);                               // Top - Down
+        setViewport(width, height);
     }
 }
 

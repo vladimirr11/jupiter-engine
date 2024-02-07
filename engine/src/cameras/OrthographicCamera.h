@@ -14,8 +14,8 @@ public:
     OrthographicCamera(const float32 width, const float32 height, const float32 near = -1.f,
                        const float32 far = 1.f);
 
-    void setViewport(const float32 left, const float32 right, const float32 bottom,
-                     const float32 top, const float32 near = -1.f, const float32 far = 1.f);
+    void setViewport(const float32 width, const float32 height, const float32 near = -1.f,
+                     const float32 far = 1.f);
 
     void setPosition(const jm::Vec3f& pos);
     void setRotation(const float32 zRotation, const jm::Vec3f& axis = jm::Vec3f(0.f, 0.f, 1.f));
