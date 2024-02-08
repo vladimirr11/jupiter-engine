@@ -3,6 +3,7 @@
 
 // Jupiter includes
 #include <Jupiter.h>
+#include <imgui_internal.h>
 
 using namespace jupiter;
 
@@ -74,16 +75,14 @@ private:
     }
 
     void uiLayerUpdate() override {
-        // ImGui demo
         ImGuiIO& io = ImGui::GetIO();
+        const Window& window = Application::getWindow();
 
         static bool dockspaceOpen = true;
         static bool fullscreen = true;
         static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 
-        // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable
-        // into, because it would be confusing to have two docking targets within each others.
-        ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+        ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking;
         if (fullscreen) {
             const ImGuiViewport* viewport = ImGui::GetMainViewport();
             ImGui::SetNextWindowPos(viewport->WorkPos);
@@ -113,54 +112,66 @@ private:
 
         // Submit the DockSpace
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
-            ImGuiID dockspaceID = ImGui::GetID("MyDockSpace");
+            ImGuiID dockspaceID = ImGui::GetID("MyDockspace");
             ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
-        }
 
-        if (ImGui::BeginMenuBar()) {
-            if (ImGui::BeginMenu("File")) {
-                if (ImGui::MenuItem("Close", nullptr, false, &dockspaceOpen != nullptr)) {
-                    Application::close();
-                }
-                ImGui::EndMenu();
+            static auto firstTime = true;
+            if (firstTime) {
+                firstTime = false;
+                ImGui::DockBuilderRemoveNode(dockspaceID);
+                ImGui::DockBuilderAddNode(dockspaceID,
+                                          dockspaceFlags | ImGuiDockNodeFlags_DockSpace);
+                ImGui::DockBuilderSetNodeSize(dockspaceID, ImGui::GetWindowSize());
+                ImGuiID dockspaceMainNodeID = dockspaceID;
+                ImGuiID leftNodeID = ImGui::DockBuilderSplitNode(
+                    dockspaceMainNodeID, ImGuiDir_Left, 0.3f, nullptr, &dockspaceMainNodeID);
+
+                ImGui::DockBuilderDockWindow("Debug information", leftNodeID);
+                ImGui::DockBuilderDockWindow("Viewport", dockspaceMainNodeID);
+                ImGui::DockBuilderFinish(dockspaceID);
             }
-
-            ImGui::EndMenuBar();
         }
 
-        GraphicsContext* context = getAppGraphicsContext();
+        // Begin Debug information panel
+        {
+            GraphicsContext* context = getAppGraphicsContext();
 
-        ImGui::Begin("Debug information");
-        ImGui::Text("Graphics API: OpenGL");
-        ImGui::Text("Graphics API vendor: %s", context->getVendor());
-        ImGui::Text("Graphics API vendor version: %s", context->getVendorVersion());
-        ImGui::Text("Graphics API renderer implementation: %s",
-                    context->getRendererImplementation());
-        ImGui::Text("Consumed events memory: %lld bytes", getMemoryArenaUsedMemory());
-        ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate,
-                    io.Framerate);
-        ImGui::Text("Batch Renderer stats: #draw calls %d", Renderer::Statistics::getDrawCalls());
-        ImGui::Text("Batch Renderer stats: #draw quads %d", Renderer::Statistics::getDrawQuads());
-        ImGui::Text("Batch Renderer stats: #draw verts %d",
-                    Renderer::Statistics::getDrawVertices());
-        ImGui::End();
-
-        // Begin Viewport Panel
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        ImGui::Begin("Viewport");
-        ImVec2 viewportDims = ImGui::GetContentRegionAvail();
-        JLOG_WARN("Viewport dims [{}, {}]", viewportDims.x, viewportDims.y);
-        if (viewportPanelSize.x != viewportDims.x || viewportPanelSize.y != viewportDims.y) {
-            framebuffer->resize(viewportDims.x, viewportDims.y);
-            viewportPanelSize = {viewportDims.x, viewportDims.y};
-            camera->setViewport(viewportDims.x, viewportDims.y);
+            ImGui::Begin("Debug information");
+            ImGui::Text("Graphics API: OpenGL");
+            ImGui::Text("Graphics API vendor: %s", context->getVendor());
+            ImGui::Text("Graphics API vendor version: %s", context->getVendorVersion());
+            ImGui::Text("Graphics API renderer implementation: %s",
+                        context->getRendererImplementation());
+            ImGui::Text("Consumed events memory: %lld bytes", getMemoryArenaUsedMemory());
+            ImGui::Text("Average frame rate %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate,
+                        io.Framerate);
+            ImGui::Text("Batch Renderer stats: #draw calls %d",
+                        Renderer::Statistics::getDrawCalls());
+            ImGui::Text("Batch Renderer stats: #draw quads %d",
+                        Renderer::Statistics::getDrawQuads());
+            ImGui::Text("Batch Renderer stats: #draw verts %d",
+                        Renderer::Statistics::getDrawVertices());
+            ImGui::End();
         }
-        const uint32 viewportTextureId = framebuffer->getColorAttachmentId();
-        ImGui::Image((void*)viewportTextureId, ImVec2{viewportPanelSize.x, viewportPanelSize.y},
-                     ImVec2{0, 1}, ImVec2{1, 0});
-        // End Viewport Panel
-        ImGui::End();
-        ImGui::PopStyleVar();
+
+        // Begin Viewport panel
+        {
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+            ImGui::Begin("Viewport");
+            ImGui::PopStyleVar();
+
+            ImVec2 viewportDims = ImGui::GetContentRegionAvail();
+            JLOG_WARN("Viewport dims [{}, {}]", viewportDims.x, viewportDims.y);
+            if (viewportPanelSize.x != viewportDims.x || viewportPanelSize.y != viewportDims.y) {
+                framebuffer->resize(viewportDims.x, viewportDims.y);
+                viewportPanelSize = {viewportDims.x, viewportDims.y};
+                camera->setViewport(viewportDims.x, viewportDims.y);
+            }
+            const uint32 viewportTextureId = framebuffer->getColorAttachmentId();
+            ImGui::Image((void*)viewportTextureId, ImVec2{viewportPanelSize.x, viewportPanelSize.y},
+                         ImVec2{0, 1}, ImVec2{1, 0});
+            ImGui::End();
+        }
 
         // End dockspace
         ImGui::End();

@@ -34,7 +34,7 @@ void ImGuiUILayer::attach(const UILayerConfig& config) {
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable keyboard controls
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // Enable docking
     io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Enable Multi-Viewport/Platform Windows
-    io->ConfigDockingWithShift = true;                    // Must hold shift to dock
+    // io->ConfigDockingWithShift = true;                    // Must hold shift to dock
 
     // Setup Dear ImGui style
     style = &ImGui::GetStyle();
