@@ -1,5 +1,5 @@
 # Jupiter Engine 
-This repo is in its very beginning and at this time it represents a simple 2D/3D renderer that hasn't much to show. The renderer uses OpenGL as graphics API and at present most of the core OpenGL objects are abstracted. Next to come is a simple scene editor.
+This repo is in its very beginning and at this time it represents a simple 2D/3D renderer. The renderer uses OpenGL as graphics API and at present most of the core OpenGL objects are abstracted. Next to come is a scene editor.
 
 ## Getting Started 
 To clone the repo use:
