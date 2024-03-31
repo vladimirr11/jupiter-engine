@@ -36,7 +36,7 @@ public:
     };
 
 public:
-    // Public API of the 3D Randerer
+    // Public API of the 3D Renderer
     static void init() {
         renderBackend->init();
         BatchRenderer::init();

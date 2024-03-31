@@ -14,10 +14,11 @@ class Event;
 class Application {
 public:
     Application();
-    virtual ~Application();
 
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
+
+    virtual ~Application();
 
     static Application& instance() { return *appInstance; }
     const Window& getWindow() const { return *window.get(); }
@@ -38,8 +39,8 @@ private:
     void onEvent(const Event& event);
 
 private:
-    UniquePtr<Window> window;
-    UniquePtr<UILayer> uiLayer;
+    UniquePtr<Window> window = nullptr;
+    UniquePtr<UILayer> uiLayer = nullptr;
     bool running = true;
     static Application* appInstance;
 };

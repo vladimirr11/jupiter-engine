@@ -8,6 +8,7 @@ namespace jupiter {
 // Forward declarations
 class MouseScrollEvent;
 class WindowResizeEvent;
+class MouseMotionEvent;
 
 class OrthographicCamera : public Camera<OrthographicCamera> {
 public:

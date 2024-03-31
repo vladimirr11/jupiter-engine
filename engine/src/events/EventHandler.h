@@ -10,7 +10,6 @@ public:
     virtual ~IEventHandler() = default;
 
     virtual void execute(const Event& event) = 0;
-
     virtual uint64 getHashCode() const = 0;
 };
 

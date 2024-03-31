@@ -4,7 +4,7 @@
 #include <memory>
 #include <filesystem>
 
-// Base difines
+// Base defines
 #define DEBUG
 
 // Jupiter supports Windows and Linux platforms
@@ -31,13 +31,13 @@
 #endif  // DEBUG
 
 // Jupiter primitive data types aliases
-// Unsigned intigers
+// Unsigned integers
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;
 typedef unsigned long long uint64;
 
-// Signed intigers
+// Signed integers
 typedef char int8;
 typedef short int16;
 typedef int int32;

@@ -35,7 +35,7 @@ private:
 
 private:
     uint8* memory = nullptr;  ///< Pointer to the beginning of the owned memory
-    uint64 usedMemory = 0;    ///< Amount of memory used by the allocatpr
+    uint64 usedMemory = 0;    ///< Amount of memory used by the allocator
     const uint64 memSize;     ///< The size in bytes of the allocated memory block
 };
 
@@ -43,7 +43,7 @@ template <typename T>
 T* MemoryArena::alloc(const int32 objectCount) {
     if (usedMemory + (objectCount * sizeof(T)) > memSize) {
         const uint64 remainingBytes = memSize - usedMemory;
-        JLOG_ERROR("Requsted object count exeeds the amount of free memory. Remaining bytes {}\n",
+        JLOG_ERROR("Requested object count exceeds the amount of free memory. Remaining bytes {}\n",
                    remainingBytes);
         return nullptr;
     }

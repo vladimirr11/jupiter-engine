@@ -26,6 +26,7 @@ Application::Application() {
     // Initialize global event manager
     gEventManager = newUniquePtr<EventManager>();
     jAssertPtr(gEventManager);
+    gEventManager->start();
 
     // Create window
     window = Window::create();
@@ -55,7 +56,11 @@ Application::Application() {
     subscribe<MouseScrollEvent>([this](const MouseScrollEvent& event) { onEvent(event); });
 }
 
-Application::~Application() { Renderer::shutDown(); }
+Application::~Application() {
+    gEventManager->shutDown();
+    Renderer::shutDown();
+    uiLayer->detach();
+}
 
 void Application::run() {
     DeltaTime::init();
@@ -69,7 +74,7 @@ void Application::run() {
         // Render UI layer
         uiLayer->update(std::bind(&Application::uiLayerUpdate, this));
 
-        // Swap buffers and poll IO events
+        //  Swap buffers and poll events
         window->update();
     }
 }
@@ -77,7 +82,7 @@ void Application::run() {
 void Application::close() { running = false; }
 
 void Application::onWindowClose(const WindowCloseEvent& event) {
-    running = false;
+    close();
     JLOG_INFO(event.toString().c_str());
 }
 
@@ -88,7 +93,7 @@ void Application::onWindowResize(const WindowResizeEvent& event) {
 void Application::onEvent(const Event& event) {
     JLOG_INFO(event.toString().c_str());
     if (Input::keyPressed(Keyboard::KEY_ESCAPE)) {
-        running = false;
+        close();
     }
 }
 

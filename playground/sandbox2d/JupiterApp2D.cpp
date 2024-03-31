@@ -78,12 +78,12 @@ private:
         ImGuiIO& io = ImGui::GetIO();
         const Window& window = Application::getWindow();
 
-        static bool dockspaceOpen = true;
-        static bool fullscreen = true;
-        static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
+        static bool dockSpaceOpen = true;
+        static bool fullScreen = true;
+        static ImGuiDockNodeFlags dockSpaceFlags = ImGuiDockNodeFlags_None;
 
         ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking;
-        if (fullscreen) {
+        if (fullScreen) {
             const ImGuiViewport* viewport = ImGui::GetMainViewport();
             ImGui::SetNextWindowPos(viewport->WorkPos);
             ImGui::SetNextWindowSize(viewport->WorkSize);
@@ -94,41 +94,41 @@ private:
                            ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
             windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
         } else {
-            dockspaceFlags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
+            dockSpaceFlags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
         }
 
-        if (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode) {
+        if (dockSpaceFlags & ImGuiDockNodeFlags_PassthruCentralNode) {
             windowFlags |= ImGuiWindowFlags_NoBackground;
         }
 
         // Begin DockSpace
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        ImGui::Begin("DockSpace Demo", &dockspaceOpen, windowFlags);
+        ImGui::Begin("DockSpace Demo", &dockSpaceOpen, windowFlags);
         ImGui::PopStyleVar();
 
-        if (fullscreen) {
+        if (fullScreen) {
             ImGui::PopStyleVar(2);
         }
 
         // Submit the DockSpace
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
-            ImGuiID dockspaceID = ImGui::GetID("MyDockspace");
-            ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
+            ImGuiID dockSpaceID = ImGui::GetID("MyDockSpace");
+            ImGui::DockSpace(dockSpaceID, ImVec2(0.0f, 0.0f), dockSpaceFlags);
 
             static auto firstTime = true;
             if (firstTime) {
                 firstTime = false;
-                ImGui::DockBuilderRemoveNode(dockspaceID);
-                ImGui::DockBuilderAddNode(dockspaceID,
-                                          dockspaceFlags | ImGuiDockNodeFlags_DockSpace);
-                ImGui::DockBuilderSetNodeSize(dockspaceID, ImGui::GetWindowSize());
-                ImGuiID dockspaceMainNodeID = dockspaceID;
+                ImGui::DockBuilderRemoveNode(dockSpaceID);
+                ImGui::DockBuilderAddNode(dockSpaceID,
+                                          dockSpaceFlags | ImGuiDockNodeFlags_DockSpace);
+                ImGui::DockBuilderSetNodeSize(dockSpaceID, ImGui::GetWindowSize());
+                ImGuiID dockspaceMainNodeID = dockSpaceID;
                 ImGuiID leftNodeID = ImGui::DockBuilderSplitNode(
                     dockspaceMainNodeID, ImGuiDir_Left, 0.3f, nullptr, &dockspaceMainNodeID);
 
                 ImGui::DockBuilderDockWindow("Debug information", leftNodeID);
                 ImGui::DockBuilderDockWindow("Viewport", dockspaceMainNodeID);
-                ImGui::DockBuilderFinish(dockspaceID);
+                ImGui::DockBuilderFinish(dockSpaceID);
             }
         }
 
@@ -161,7 +161,7 @@ private:
             ImGui::PopStyleVar();
 
             ImVec2 viewportDims = ImGui::GetContentRegionAvail();
-            JLOG_WARN("Viewport dims [{}, {}]", viewportDims.x, viewportDims.y);
+            // JLOG_WARN("Viewport dims [{}, {}]", viewportDims.x, viewportDims.y);
             if (viewportPanelSize.x != viewportDims.x || viewportPanelSize.y != viewportDims.y) {
                 framebuffer->resize(viewportDims.x, viewportDims.y);
                 viewportPanelSize = {viewportDims.x, viewportDims.y};
@@ -173,7 +173,7 @@ private:
             ImGui::End();
         }
 
-        // End dockspace
+        // End dock space
         ImGui::End();
     }
 

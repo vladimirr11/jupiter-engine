@@ -34,7 +34,7 @@ void Window::init(const WindowConfig& config) {
     windowData.width = config.width;
     windowData.height = config.height;
 
-    // Initialize glfw
+    // Initialize GLFW
     if (!glfwInitialized) {
         jAssertFunc(glfwInit());
         JLOG_INFO("GLFW library initialized");
@@ -55,39 +55,48 @@ void Window::init(const WindowConfig& config) {
     jAssertPtr(context);
     context->init();
 
+    // Associate _windowData_ to the window in order to be retrieved latter with
+    // glfwGetWindowUserPointer
     glfwSetWindowUserPointer(window, &windowData);
 
     // Enable GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-    // Enable vsync
+    // Enable vSync
     glfwSwapInterval(GLFW_TRUE);
 
-    // Set glfw event callbacks
-    // Window callbacks
-    glfwSetWindowCloseCallback(
-        window, [](GLFWwindow* glfwWindow) { queueEvent(newEvent<WindowCloseEvent>()); });
+    // Set GLFW event callbacks
+    // Register function to be called on window close event
+    glfwSetWindowCloseCallback(window, [](GLFWwindow* glfwWindow) {
+        triggerEvent(WindowCloseEvent());
+        // queueEvent(newEvent<WindowCloseEvent>());
+    });
 
+    // Register function to be called on window resize event
     glfwSetWindowSizeCallback(window, [](GLFWwindow* glfwWindow, int32 width, int32 height) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
         data.width = width;
         data.height = height;
-        queueEvent(newEvent<WindowResizeEvent>(width, height));
+        triggerEvent(WindowResizeEvent(width, height));
+        // queueEvent(newEvent<WindowResizeEvent>(width, height));
     });
 
-    // Keyborad callbacks
+    // Register function to be called on keyboard event
     glfwSetKeyCallback(
         window, [](GLFWwindow* glfwWindow, int32 key, int32 scanCode, int32 action, int32 mods) {
             bool repeated = false;
             switch (action) {
             case GLFW_PRESS:
+                // triggerEvent(KeyPressEvent((Keyboard::Key)key, repeated));
                 queueEvent(newEvent<KeyPressEvent>((Keyboard::Key)key, repeated));
                 break;
             case GLFW_REPEAT:
                 repeated = true;
+                // triggerEvent(KeyPressEvent((Keyboard::Key)key, repeated));
                 queueEvent(newEvent<KeyPressEvent>((Keyboard::Key)key, repeated));
                 break;
             case GLFW_RELEASE:
+                // triggerEvent(KeyReleaseEvent((Keyboard::Key)key));
                 queueEvent(newEvent<KeyReleaseEvent>((Keyboard::Key)key));
                 break;
             default:
@@ -96,14 +105,17 @@ void Window::init(const WindowConfig& config) {
             }
         });
 
-    // Mouse callbacks
+    // Register function to be called on mouse button pressed or released event
     glfwSetMouseButtonCallback(
         window, [](GLFWwindow* glfwWindow, int32 mouseButton, int32 action, int32 mods) {
             switch (action) {
-            case GLFW_PRESS:
+            case GLFW_PRESS: {
+                // triggerEvent(MouseButtonPressEvent((Mouse::MouseKey)mouseButton));
                 queueEvent(newEvent<MouseButtonPressEvent>((Mouse::MouseKey)mouseButton));
                 break;
+            }
             case GLFW_RELEASE:
+                // triggerEvent(MouseButtonReleaseEvent((Mouse::MouseKey)mouseButton));
                 queueEvent(newEvent<MouseButtonReleaseEvent>((Mouse::MouseKey)mouseButton));
                 break;
             default:
@@ -112,11 +124,15 @@ void Window::init(const WindowConfig& config) {
             }
         });
 
+    // Register function to be called on mouse move event
     glfwSetCursorPosCallback(window, [](GLFWwindow* glfwWindow, float64 xPos, float64 yPos) {
+        // triggerEvent(MouseMotionEvent((float32)xPos, (float32)yPos));
         queueEvent(newEvent<MouseMotionEvent>((float32)xPos, (float32)yPos));
     });
 
+    // Register function to be called on mouse scroll event
     glfwSetScrollCallback(window, [](GLFWwindow* glfwWindow, float64 xOffset, float64 yOffset) {
+        // triggerEvent(MouseScrollEvent((float32)xOffset, (float32)yOffset));
         queueEvent(newEvent<MouseScrollEvent>((float32)xOffset, (float32)yOffset));
     });
 }

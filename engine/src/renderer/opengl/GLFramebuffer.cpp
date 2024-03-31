@@ -6,7 +6,7 @@
 #include "renderer/opengl/GLAssert.h"
 #include "base/Assert.h"
 
-// Third-party inludes
+// Third-party includes
 #include <glad/glad.h>
 
 namespace jupiter {

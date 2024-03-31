@@ -23,33 +23,33 @@ public:
 template <typename... Args>
 void Logger::logTrace(LogLevel level, const char* msg, Args&&... args) {
     std::time_t t = std::time(nullptr);
-    std::string formatedLog =
+    std::string formattedLog =
         fmt::format(fmt::runtime("[{:%F %T UTC%z}] Jupiter Log: "), fmt::localtime(t));
-    formatedLog += fmt::vformat(msg, fmt::make_format_args(args...));
+    formattedLog += fmt::vformat(msg, fmt::make_format_args(args...));
     switch (level) {
     case TRACE:
-        formatedLog =
-            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(WHITE)), fmt::runtime(formatedLog));
+        formattedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(WHITE)), fmt::runtime(formattedLog));
         break;
     case INFO:
-        formatedLog =
-            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(GREEN)), fmt::runtime(formatedLog));
+        formattedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(GREEN)), fmt::runtime(formattedLog));
         break;
     case WARN:
-        formatedLog =
-            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(YELLOW)), fmt::runtime(formatedLog));
+        formattedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(YELLOW)), fmt::runtime(formattedLog));
         break;
     case ERROR:
-        formatedLog =
-            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(RED)), fmt::runtime(formatedLog));
+        formattedLog =
+            fmt::format(fmt::emphasis::bold | fmt::fg(fmt::rgb(RED)), fmt::runtime(formattedLog));
         break;
     case CRITICAL:
-        formatedLog =
-            fmt::format(fmt::emphasis::bold | fmt::bg(fmt::rgb(RED)), fmt::runtime(formatedLog));
+        formattedLog =
+            fmt::format(fmt::emphasis::bold | fmt::bg(fmt::rgb(RED)), fmt::runtime(formattedLog));
         break;
     }
 
-    fmt::print("{}\n", formatedLog);
+    fmt::print("{}\n", formattedLog);
 }
 
 }  // namespace jupiter

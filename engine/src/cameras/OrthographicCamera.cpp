@@ -97,6 +97,6 @@ void OrthographicCamera::onWindowResize(const WindowResizeEvent& windowResizeEve
         aspectRatio = windowResizeEvent.getWidth() / (float32)windowResizeEvent.getHeight();
         setViewport(-aspectRatio * zoom, aspectRatio * zoom, -zoom, zoom);
     }
-}
+} 
 
 }  // namespace jupiter

@@ -9,7 +9,7 @@ struct FramebufferConfig {
     uint32 width = 0u;
     uint32 height = 0u;
     uint32 samples = 1u;
-    bool renderOnSreen = false;
+    bool renderOnScreen = false;
 };
 
 class Framebuffer {

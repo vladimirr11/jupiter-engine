@@ -8,10 +8,10 @@ namespace jupiter {
 
 /// @brief Reports an assertion failure and halt execution of the program if _errorCode_ != 0
 template <typename T>
-inline void checkFuncReturnCode(T result, const char* func, const char* fileName, const int32 line) {
+inline void checkFuncReturnCode(T result, const char* funcName, const char* fileName, const int32 line) {
     if (result) {
     } else {
-        JLOG_ERROR("{} returned error code {} at file {}, line {}", func, result, __FILE__,
+        JLOG_ERROR("{} returned error code {} at file {}, line {}", funcName, result, __FILE__,
                    __LINE__);
         exit(EXIT_FAILURE);
     }

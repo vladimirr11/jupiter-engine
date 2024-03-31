@@ -1,6 +1,6 @@
 #pragma once
 
-// C++ systme includes
+// C++ system includes
 #include <random>
 #include <iostream>
 
