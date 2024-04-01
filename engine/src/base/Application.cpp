@@ -26,7 +26,6 @@ Application::Application() {
     // Initialize global event manager
     gEventManager = newUniquePtr<EventManager>();
     jAssertPtr(gEventManager);
-    gEventManager->start();
 
     // Create window
     window = Window::create();

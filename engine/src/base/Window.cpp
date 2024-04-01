@@ -68,8 +68,8 @@ void Window::init(const WindowConfig& config) {
     // Set GLFW event callbacks
     // Register function to be called on window close event
     glfwSetWindowCloseCallback(window, [](GLFWwindow* glfwWindow) {
-        triggerEvent(WindowCloseEvent());
-        // queueEvent(newEvent<WindowCloseEvent>());
+        // triggerEvent(WindowCloseEvent());
+        queueEvent(newEvent<WindowCloseEvent>());
     });
 
     // Register function to be called on window resize event
@@ -77,8 +77,8 @@ void Window::init(const WindowConfig& config) {
         WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
         data.width = width;
         data.height = height;
-        triggerEvent(WindowResizeEvent(width, height));
-        // queueEvent(newEvent<WindowResizeEvent>(width, height));
+        // triggerEvent(WindowResizeEvent(width, height));
+        queueEvent(newEvent<WindowResizeEvent>(width, height));
     });
 
     // Register function to be called on keyboard event

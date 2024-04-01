@@ -2,9 +2,6 @@
 
 // C++ system includes
 #include <unordered_map>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
 
 // Own includes
 #include "events/EventHandler.h"
@@ -22,8 +19,6 @@ public:
     EventManager(const EventManager&) = delete;
     EventManager& operator=(const EventManager&) = delete;
 
-    void start();
-
     void subscribe(const EventType type, UniquePtr<IEventHandler> handler);
     void unsubscribe(const EventType type, const uint64 handlerHash);
 
@@ -34,17 +29,8 @@ public:
     void shutDown();
 
 private:
-    void processEvents();
-
-private:
     EventQueue eventQueue;
     EventHandlersMap handlersMap;
-    std::thread eventThread;
-    std::mutex eventMutex;
-    std::condition_variable cv;
-    bool eventsReady = false;
-    bool eventsProcessed = true;
-    bool running = false;
 };
 
 // Global even manager
