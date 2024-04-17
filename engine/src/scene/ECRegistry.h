@@ -15,8 +15,24 @@ struct ECRegistry;
 class Entity {
 public:
     Entity() = default;
-    Entity(const uint32 id_, const std::bitset<kMaxComponents> components_ = {})
-        : id(id_), components(components_) {}
+    Entity(const uint32 id_, ECRegistry* registry_,
+           const std::bitset<kMaxComponents> components_ = {})
+        : registry(registry_), id(id_), components(components_) {}
+
+    // Note: not allowed entities with same id
+    Entity(const Entity& other) = delete;
+    Entity& operator=(const Entity& rhs) = delete;
+
+    // Initialization of default constructed entities
+    void init(const uint32 id_, ECRegistry* registry_,
+              const std::bitset<kMaxComponents> components_ = {}) {
+        registry = registry_;
+        id = id_;
+        components = components_;
+    }
+
+    // Copy _*this_ with different id
+    Entity clone() {}
 
     template <typename CompT, typename... Args>
     void assign(Args&&... args) {}
@@ -29,7 +45,7 @@ public:
 
 private:
     ECRegistry* registry = nullptr;
-    const uint32 id{};
+    uint32 id{};
     std::bitset<kMaxComponents> components;
 };
 
