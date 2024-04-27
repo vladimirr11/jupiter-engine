@@ -2,6 +2,7 @@
 
 // C++ system includes
 #include <bitset>
+#include <type_traits>
 
 // Own includes
 #include "base/Defines.h"
@@ -47,6 +48,25 @@ private:
     ECRegistry* registry = nullptr;
     uint32 id{};
     std::bitset<kMaxComponents> components;
+};
+
+/// @brief Used to retrieve unique component type id
+struct ComponentFamily {
+public:
+    template <typename Type>
+    inline static uint32 getTypeId() {
+        return getIdentifier<std::remove_cvref_t<Type>>();
+    }
+
+private:
+    template <typename...>
+    static uint32 getIdentifier() {
+        static const uint32 value = id++;
+        return value;
+    }
+
+private:
+    inline static uint32 id = 0;
 };
 
 }  // namespace jupiter
