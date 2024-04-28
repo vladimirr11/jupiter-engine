@@ -35,10 +35,10 @@ public:
     // Copy _*this_ with different id
     Entity clone() {}
 
-    template <typename CompT, typename... Args>
+    template <typename CompType, typename... Args>
     void assign(Args&&... args) {}
 
-    template <typename CompT>
+    template <typename CompType>
     void remove() {}
 
     const uint32 getId() const { return id; }
@@ -50,10 +50,16 @@ private:
     std::bitset<kMaxComponents> components;
 };
 
+template <typename Derived>
+struct Component {
+    using type = Derived;
+};
+
 /// @brief Used to retrieve unique component type id
 struct ComponentFamily {
 public:
-    template <typename Type>
+    template <typename Type,
+              typename = std::enable_if_t<std::is_base_of_v<Component<Type>, Type>, void>>
     inline static uint32 getTypeId() {
         return getIdentifier<std::remove_cvref_t<Type>>();
     }
@@ -67,6 +73,37 @@ private:
 
 private:
     inline static uint32 id = 0;
+};
+
+class IComponentPool {
+public:
+    virtual ~IComponentPool() = default;
+
+    virtual void clear() = 0;
+};
+
+template <typename Type>
+class ComponentPool final : public IComponentPool {
+public:
+    ComponentPool() {}
+
+    void add(const Type& comp) {}
+
+    template <typename... Args>
+    void add(Args&&... args) {}
+
+    uint64 size() const {}
+    void remove(const Entity& entity) {}
+    void clear() override {}
+
+private:
+    std::vector<Type> pool;
+};
+
+class ECRegistry {
+public:
+private:
+    std::vector<UniquePtr<IComponentPool>> pools;
 };
 
 }  // namespace jupiter
