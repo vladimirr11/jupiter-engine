@@ -3,6 +3,8 @@
 // C++ system includes
 #include <bitset>
 #include <type_traits>
+#include <deque>
+#include <unordered_map>
 
 // Own includes
 #include "base/Defines.h"
@@ -20,10 +22,6 @@ public:
            const std::bitset<kMaxComponents> components_ = {})
         : registry(registry_), id(id_), components(components_) {}
 
-    // Note: not allowed entities with same id
-    Entity(const Entity& other) = delete;
-    Entity& operator=(const Entity& rhs) = delete;
-
     // Initialization of default constructed entities
     void init(const uint32 id_, ECRegistry* registry_,
               const std::bitset<kMaxComponents> components_ = {}) {
@@ -40,6 +38,9 @@ public:
 
     template <typename CompType>
     void remove() {}
+
+    template <typename CompType>
+    bool hasComponent() {}
 
     const uint32 getId() const { return id; }
     const std::bitset<kMaxComponents> getComponents() const { return components; }
@@ -92,7 +93,7 @@ public:
     template <typename... Args>
     void add(Args&&... args) {}
 
-    uint64 size() const {}
+    uint64 size() const { return pool.size(); }
     void remove(const Entity& entity) {}
     void clear() override {}
 
@@ -102,8 +103,28 @@ private:
 
 class ECRegistry {
 public:
+    ECRegistry() {}
+
+    Entity& create() {
+        // Use this simple approach for now
+        static uint32 entityId = 0;
+        Entity newEntity{entityId++, this};
+        auto entityIdx = freeSlots.empty() ? entities.size() : freeSlots.front();
+        if (!freeSlots.empty()) {
+            freeSlots.pop_front();
+            entities[entityIdx] = newEntity;
+        } else {
+            entities.push_back(newEntity);
+        }
+        mapper[entityId - 1] = entityIdx;
+        return entities[entityIdx];
+    }
+
 private:
     std::vector<UniquePtr<IComponentPool>> pools;
+    std::vector<Entity> entities;
+    std::deque<size_t> freeSlots;
+    std::unordered_map<uint32, size_t> mapper;
 };
 
 }  // namespace jupiter
